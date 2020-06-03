@@ -83,6 +83,11 @@ class DiepSocket extends EventEmitter {
     constructor(link, proxy, options) {
         super();
 
+        if(typeof proxy === 'object'){
+			options = proxy;
+			proxy = null;
+		}
+
         this._accepted = false;
         this._options = {
             timeout: 30000,
