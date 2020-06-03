@@ -7,11 +7,11 @@
 		"start": "server.js"
 	},
 	"dependencies": {
-    "ws": "7.3.0",
-    "https-proxy-agent": "5.0.0"
-  },
+		"ws": "7.3.0",
+		"https-proxy-agent": "5.0.0"
+	},
 	"engines": {
-    "node": "12.x"
+		"node": "12.x"
 	},
 	"keywords": [],
 	"author": "Cazka#9552",
