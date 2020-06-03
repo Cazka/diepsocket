@@ -14,14 +14,15 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  *  - link {String] The party link from the server.
  *  - proxy {String} The http proxy that will be used.
  *  - options {Object}
- * 		- timeout: How long the connection is allowed to take to establish.
- *                 Default 30 seconds.
+ * 	    - timeout: How long the connection is allowed to take to establish.
+ *                  Default 30 seconds.
  *
  * Event: 'open'
  * Emitted when the connection is established.
  *
  * Event: 'accept'
- * Emitted when the server accepted us as a client. I suggest to use this event instead of 'open'.
+ * Emitted when the server accepted us as a client.
+ * I suggest to use this event instead of 'open'.
  *
  * Event: 'message'
  *  - data {Buffer} The Buffer sent from the server.
@@ -30,9 +31,10 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  * Event: 'close'
  *  - code {Number}
  *  - reason {String}
- * Emitted when the connection is closed. code is a numeric value indicating the
- * status code explaining why the connection has been closed. reason is a
- * human-readable string explaining why the connection has been closed. You can use custom codes starting at 4000.
+ * Emitted when the connection is closed. code is a numeric value indicating
+ * the status code explaining why the connection has been closed. reason is a
+ * human-readable string explaining why the connection has been closed.
+ * You can use custom codes starting at 4000.
  *
  * Event: 'error'
  *  - error {Error}
@@ -41,7 +43,7 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  * Event: 'timeout'
  *  - reason {Error}
  * Emitted when the connection takes too long to establish.
- * When there is not a 'timeout' Eventlistener, 'error' will be emitted instead.
+ * When there's no 'timeout' listener, 'error' will be emitted instead.
  *
  * socket.send(...args)
  * Send data to the server.
@@ -53,7 +55,7 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  * Close the connection.
  *
  * DiepSocket.getLink(ws[, party])
- *  - ws {String} This can be the wsURL or the server i.
+ *  - ws {String} This can be the wsURL or the server id.
  *  - party {String} The party code.
  *
  * DiepSocket.parseLink(link)
@@ -75,7 +77,8 @@ class DiepSocket extends EventEmitter {
      * @param {String} link The link from the server to which to connect
      * @param {String} proxy The proxy that will be used. ip:port format
      * @param {Object} options Connection options
-     * @param {Number} options.timeout How long the connection is allowed to take to establish. Default 30,000 ms
+     * @param {Number} options.timeout How long the connection is allowed to take to
+     * establish. Default 30,000 ms
      */
     constructor(link, proxy, options) {
         super();
