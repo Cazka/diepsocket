@@ -1,0 +1,19 @@
+{
+	"name": "diepsocket",
+	"version": "1.0.0",
+	"description": "connect to a diep.io server",
+	"main": "server.js",
+	"scripts": {
+		"start": "server.js"
+	},
+	"dependencies": {
+    "ws": "7.3.0",
+    "https-proxy-agent": "5.0.0"
+  },
+	"engines": {
+    "node": "12.x"
+	},
+	"keywords": [],
+	"author": "Cazka#9552",
+	"license": "MIT"
+}
