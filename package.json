@@ -12,5 +12,7 @@
 	},
 	"keywords": [],
 	"author": "Cazka#9552",
-	"license": "MIT"
+	"license": "MIT",
+	"homepage": "https://github.com/Cazka/diepsocket",
+	"repository": "github:Cazka/diepsocket"
 }
