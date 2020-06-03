@@ -1,6 +1,6 @@
 {
 	"name": "diepsocket",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "connect to a diep.io server",
 	"main": "DiepSocket.js",
 	"dependencies": {
