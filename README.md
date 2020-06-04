@@ -1,6 +1,6 @@
-# diepbuddy-client
+# diepsocket
 
-[![NPM version](https://badge.fury.io/js/diepbuddy-client.svg)](https://www.npmjs.com/package/diepbuddy-client)
+[![NPM version](https://badge.fury.io/js/diepsocket.svg)](https://www.npmjs.com/package/diepbuddy-client)
 [![license](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 ## Description
