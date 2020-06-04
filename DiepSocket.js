@@ -48,7 +48,7 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  * socket.send(...args)
  * Send data to the server.
  *
- * ocket.sendBinary(data)
+ * socket.sendBinary(data)
  * Send binary data to the server.
  *
  * socket.close()
