@@ -1,24 +1,31 @@
-<h1 align="center">Welcome to diepsocket 👋</h1>
-<p>
-  <a href="https://www.npmjs.com/package/diepsocket" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/diepsocket.svg">
-  </a>
-  <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-  </a>
-</p>
+# diepbuddy-client
 
-> connect to a diep.io server
+[![NPM version](https://badge.fury.io/js/diepbuddy-client.svg)](https://www.npmjs.com/package/diepbuddy-client)
+[![license](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-## Author
+## Description
 
-👤 **Cazka#9552**
+Connect to a diep.io server very easily.
 
-* Github: [@Cazka](https://github.com/Cazka)
+## Installation
 
-## Show your support
+```bash
+npm install diepsocket
+```
 
-Give a ⭐️ if this project helped you!
+## How to use
 
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+The following example will connect a bot to the diep.io partylink.
+
+```js
+const DiepSocket = require('diepsocket');
+
+const bot = new DiepSocket('diep.io/#26331613006B57F647');
+
+bot.on('accept', () => console.log('Succesfully connected!'))
+bot.on('error', (err) => console.log(err));
+```
+
+If you want to learn the server protocol I suggest visiting these sites:
+https://github.com/cx88/diepssect
+https://github.com/HueHanaejistla/diep.io-protocol-wiki
