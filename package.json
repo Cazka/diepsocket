@@ -6,6 +6,9 @@
     "license": "MIT",
     "homepage": "https://github.com/Cazka/diepsocket",
     "repository": "github:Cazka/diepsocket",
+    "bugs": {
+        "url": "https://github.com/Cazka/diepsocket/issues"
+    },
 	"main": "DiepSocket.js",
 	"dependencies": {
 		"https-proxy-agent": "^5.0.0",
