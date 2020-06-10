@@ -288,6 +288,7 @@ class DiepSocket extends EventEmitter {
      *
      * @param {String} wsURL The server id or wsURL
      * @param {String} party The party code
+     * @throws Will throw error if wsURL does not match regex.
      * @public
      */
     static getLink(wsURL, party = '') {
@@ -310,6 +311,7 @@ class DiepSocket extends EventEmitter {
      * Get the server id and party code from a party link
      *
      * @param {String} link
+     * @throws Will throw error if link does not match regex.
      * @public
      */
     static linkParse(link) {
