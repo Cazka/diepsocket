@@ -14,14 +14,14 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
  *  - link {String] The party link from the server.
  *  - proxy {String} The http proxy that will be used.
  *  - options {Object}
- * 	    - timeout: How long the connection is allowed to take to establish.
+ * 	    - timeout: How long the connection is allowed to take to establish before the connection times out.
  *                  Default 30 seconds.
  *
  * Event: 'open'
  * Emitted when the connection is established.
  *
  * Event: 'accept'
- * Emitted when the server accepted us as a client.
+ * Emitted when the server accepts us as a client.
  * I suggest to use this event instead of 'open'.
  *
  * Event: 'message'
@@ -149,7 +149,7 @@ class DiepSocket extends EventEmitter {
             if (!this._accepted) {
                 this._emitTimeout(
                     new Error(
-                        "Timeout: Socket openend, but didn't receive 07 paket"
+                        "Timeout: Socket openend, but didn't receive 07 packet"
                     )
                 );
                 this.close();
