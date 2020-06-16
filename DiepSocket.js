@@ -118,7 +118,7 @@ class DiepSocket extends EventEmitter {
         }
         if(this._options.ipv6){
             socketOptions.family = 6;
-            socketOptions.localAddress = this.options.ipv6;
+            socketOptions.localAddress = this._options.ipv6;
         }
 
         this._socket = new WebSocket(`wss://${id}.s.m28n.net/`, socketOptions);
