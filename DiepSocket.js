@@ -10,12 +10,13 @@ const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
  *
- * new DiepSocket(link[, proxy][,options])
+ * new DiepSocket(link[,options])
  *  - link {String] The party link from the server.
- *  - proxy {String} The http proxy that will be used.
  *  - options {Object}
  * 	    - timeout: How long the connection is allowed to take to establish before the connection times out.
  *                  Default 30 seconds.
+ *      - proxy {String} The http proxy that will be used.
+ *      - ipv6 {String} The ipv6 that will be used.
  *
  * Event: 'open'
  * Emitted when the connection is established.
@@ -75,18 +76,14 @@ class DiepSocket extends EventEmitter {
      * Creates a new `DiepSocket`.
      *
      * @param {String} link The link from the server to which to connect
-     * @param {String} proxy The proxy that will be used. ip:port format
      * @param {Object} options Connection options
      * @param {Number} options.timeout How long the connection is allowed to take to
      * establish. Default 30,000 ms
+     * @param {String} options.proxy The proxy that will be used. ip:port format
+     * @param {String} options.ipv6 The ipv6 address which will be used.
      */
-    constructor(link, proxy, options) {
+    constructor(link, options) {
         super();
-
-        if(typeof proxy === 'object'){
-			options = proxy;
-			proxy = null;
-		}
 
         this._accepted = false;
         this._options = {
@@ -99,7 +96,7 @@ class DiepSocket extends EventEmitter {
         this._socket = null;
 
         const { id, party } = this.constructor.linkParse(link);
-        this._connect(id, party, proxy);
+        this._connect(id, party);
     }
 
     /**
@@ -110,14 +107,18 @@ class DiepSocket extends EventEmitter {
      * @param {String} proxy The proxy that will be used
      * @private
      */
-    _connect(id, party, proxy) {
+    _connect(id, party) {
         const socketOptions = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
         };
-        if (proxy) {
-            const agent = new HttpsProxyAgent(url.parse(`http://${proxy}`));
+        if (this._options.proxy) {
+            const agent = new HttpsProxyAgent(url.parse(`http://${this._options.proxy}`));
             socketOptions.agent = agent;
+        }
+        if(this._options.ipv6){
+            socketOptions.family = 6;
+            socketOptions.localAddress = this.options.ipv6;
         }
 
         this._socket = new WebSocket(`wss://${id}.s.m28n.net/`, socketOptions);
