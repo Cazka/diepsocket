@@ -116,7 +116,7 @@ class DiepSocket extends EventEmitter {
             const agent = new HttpsProxyAgent(url.parse(`http://${this._options.proxy}`));
             socketOptions.agent = agent;
         }
-        if(this._options.ipv6){
+        if (this._options.ipv6) {
             socketOptions.family = 6;
             socketOptions.localAddress = this._options.ipv6;
         }
@@ -129,9 +129,7 @@ class DiepSocket extends EventEmitter {
 
         this._connectTimeout = setTimeout(() => {
             if (this._socket.readyState === this._socket.CONNECTING) {
-                this._emitTimeout(
-                    new Error('Timeout: Connection took too long to establish')
-                );
+                this._emitTimeout(new Error('Timeout: Connection took too long to establish'));
             }
         }, this._options.timeout);
     }
@@ -149,9 +147,7 @@ class DiepSocket extends EventEmitter {
         this._acceptTimeout = setTimeout(() => {
             if (!this._accepted) {
                 this._emitTimeout(
-                    new Error(
-                        "Timeout: Socket openend, but didn't receive 07 packet"
-                    )
+                    new Error("Timeout: Socket openend, but didn't receive 07 packet")
                 );
                 this.close();
             }
@@ -168,9 +164,7 @@ class DiepSocket extends EventEmitter {
     _onMessage(data) {
         switch (data[0]) {
             case 1:
-                throw new Error(
-                    'Outdated Client: Check if BUILD is up-to-date'
-                );
+                throw new Error('Outdated Client: Check if BUILD is up-to-date');
             case 5:
                 this.send(5);
                 break;
@@ -179,9 +173,7 @@ class DiepSocket extends EventEmitter {
                 super.emit('accept');
                 break;
             case 9:
-                this._onError(
-                    new Error('Link is invalid or the server is getting botted')
-                );
+                this._onError(new Error('Link is invalid or the server is getting botted'));
                 break;
             default:
                 super.emit('message', data);
@@ -265,7 +257,7 @@ class DiepSocket extends EventEmitter {
             typeof r === 'number'
                 ? [r]
                 : typeof r === 'string'
-                ? r.split('').map((r) => r.charCodeAt(0))
+                ? Array.from(new TextEncoder().encode(r))
                 : r
         );
         let u8 = new Uint8Array([].concat(...data));
@@ -280,8 +272,7 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     sendBinary(data) {
-        if (this._socket && this._socket.readyState === 1)
-            this._socket.send(data);
+        if (this._socket && this._socket.readyState === 1) this._socket.send(data);
     }
 
     /**
@@ -293,17 +284,13 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static getLink(wsURL, party = '') {
-        const match = wsURL.match(
-            /(?<=wss:\/\/).[0-9a-z]{3}(?=.s.m28n.net\/)|^[0-9a-z]{4}$/
-        );
+        const match = wsURL.match(/(?<=wss:\/\/).[0-9a-z]{3}(?=.s.m28n.net\/)|^[0-9a-z]{4}$/);
         if (!match) throw new Error('Invalid wsURL: wrong format:', wsURL);
         let serverid = match[0];
         const link = 'https://diep.io/#';
         serverid = serverid
             .split('')
-            .map((char) =>
-                char.charCodeAt(0).toString(16).split('').reverse().join('')
-            )
+            .map((char) => char.charCodeAt(0).toString(16).split('').reverse().join(''))
             .join('');
         return link + (serverid + '00' + party).toUpperCase();
     }
