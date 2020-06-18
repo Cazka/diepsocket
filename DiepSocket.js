@@ -104,7 +104,6 @@ class DiepSocket extends EventEmitter {
      *
      * @param {String} id The server id from the diep.io server
      * @param {String} party The party code from the arena
-     * @param {String} proxy The proxy that will be used
      * @private
      */
     _connect(id, party) {
