@@ -1,6 +1,6 @@
 {
 	"name": "diepsocket",
-	"version": "1.0.16",
+	"version": "1.0.17",
 	"description": "connect to a diep.io server",
     "author": "Cazka#9552",
     "license": "MIT",
