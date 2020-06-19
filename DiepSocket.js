@@ -5,7 +5,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const WebSocket = require('ws');
 const url = require('url');
 
-const BUILD = 'eab7be559e0cf41175ea24fada87ee8eebbbcf2a';
+const BUILD = 'd20ce164190315af42b4284e852dd50ce5a0be50';
 
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
