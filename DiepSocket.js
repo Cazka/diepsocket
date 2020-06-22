@@ -94,9 +94,17 @@ class DiepSocket extends EventEmitter {
         this._acceptTimeout = null;
 
         this._socket = null;
+        this._gamemode = null;
 
         const { id, party } = this.constructor.linkParse(link);
         this._connect(id, party);
+    }
+
+    /**
+     * returns the gamemode.
+     */
+    get gamemode() {
+        return this._gamemode;
     }
 
     /**
@@ -162,16 +170,21 @@ class DiepSocket extends EventEmitter {
      */
     _onMessage(data) {
         switch (data[0]) {
-            case 1:
+            case 0x01:
                 throw new Error('Outdated Client: Check if BUILD is up-to-date');
-            case 5:
+            case 0x04:
+                this.gamemode = new TextDecoder()
+                    .decode(data.slice(1, data.length))
+                    .split('\u0000')[0];
+                break;
+            case 0x05:
                 this.send(5);
                 break;
-            case 7:
+            case 0x07:
                 this._accepted = true;
                 super.emit('accept');
                 break;
-            case 9:
+            case 0x09:
                 this._onError(new Error('Link is invalid or the server is getting botted'));
                 break;
             default:
