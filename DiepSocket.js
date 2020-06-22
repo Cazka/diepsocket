@@ -173,7 +173,7 @@ class DiepSocket extends EventEmitter {
             case 0x01:
                 throw new Error('Outdated Client: Check if BUILD is up-to-date');
             case 0x04:
-                this.gamemode = new TextDecoder()
+                this._gamemode = new TextDecoder()
                     .decode(data.slice(1, data.length))
                     .split('\u0000')[0];
                 break;
