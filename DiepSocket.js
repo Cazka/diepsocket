@@ -93,10 +93,12 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout = null;
         this._acceptTimeout = null;
 
+        const { id, party } = this.constructor.linkParse(link);
+        this._id = id;
+        this._party = party;
         this._socket = null;
         this._gamemode = null;
-
-        const { id, party } = this.constructor.linkParse(link);
+        
         this._connect(id, party);
     }
 
@@ -105,6 +107,13 @@ class DiepSocket extends EventEmitter {
      */
     get gamemode() {
         return this._gamemode;
+    }
+
+    /**
+     * returns the party link.
+     */
+    get link() {
+        return this.constructor.getLink(this._id, this._party);
     }
 
     /**
@@ -180,6 +189,19 @@ class DiepSocket extends EventEmitter {
             case 0x05:
                 this.send(5);
                 break;
+            case 0x06: {
+                let party = '';
+                for (let i = 1; i < data.byteLength; i++) {
+                    let byte = data[i].toString(16).split('');
+                    if (byte.length === 1) {
+                        party += byte[0] + '0';
+                    } else {
+                        party += byte[1] + byte[0];
+                    }
+                }
+                this.party = party;
+                break;
+            }
             case 0x07:
                 this._accepted = true;
                 setTimeout(() => super.emit('accept'));
