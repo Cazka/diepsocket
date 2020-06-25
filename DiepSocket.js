@@ -362,7 +362,7 @@ class DiepSocket extends EventEmitter {
      * @param {Function} cb The callback function
      * @public
      */
-    static async findServer(gamemode, region, cb) {
+    static findServer(gamemode, region, cb) {
         if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
 
         https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
