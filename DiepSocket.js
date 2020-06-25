@@ -5,12 +5,36 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const WebSocket = require('ws');
 const url = require('url');
-const {Reader, Writer} = require('./coder.js');
+const { Reader, Writer } = require('./coder.js');
 
 const BUILD = '737f883f632d63992379fb1d3d2c759e5c2544ad';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
+const INPUT  = {
+    leftMouse:      0b000000000001,
+    upKey:          0b000000000010,
+    leftKey:        0b000000000100,
+    downKey:        0b000000001000,
+    rightKey:       0b000000010000,
+    godMode:        0b000000100000,
+    suicide:        0b000001000000,
+    rightMouse:     0b000010000000,
+    instantUpg:     0b000100000000,
+    gamepad:        0b001000000000,
+    switchclass:    0b010000000000,
+    constantOfTrue: 0b100000000000,
+};
+const DIRECTION = {
+    N:              0b000000000010,
+    W:              0b000000000100,
+    S:              0b000000001000,
+    E:              0b000000010000,
+    NE:             0b000000010010,
+    SE:             0b000000011000,
+    SW:             0b000000001100,
+    NW:             0b000000000110,
+};
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
  *
@@ -55,6 +79,18 @@ const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
  *
  * socket.sendBinary(data)
  * Send binary data to the server.
+ * 
+ * socket.spawn(name)
+ *  - name {String} The name
+ * Spawn with the given name.
+ * 
+ * socket.move(flags, mouseX, mouseY, movX, movY)
+ *  - flags {Integer} The flags
+ *  - mouseX {Float} The mouse X position
+ *  - mouseY {Float} The mouse Y position
+ *  - movX {Float} The movement X
+ *  - movY {Float} The movement Y
+ * Send a movement packet.
  *
  * socket.close()
  * Close the connection.
@@ -67,7 +103,7 @@ const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
  *  - link {String} The server link.
  *  - {id, party}
  * Returns the id from the server and the party code.
- * 
+ *
  * DiepSocket.findServer(gamemode, region, cb)
  *  - gamemode {String} The gamemode
  *  - region {String} The region
@@ -322,8 +358,21 @@ class DiepSocket extends EventEmitter {
      * Spawn with the given name.
      * @param {String} name The name
      */
-    spawn(name){
-        this.sendBinary(new Writer().vu(1).string(name));
+    spawn(name) {
+        this.sendBinary(new Writer().vu(2).string(name).out());
+    }
+
+    /**
+     * Send a movement packet. Note: use DiepSocket.INPUT to build the flags.
+     * I haven't done much research on movX and movY.
+     * @param {Integer} flags The flags
+     * @param {Float} mouseX The mouse X position
+     * @param {Float} mouseY The mouse Y position
+     * @param {Float} movX The movement X
+     * @param {Float} movY The movement Y
+     */
+    move(flags = 1024, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
+        this.sendBinary(new Writer().vu(1).vu(flags).vf(mouseX).vf(mouseY).vf(movX).vf(movY).out());
     }
 
     /**
