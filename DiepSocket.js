@@ -359,23 +359,24 @@ class DiepSocket extends EventEmitter {
      *
      * @param {String} gamemode The gamemode
      * @param {String} region The region
+     * @param {Function} cb The callback function
+     * @public
      */
     static async findServer(gamemode, region, cb) {
         if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
 
-        https
-            .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
-                let data = '';
+        https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
+            let data = '';
 
-                res.on('data', (chunk) => {
-                    data += chunk;
-                });
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
 
-                res.on('end', () => {
-                    data = JSON.parse(data);
-                    cb(this.getLink(data.servers[`vultr-${region}`].id));
-                });
-            })
+            res.on('end', () => {
+                data = JSON.parse(data);
+                cb(this.getLink(data.servers[`vultr-${region}`].id));
+            });
+        });
     }
 }
 module.exports = DiepSocket;
