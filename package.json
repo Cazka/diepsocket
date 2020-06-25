@@ -1,6 +1,6 @@
 {
 	"name": "diepsocket",
-	"version": "1.0.28",
+	"version": "1.0.29",
 	"description": "connect to a diep.io server",
     "author": "Cazka#9552",
     "license": "MIT",
@@ -9,7 +9,7 @@
     "bugs": {
         "url": "https://github.com/Cazka/diepsocket/issues"
     },
-	"main": "DiepSocket.js",
+	"main": "diepsocket.js",
 	"dependencies": {
 		"https-proxy-agent": "^5.0.0",
 		"ws": "^7.3.0"
