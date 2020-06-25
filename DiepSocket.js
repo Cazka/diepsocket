@@ -373,7 +373,7 @@ class DiepSocket extends EventEmitter {
      * @param {Float} movY The movement Y
      * @public
      */
-    move(flags = 1024, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
+    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
         this.sendBinary(new Writer().vu(1).vu(flags).vf(mouseX).vf(mouseY).vf(movX).vf(movY).out());
     }
 
