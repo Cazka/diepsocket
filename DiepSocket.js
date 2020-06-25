@@ -5,6 +5,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const WebSocket = require('ws');
 const url = require('url');
+const {Reader, Writer} = require('./coder.js');
 
 const BUILD = '737f883f632d63992379fb1d3d2c759e5c2544ad';
 
@@ -66,7 +67,12 @@ const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
  *  - link {String} The server link.
  *  - {id, party}
  * Returns the id from the server and the party code.
- *
+ * 
+ * DiepSocket.findServer(gamemode, region, cb)
+ *  - gamemode {String} The gamemode
+ *  - region {String} The region
+ *  - cb {Function} The callback function
+ * Calls the callback function with the found party link.
  */
 
 /**
@@ -310,6 +316,14 @@ class DiepSocket extends EventEmitter {
      */
     sendBinary(data) {
         if (this._socket && this._socket.readyState === 1) this._socket.send(data);
+    }
+
+    /**
+     * Spawn with the given name.
+     * @param {String} name The name
+     */
+    spawn(name){
+        this.sendBinary(new Writer().vu(1).string(name));
     }
 
     /**
