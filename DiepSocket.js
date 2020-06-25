@@ -244,7 +244,7 @@ class DiepSocket extends EventEmitter {
                         party += byte[1] + byte[0];
                     }
                 }
-                this.party = party;
+                this._party = party;
                 break;
             }
             case 0x07:
