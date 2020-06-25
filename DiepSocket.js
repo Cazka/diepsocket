@@ -138,7 +138,7 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout = null;
         this._acceptTimeout = null;
 
-        const { id, party } = this.linkParse(link);
+        const { id, party } = this.constructor.linkParse(link);
         this._id = id;
         this._party = party;
         this._socket = null;
@@ -158,7 +158,7 @@ class DiepSocket extends EventEmitter {
      * returns the party link.
      */
     get link() {
-        return this.getLink(this._id, this._party);
+        return this.constructor.getLink(this._id, this._party);
     }
 
     /**
