@@ -2,11 +2,14 @@
 
 const EventEmitter = require('events');
 const HttpsProxyAgent = require('https-proxy-agent');
+const https = require('https');
 const WebSocket = require('ws');
 const url = require('url');
 
 const BUILD = '737f883f632d63992379fb1d3d2c759e5c2544ad';
 
+const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
+const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
  *
@@ -93,12 +96,12 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout = null;
         this._acceptTimeout = null;
 
-        const { id, party } = this.constructor.linkParse(link);
+        const { id, party } = this.linkParse(link);
         this._id = id;
         this._party = party;
         this._socket = null;
         this._gamemode = null;
-        
+
         this._connect(id, party);
     }
 
@@ -113,7 +116,7 @@ class DiepSocket extends EventEmitter {
      * returns the party link.
      */
     get link() {
-        return this.constructor.getLink(this._id, this._party);
+        return this.getLink(this._id, this._party);
     }
 
     /**
@@ -321,18 +324,17 @@ class DiepSocket extends EventEmitter {
         const match = wsURL.match(/(?<=wss:\/\/).[0-9a-z]{3}(?=.s.m28n.net\/)|^[0-9a-z]{4}$/);
         if (!match) throw new Error('Invalid wsURL: wrong format:', wsURL);
         let serverid = match[0];
-        const link = 'https://diep.io/#';
         serverid = serverid
             .split('')
             .map((char) => char.charCodeAt(0).toString(16).split('').reverse().join(''))
             .join('');
-        return link + (serverid + '00' + party).toUpperCase();
+        return 'https://diep.io/#' + (serverid + (party ? `00${party}` : '')).toUpperCase();
     }
 
     /**
      * Get the server id and party code from a party link
      *
-     * @param {String} link
+     * @param {String} link The party link
      * @throws Will throw error if link does not match regex.
      * @public
      */
@@ -350,6 +352,30 @@ class DiepSocket extends EventEmitter {
             id += String.fromCharCode(byte);
         }
         return { id, party: data.join('') };
+    }
+
+    /**
+     * Get a random party link from the specified gamemode and region
+     *
+     * @param {String} gamemode The gamemode
+     * @param {String} region The region
+     */
+    static async findServer(gamemode, region, cb) {
+        if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
+
+        https
+            .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
+                let data = '';
+
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                res.on('end', () => {
+                    data = JSON.parse(data);
+                    cb(this.getLink(data.servers[`vultr-${region}`].id));
+                });
+            })
     }
 }
 module.exports = DiepSocket;
