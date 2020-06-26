@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 const url = require('url');
 const { Reader, Writer } = require('./coder.js');
 
-const BUILD = '737f883f632d63992379fb1d3d2c759e5c2544ad';
+const BUILD = 'fbd8486a553810389494c8e0e953191d84e52824';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
