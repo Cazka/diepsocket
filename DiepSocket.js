@@ -359,7 +359,7 @@ class DiepSocket extends EventEmitter {
      * @param {String} name The name
      * @public
      */
-    spawn(name) {
+    spawn(name = '') {
         this.sendBinary(new Writer().vu(2).string(name).out());
     }
 
