@@ -7,33 +7,33 @@ const WebSocket = require('ws');
 const url = require('url');
 const { Reader, Writer } = require('./coder.js');
 
-const BUILD = '9b99b32c14436f8b8b45d90d42ec3709cacade8e';
+let BUILD = '9b99b32c14436f8b8b45d90d42ec3709cacade8e';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
-const INPUT  = {
-    leftMouse:      0b000000000001,
-    upKey:          0b000000000010,
-    leftKey:        0b000000000100,
-    downKey:        0b000000001000,
-    rightKey:       0b000000010000,
-    godMode:        0b000000100000,
-    suicide:        0b000001000000,
-    rightMouse:     0b000010000000,
-    instantUpg:     0b000100000000,
-    gamepad:        0b001000000000,
-    switchclass:    0b010000000000,
+const INPUT = {
+    leftMouse: 0b000000000001,
+    upKey: 0b000000000010,
+    leftKey: 0b000000000100,
+    downKey: 0b000000001000,
+    rightKey: 0b000000010000,
+    godMode: 0b000000100000,
+    suicide: 0b000001000000,
+    rightMouse: 0b000010000000,
+    instantUpg: 0b000100000000,
+    gamepad: 0b001000000000,
+    switchclass: 0b010000000000,
     constantOfTrue: 0b100000000000,
 };
 const DIRECTION = {
-    N:              0b000000000010,
-    W:              0b000000000100,
-    S:              0b000000001000,
-    E:              0b000000010000,
-    NE:             0b000000010010,
-    SE:             0b000000011000,
-    SW:             0b000000001100,
-    NW:             0b000000000110,
+    N: 0b000000000010,
+    W: 0b000000000100,
+    S: 0b000000001000,
+    E: 0b000000010000,
+    NE: 0b000000010010,
+    SE: 0b000000011000,
+    SW: 0b000000001100,
+    NW: 0b000000000110,
 };
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
@@ -79,11 +79,11 @@ const DIRECTION = {
  *
  * socket.sendBinary(data)
  * Send binary data to the server.
- * 
+ *
  * socket.spawn(name)
  *  - name {String} The name
  * Spawn with the given name.
- * 
+ *
  * socket.move(flags, mouseX, mouseY, movX, movY)
  *  - flags {Integer} The flags
  *  - mouseX {Float} The mouse X position
@@ -169,6 +169,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _connect(id, party) {
+        clearTimeout(this._connectTimeout);
         const socketOptions = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
@@ -224,8 +225,16 @@ class DiepSocket extends EventEmitter {
      */
     _onMessage(data) {
         switch (data[0]) {
-            case 0x01:
-                throw new Error('Outdated Client: Check if BUILD is up-to-date');
+            case 0x01: {
+                //throw new Error('Outdated Client: Check if BUILD is up-to-date');
+                console.warn('DiepSocket: outdated client. Further use is not recommended.');
+
+                const reader = new Reader(data);
+                reader.vu();
+                BUILD = reader.string();
+
+                this._connect(this._id, this._party);
+            }
             case 0x04:
                 this._gamemode = new TextDecoder()
                     .decode(data.slice(1, data.length))
