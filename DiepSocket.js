@@ -260,7 +260,9 @@ class DiepSocket extends EventEmitter {
             }
             case 0x07:
                 this._accepted = true;
-                setTimeout(() => super.emit('accept'));
+                setTimeout(() => {
+                    if (this._socket.readyState === this._socket.OPEN) super.emit('accept');
+                });
                 break;
             case 0x09:
                 this._onError(new Error('Link is invalid or the server is getting botted'));
