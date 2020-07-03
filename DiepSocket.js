@@ -144,7 +144,7 @@ class DiepSocket extends EventEmitter {
         this._socket = null;
         this._gamemode = null;
 
-        this._connect(id, party);
+        this._connect();
     }
 
     /**
@@ -156,6 +156,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * returns the party link.
+     * 
      */
     get link() {
         return this.constructor.getLink(this._id, this._party);
@@ -163,12 +164,10 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Creates a WebSocket connection to the diep.io server.
-     *
-     * @param {String} id The server id from the diep.io server
-     * @param {String} party The party code from the arena
+     * 
      * @private
      */
-    _connect(id, party) {
+    _connect() {
         clearTimeout(this._connectTimeout);
         const socketOptions = {
             origin: 'https://diep.io',
@@ -183,8 +182,8 @@ class DiepSocket extends EventEmitter {
             socketOptions.localAddress = this._options.ipv6;
         }
 
-        this._socket = new WebSocket(`wss://${id}.s.m28n.net/`, socketOptions);
-        this._socket.on('open', () => this._onOpen(party));
+        this._socket = new WebSocket(`wss://${this._id}.s.m28n.net/`, socketOptions);
+        this._socket.on('open', () => this._onOpen());
         this._socket.on('message', (data) => this._onMessage(data));
         this._socket.on('close', (code, reason) => this._onClose(code, reason));
         this._socket.on('error', (error) => this._onError(error));
@@ -198,13 +197,12 @@ class DiepSocket extends EventEmitter {
 
     /**
      * The listener of the `WebSocket` `'open'` event.
-     *
-     * @param {String} party The party code from the arena
+     * 
      * @private
      */
-    _onOpen(party) {
+    _onOpen() {
         this.send(0x05);
-        this.send(0x00, BUILD, 0x00, 0x00, party, 0x00, 0x00);
+        this.send(0x00, BUILD, 0x00, 0x00, this._party, 0x00, 0x00);
 
         this._acceptTimeout = setTimeout(() => {
             if (!this._accepted) {
@@ -234,6 +232,7 @@ class DiepSocket extends EventEmitter {
                 BUILD = reader.string();
 
                 this._connect(this._id, this._party);
+                break;
             }
             case 0x04:
                 this._gamemode = new TextDecoder()
