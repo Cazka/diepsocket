@@ -41,10 +41,10 @@ const DIRECTION = {
  * new DiepSocket(link[,options])
  *  - link {String] The party link from the server.
  *  - options {Object}
- * 	    - timeout: How long the connection is allowed to take to establish before the connection times out.
- *                  Default 30 seconds.
- *      - proxy {String} The http proxy that will be used.
- *      - ipv6 {String} The ipv6 that will be used.
+ * 	    - timeout: How long the connection is allowed to take to establish before the connection times out. Default 30 seconds
+ *      - proxy {String} The http proxy that will be used
+ *      - ipv6 {String} The ipv6 that will be used
+ *      - forceTeam {boolean} When set to true will only join same team otherwise throw an error
  *
  * Event: 'open'
  * Emitted when the connection is established.
@@ -54,7 +54,7 @@ const DIRECTION = {
  * I suggest to use this event instead of 'open'.
  *
  * Event: 'message'
- *  - data {Buffer} The Buffer sent from the server.
+ *  - data {Buffer} The Buffer sent from the server
  * Emitted when a message is received from the server.
  *
  * Event: 'close'
@@ -123,9 +123,10 @@ class DiepSocket extends EventEmitter {
      * @param {String} link The link from the server to which to connect
      * @param {Object} options Connection options
      * @param {Number} options.timeout How long the connection is allowed to take to
-     * establish. Default 30,000 ms
+     * establish before the connection times out. Default 30,000 ms
      * @param {String} options.proxy The proxy that will be used. ip:port format
-     * @param {String} options.ipv6 The ipv6 address which will be used.
+     * @param {String} options.ipv6 The ipv6 address which will be used
+     * @param {boolean} options.forceTeam When set to true will only join same team otherwise throw an error
      */
     constructor(link, options) {
         super();
@@ -156,7 +157,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * returns the party link.
-     * 
+     *
      */
     get link() {
         return this.constructor.getLink(this._id, this._party);
@@ -164,7 +165,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Creates a WebSocket connection to the diep.io server.
-     * 
+     *
      * @private
      */
     _connect() {
@@ -197,7 +198,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * The listener of the `WebSocket` `'open'` event.
-     * 
+     *
      * @private
      */
     _onOpen() {
@@ -252,6 +253,8 @@ class DiepSocket extends EventEmitter {
                         party += byte[1] + byte[0];
                     }
                 }
+                if (party != this._party && this._options.forceTeam)
+                    this._onError(new Error('The team you tried to join is full'));
                 this._party = party;
                 break;
             }
@@ -288,6 +291,8 @@ class DiepSocket extends EventEmitter {
     _onError(error) {
         clearTimeout(this._connectTimeout);
         clearTimeout(this._acceptTimeout);
+        this.close();
+        this._resetListeners();
         if (!super.emit('error', error)) throw error;
     }
 
