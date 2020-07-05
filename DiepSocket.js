@@ -253,7 +253,7 @@ class DiepSocket extends EventEmitter {
                         party += byte[1] + byte[0];
                     }
                 }
-                if (party !== this._party && this._options.forceTeam)
+                if (this._options.forceTeam && party && party !== this._party)
                     this._onError(new Error('The team you tried to join is full'));
                 this._party = party;
                 break;
