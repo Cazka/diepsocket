@@ -464,7 +464,11 @@ class DiepSocket extends EventEmitter {
 
             res.on('end', () => {
                 data = JSON.parse(data);
-                cb(this.getLink(data.servers[`vultr-${region}`].id));
+                const servers = data.servers;
+                const region = servers ? servers[`vultr-${region}`] : null;
+                const id = region ? region.id : null;
+                const link = id ? this.getLink(id) : null;
+                cb(link);
             });
         });
     }
