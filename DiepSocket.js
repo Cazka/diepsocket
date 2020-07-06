@@ -57,6 +57,9 @@ const DIRECTION = {
  *  - data {Buffer} The Buffer sent from the server
  * Emitted when a message is received from the server.
  *
+ * Event: 'broadcast'
+ *  - message {String} The broadcast message.
+ * Emitted when diep.io sends a broadcast packet. e.g. 'You have killed ...'
  * Event: 'close'
  *  - code {Number}
  *  - reason {String}
@@ -233,6 +236,13 @@ class DiepSocket extends EventEmitter {
                 BUILD = reader.string();
 
                 this._connect(this._id, this._party);
+                break;
+            }
+            case 0x03: {
+                const reader = new Reader(data);
+                reader.vu();
+                const message = reader.string();
+                super.emit('broadcast', message);
                 break;
             }
             case 0x04:
