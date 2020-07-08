@@ -475,7 +475,6 @@ class DiepSocket extends EventEmitter {
      *
      * @param {String} gamemode The gamemode
      * @param {String} region The region
-     * @param {Function} cb The callback function
      * @public
      */
     static findServerSync(gamemode, region) {
