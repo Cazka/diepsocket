@@ -470,5 +470,33 @@ class DiepSocket extends EventEmitter {
             });
         });
     }
+    /**
+     * Get a random party link from the specified gamemode and region
+     *
+     * @param {String} gamemode The gamemode
+     * @param {String} region The region
+     * @param {Function} cb The callback function
+     * @public
+     */
+    static findServerSync(gamemode, region) {
+        return new Promise((resolve) => {
+            if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
+
+            https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
+                let data = '';
+
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                res.on('end', () => {
+                    data = JSON.parse(data);
+                    const server = data.servers[`vultr-${region}`];
+                    const link = server.id ? this.getLink(server.id) : null;
+                    resolve(link);
+                });
+            });
+        });
+    }
 }
 module.exports = DiepSocket;
