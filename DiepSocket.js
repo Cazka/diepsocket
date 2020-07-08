@@ -480,7 +480,7 @@ class DiepSocket extends EventEmitter {
      */
     static findServerSync(gamemode, region) {
         return new Promise((resolve) => {
-            if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
+            if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) resolve();
 
             https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
                 let data = '';
