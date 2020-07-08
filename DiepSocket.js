@@ -274,7 +274,7 @@ class DiepSocket extends EventEmitter {
             }
             case 0x07:
                 this._accepted = true;
-                if (!this._options.forceTeam || this._initialLink === this.link())
+                if (!this._options.forceTeam || this._initialLink === this.link)
                     super.emit('accept');
                 else this._onError(new Error('The team you tried to join is full'));
                 break;
