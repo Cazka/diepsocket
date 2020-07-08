@@ -112,6 +112,11 @@ const DIRECTION = {
  *  - region {String} The region
  *  - cb {Function} The callback function
  * Calls the callback function with the found party link.
+ * 
+ * DiepSocket.findServerSync(gamemode, region)
+ *  - gamemode {String} The gamemode
+ *  - region {String} The region
+ * Returns null if it couldn't find a link otherwise the link to the given options.
  */
 
 /**
