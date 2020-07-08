@@ -112,7 +112,7 @@ const DIRECTION = {
  *  - region {String} The region
  *  - cb {Function} The callback function
  * Calls the callback function with the found party link.
- * 
+ *
  * DiepSocket.findServerSync(gamemode, region)
  *  - gamemode {String} The gamemode
  *  - region {String} The region
@@ -274,9 +274,11 @@ class DiepSocket extends EventEmitter {
             }
             case 0x07:
                 this._accepted = true;
-                if (!this._options.forceTeam || this._initialLink === this.link)
-                    super.emit('accept');
-                else this._onError(new Error('The team you tried to join is full'));
+                setTimeout(() => {
+                    if (!this._options.forceTeam || this._initialLink === this.link)
+                        super.emit('accept');
+                    else this._onError(new Error('The team you tried to join is full'));
+                });
                 break;
             case 0x09:
                 this._onError(new Error('Link is invalid or the server is getting botted'));
