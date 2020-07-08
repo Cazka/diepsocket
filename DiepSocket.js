@@ -143,6 +143,7 @@ class DiepSocket extends EventEmitter {
         this._acceptTimeout = null;
 
         const { id, party } = this.constructor.linkParse(link);
+        this._initialLink = link;
         this._id = id;
         this._party = party;
         this._socket = null;
@@ -263,16 +264,14 @@ class DiepSocket extends EventEmitter {
                         party += byte[1] + byte[0];
                     }
                 }
-                if (this._options.forceTeam && party && party !== this._party)
-                    this._onError(new Error('The team you tried to join is full'));
                 this._party = party;
                 break;
             }
             case 0x07:
                 this._accepted = true;
-                setTimeout(() => {
-                    if (this._socket.readyState === this._socket.OPEN) super.emit('accept');
-                });
+                if (!this._options.forceTeam || this._initialLink === this.link())
+                    super.emit('accept');
+                else this._onError(new Error('The team you tried to join is full'));
                 break;
             case 0x09:
                 this._onError(new Error('Link is invalid or the server is getting botted'));
@@ -390,12 +389,11 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Send a movement packet. Note: use DiepSocket.INPUT to build the flags.
-     * I haven't done much research on movX and movY.
      * @param {Integer} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
-     * @param {Float} movX The movement X
-     * @param {Float} movY The movement Y
+     * @param {Float} movX The movement X 0 - 1 where 1 is the maximum speed
+     * @param {Float} movY The movement Y 0 - 1 where 1 is the maximum speed
      * @public
      */
     move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
