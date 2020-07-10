@@ -39,7 +39,7 @@ const DIRECTION = {
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
  *
  * new DiepSocket(link[,options])
- *  - link {String] The party link from the server.
+ *  - link {String] The party link from the server
  *  - options {Object}
  * 	    - timeout: How long the connection is allowed to take to establish before the connection times out. Default 30 seconds
  *      - proxy {String} The http proxy that will be used
