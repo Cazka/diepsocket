@@ -5,7 +5,7 @@
 
 ## Description
 
-Connect to a diep.io server very easily.
+Connect to a diep.io server very easily. Outdated readme, since i made the repo private.
 
 ## Installation
 

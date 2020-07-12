@@ -1,5 +1,5 @@
 /*
- * This is from @cx88
+ * This is from @cx88 with little modifications
  * https://github.com/cx88/diepssect/blob/master/diep-bot/coder.js
  */
 'use strict';
