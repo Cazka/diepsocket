@@ -148,9 +148,9 @@ class DiepSocket extends EventEmitter {
         this._acceptTimeout = null;
 
         const { id, party } = this.constructor.linkParse(link);
-        this._initialLink = link;
         this._id = id;
         this._party = party;
+        this._initialLink = this.link;
         this._socket = null;
         this._gamemode = null;
 
