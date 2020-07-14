@@ -458,22 +458,29 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServer(gamemode, region, cb) {
-        if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) return;
+        if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) {
+            cb(null);
+            return;
+        }
+        https
+            .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
+                let data = '';
 
-        https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
-            let data = '';
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
 
-            res.on('data', (chunk) => {
-                data += chunk;
+                res.on('end', () => {
+                    data = JSON.parse(data);
+                    const server = data ? data.servers[`vultr-${region}`] : null;
+                    const id = server ? server.id : null;
+                    const link = id ? this.getLink(id) : null;
+                    cb(link);
+                });
+            })
+            .on('error', (e) => {
+                cb(null);
             });
-
-            res.on('end', () => {
-                data = JSON.parse(data);
-                const server = data.servers[`vultr-${region}`];
-                const link = server.id ? this.getLink(server.id) : null;
-                cb(link);
-            });
-        });
     }
     /**
      * Get a random party link from the specified gamemode and region
@@ -484,24 +491,7 @@ class DiepSocket extends EventEmitter {
      */
     static findServerSync(gamemode, region) {
         return new Promise((resolve) => {
-            if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) {
-                resolve();
-                return;
-            }
-            https.get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
-                let data = '';
-
-                res.on('data', (chunk) => {
-                    data += chunk;
-                });
-
-                res.on('end', () => {
-                    data = JSON.parse(data);
-                    const server = data.servers[`vultr-${region}`];
-                    const link = server.id ? this.getLink(server.id) : null;
-                    resolve(link);
-                });
-            });
+            this.findServer(gamemode, region, resolve);
         });
     }
 }
