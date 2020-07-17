@@ -471,11 +471,15 @@ class DiepSocket extends EventEmitter {
                 });
 
                 res.on('end', () => {
-                    data = JSON.parse(data);
-                    const server = data ? data.servers[`vultr-${region}`] : null;
-                    const id = server ? server.id : null;
-                    const link = id ? this.getLink(id) : null;
-                    cb(link);
+                    try {
+                        data = JSON.parse(data);
+                        const server = data ? data.servers[`vultr-${region}`] : null;
+                        const id = server ? server.id : null;
+                        const link = id ? this.getLink(id) : null;
+                        cb(link);
+                    } catch (error) {
+                        cb();
+                    }
                 });
             })
             .on('error', (e) => {
