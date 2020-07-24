@@ -2,19 +2,17 @@
 	"name": "diepsocket",
 	"version": "1.0.49",
 	"description": "connect to a diep.io server",
-	"author": "Cazka#9552",
+    "main": "./src/diepsocket.js",
+    "repository": "github:Cazka/diepsocket",
+    "keywords": [],
+	"author": "Cazka",
 	"license": "MIT",
-	"homepage": "https://github.com/Cazka/diepsocket",
-	"repository": "github:Cazka/diepsocket",
 	"bugs": {
 		"url": "https://github.com/Cazka/diepsocket/issues"
 	},
-	"main": "diepsocket.js",
+	"homepage": "https://github.com/Cazka/diepsocket",
 	"dependencies": {
 		"https-proxy-agent": "^5.0.0",
 		"ws": "^7.3.1"
-	},
-	"engines": {
-		"node": "^14.3"
 	}
 }
