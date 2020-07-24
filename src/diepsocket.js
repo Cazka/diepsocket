@@ -376,9 +376,11 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServer(gamemode, region, cb) {
-        if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) {
-            cb();
-            return;
+        if(!GAMEMODES.includes(gamemode)){
+            gamemode = GAMEMODES[Math.floor(Math.random() * GAMEMODES.length)];
+        }
+        if(!REGIONS.includes(region)){
+            region = REGIONS[Math.floor(Math.random() * REGIONS.length)];
         }
         https
             .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
