@@ -28,5 +28,5 @@ bot.on('error', (err) => console.log(err));
 
 If you want to learn the server protocol I suggest visiting these sites:
 
-https://github.com/cx88/diepssect
+https://github.com/cx88/diepssect  
 https://github.com/HueHanaejistla/diep.io-protocol-wiki
