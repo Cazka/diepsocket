@@ -200,8 +200,7 @@ class DiepSocket extends EventEmitter {
                 this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
                 break;
             case 'pow_request':
-                if (super.emit('pow_request', packet.content))
-                    return;
+                if (super.emit('pow_request', packet.content)) return;
                 //start a worker and send packet.content
                 //on response from worker this.send(response);
                 break;
