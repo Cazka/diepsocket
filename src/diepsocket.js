@@ -207,8 +207,9 @@ class DiepSocket extends EventEmitter {
                 break;
             case 'player_count':
                 super.emit('player_count', packet.content.playercount);
+                break;
             default:
-                //console.log(`No event handler for ${packet.type}`);
+                console.log(`No event handler for ${packet.type}`);
                 break;
         }
     }
