@@ -8,7 +8,7 @@ const url = require('url');
 
 const { Parser, Builder } = require('diep-protocol');
 
-let BUILD = 'ac7a2bad97be9e0f8079cdf40437112c9ce42813';
+let BUILD = '7e1b548e1d99f43e6f33307124a4b8f1070a7f2e';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
