@@ -168,7 +168,8 @@ class DiepSocket extends EventEmitter {
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
                 BUILD = packet.content.build;
-                this._connect();
+                this.close();
+                //this._connect();
                 break;
             case 'message':
                 super.emit('message', packet.content);
