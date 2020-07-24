@@ -5,9 +5,11 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const WebSocket = require('ws');
 const url = require('url');
-const { Reader, Writer } = require('./coder.js');
+const {Parser, Builder} = require('diep-protocol');
+const crypto = require('crypto');
 
-let BUILD = 'a5c9e13100793a51056188a9608451d6d3d0bc20';
+
+let BUILD = '6a2200d3e6c5aa73f9f4ccedcc2909289bc5ef26';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
@@ -158,14 +160,15 @@ class DiepSocket extends EventEmitter {
     }
 
     /**
-     * returns the gamemode.
+     * Returns the gamemode.
+     *
      */
     get gamemode() {
         return this._gamemode;
     }
 
     /**
-     * returns the party link.
+     * Returns the party link.
      *
      */
     get link() {
@@ -178,30 +181,29 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _connect() {
-        clearTimeout(this._connectTimeout);
-        const socketOptions = {
+        clearTimeout(this._connectTimeout); // incase
+
+        const options = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
         };
         if (this._options.proxy) {
             const agent = new HttpsProxyAgent(url.parse(`http://${this._options.proxy}`));
-            socketOptions.agent = agent;
+            options.agent = agent;
         }
         if (this._options.ipv6) {
-            socketOptions.family = 6;
-            socketOptions.localAddress = this._options.ipv6;
+            options.family = 6;
+            options.localAddress = this._options.ipv6;
         }
 
-        this._socket = new WebSocket(`wss://${this._id}.s.m28n.net/`, socketOptions);
-        this._socket.on('open', () => this._onOpen());
-        this._socket.on('message', (data) => this._onMessage(data));
-        this._socket.on('close', (code, reason) => this._onClose(code, reason));
-        this._socket.on('error', (error) => this._onError(error));
+        this._socket = new WebSocket(`wss://${this._id}.s.m28n.net/`, options);
+        this._socket.on('open', () => this._onopen());
+        this._socket.on('message', (data) => this._onmessage(data));
+        this._socket.on('close', (code, reason) => this._onclose(code, reason));
+        this._socket.on('error', (err) => this._onerror(err));
 
         this._connectTimeout = setTimeout(() => {
-            if (this._socket.readyState === this._socket.CONNECTING) {
-                this._emitTimeout(new Error('Timeout: Connection took too long to establish'));
-            }
+            this._emitTimeout(new Error('Timeout: Connection took too long to establish'));
         }, this._options.timeout);
     }
 
@@ -210,9 +212,11 @@ class DiepSocket extends EventEmitter {
      *
      * @private
      */
-    _onOpen() {
-        this.send(0x05);
-        this.send(0x00, BUILD, 0x00, 0x00, this._party, 0x00, 0x00);
+    _onopen() {
+        clearTimeout(this._connectTimeout);
+
+        this.send('heartbeat');
+        this.send('initial');
 
         this._acceptTimeout = setTimeout(() => {
             if (!this._accepted) {
@@ -221,7 +225,7 @@ class DiepSocket extends EventEmitter {
                 );
                 this.close();
             }
-        }, 10000);
+        }, 40000);
         super.emit('open');
     }
 
@@ -231,7 +235,8 @@ class DiepSocket extends EventEmitter {
      * @param {Buffer} data The message from the server
      * @private
      */
-    _onMessage(data) {
+    _onmessage(data) {
+        const parsed = 
         switch (data[0]) {
             case 0x01: {
                 //throw new Error('Outdated Client: Check if BUILD is up-to-date');
@@ -240,6 +245,7 @@ class DiepSocket extends EventEmitter {
                 const reader = new Reader(data);
                 reader.vu();
                 BUILD = reader.string();
+                console.log(BUILD);
 
                 this._connect(this._id, this._party);
                 break;
@@ -277,12 +283,26 @@ class DiepSocket extends EventEmitter {
                 setTimeout(() => {
                     if (!this._options.forceTeam || this._initialLink === this.link)
                         super.emit('accept');
-                    else this._onError(new Error('The team you tried to join is full'));
+                    else this._onerror(new Error('The team you tried to join is full'));
                 });
                 break;
             case 0x09:
-                this._onError(new Error('Link is invalid or the server is getting botted'));
+                this._onerror(new Error('Link is invalid or the server is getting botted'));
                 break;
+            case 0x0b: {
+                //POW
+                const reader = new Reader(data);
+                reader.vu();
+                const difficulty = reader.vu();
+                const prefix = reader.string();
+                console.log('pow');
+                setTimeout(() =>
+                    solve(prefix, difficulty, (r) => {
+                        this.send(10, r);
+                    })
+                );
+                break;
+            }
             default:
                 super.emit('message', data);
         }
@@ -295,7 +315,7 @@ class DiepSocket extends EventEmitter {
      * @param {String} reason The reason for closing
      * @private
      */
-    _onClose(code, reason) {
+    _onclose(code, reason) {
         clearTimeout(this._connectTimeout);
         super.emit('close', code, reason);
     }
@@ -306,7 +326,7 @@ class DiepSocket extends EventEmitter {
      * @param {Error} error The emitted error
      * @private
      */
-    _onError(error) {
+    _onerror(error) {
         clearTimeout(this._connectTimeout);
         clearTimeout(this._acceptTimeout);
         this.close();
@@ -322,7 +342,7 @@ class DiepSocket extends EventEmitter {
      */
     _emitTimeout(error) {
         this._resetListeners();
-        if (!super.emit('timeout', error)) this._onError(error);
+        if (!super.emit('timeout', error)) this._onerror(error);
     }
 
     /**
@@ -497,6 +517,75 @@ class DiepSocket extends EventEmitter {
         return new Promise((resolve) => {
             this.findServer(gamemode, region, resolve);
         });
+    }
+}
+async function solve(prefix, difficulty, cb) {
+    let r;
+    for (;;) {
+        r = generateRandomString(16);
+        let msg = prefix + r + prefix;
+        let sha1 = crypto.createHash('sha1').update(msg).digest('hex');
+        if (solvesDifficulty(sha1, difficulty)) {
+            break;
+        }
+    }
+    cb(r);
+}
+function generateRandomString(len) {
+    var str = '';
+    var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (var i = 0; i < len; ++i) str += CHARS[~~(Math.random() * CHARS.length)];
+    return str;
+}
+function solvesDifficulty(str, difficulty) {
+    for (var i = 0; i < ~~(difficulty / 4); ++i) {
+        if (str[i] != '0') return false;
+    }
+    for (var i = 4 * ~~(difficulty / 4); i < difficulty; ++i) {
+        var nibble = str[~~(i / 4)];
+        var num = nibbleToNumber(nibble);
+        if (!(num & (1 << (i & 3)))) {
+            return false;
+        }
+    }
+    return true;
+}
+function nibbleToNumber(ch) {
+    switch (ch.toLowerCase()) {
+        case '0':
+            return 0;
+        case '1':
+            return 1;
+        case '2':
+            return 2;
+        case '3':
+            return 3;
+        case '4':
+            return 4;
+        case '5':
+            return 5;
+        case '6':
+            return 6;
+        case '7':
+            return 7;
+        case '8':
+            return 8;
+        case '9':
+            return 9;
+        case 'a':
+            return 10;
+        case 'b':
+            return 11;
+        case 'c':
+            return 12;
+        case 'd':
+            return 13;
+        case 'e':
+            return 14;
+        case 'f':
+            return 15;
+        default:
+            return 0;
     }
 }
 module.exports = DiepSocket;
