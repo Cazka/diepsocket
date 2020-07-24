@@ -6,9 +6,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const url = require('url');
 
-const {Parser, Builder} = require('diep-protocol');
-const crypto = require('crypto');
-
+const { Parser, Builder } = require('diep-protocol');
 
 let BUILD = 'ac7a2bad97be9e0f8079cdf40437112c9ce42813';
 
@@ -99,7 +97,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _connect() {
-        clearTimeout(this._connectTimeout); // incase
+        clearTimeout(this._connectTimeout);
 
         const options = {
             origin: 'https://diep.io',
@@ -134,7 +132,8 @@ class DiepSocket extends EventEmitter {
         clearTimeout(this._connectTimeout);
 
         this.send('heartbeat');
-        this.send('initial');
+        this.send('initial', { build: BUILD, party: this._party });
+        this.lastPing = Date.now();
 
         this._acceptTimeout = setTimeout(() => {
             if (!this._accepted) {
@@ -154,75 +153,63 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
-        const parsed = 
-        switch (data[0]) {
-            case 0x01: {
-                //throw new Error('Outdated Client: Check if BUILD is up-to-date');
+        let packet;
+        try {
+            packet = new Parser(data).clientbound();
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
+        switch (packet.type) {
+            case 'update':
+                super.emit('update', packet.content);
+                break;
+            case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
-
-                const reader = new Reader(data);
-                reader.vu();
-                BUILD = reader.string();
-                console.log(BUILD);
-
-                this._connect(this._id, this._party);
+                BUILD = packet.content.build;
+                this._connect();
                 break;
-            }
-            case 0x03: {
-                const reader = new Reader(data);
-                reader.vu();
-                const message = reader.string();
-                super.emit('broadcast', message);
+            case 'message':
+                super.emit('message', packet.content);
                 break;
-            }
-            case 0x04:
-                this._gamemode = new TextDecoder()
-                    .decode(data.slice(1, data.length))
-                    .split('\u0000')[0];
+            case 'server_info':
+                this._gamemode = packet.content.gamemode;
                 break;
-            case 0x05:
-                this.send(5);
+            case 'heartbeat':
+                let now = Date.now();
+                super.emit('latency', now - this.lastPing);
+                this.send('heartbeat');
+                this.lastPing = now;
                 break;
-            case 0x06: {
-                let party = '';
-                for (let i = 1; i < data.byteLength; i++) {
-                    let byte = data[i].toString(16).split('');
-                    if (byte.length === 1) {
-                        party += byte[0] + '0';
-                    } else {
-                        party += byte[1] + byte[0];
-                    }
-                }
-                this._party = party;
+            case 'party':
+                this._party = packet.content.party;
                 break;
-            }
-            case 0x07:
+            case 'accept':
                 this._accepted = true;
                 setTimeout(() => {
                     if (!this._options.forceTeam || this._initialLink === this.link)
                         super.emit('accept');
                     else this._onerror(new Error('The team you tried to join is full'));
-                });
+                }, 100);
                 break;
-            case 0x09:
-                this._onerror(new Error('Link is invalid or the server is getting botted'));
+            case 'achievements':
+                super.emit('achievements', packet.content);
                 break;
-            case 0x0b: {
-                //POW
-                const reader = new Reader(data);
-                reader.vu();
-                const difficulty = reader.vu();
-                const prefix = reader.string();
-                console.log('pow');
-                setTimeout(() =>
-                    solve(prefix, difficulty, (r) => {
-                        this.send(10, r);
-                    })
-                );
+            case 'invalid_link':
+                this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
                 break;
-            }
+            case 'pow_request':
+                if (super.emit('pow_request', packet.content))
+                    return;
+                //start a worker and send packet.content
+                //on response from worker this.send(response);
+                break;
+            case 'player_count':
+                super.emit('player_count', packet.content.playercount);
             default:
-                super.emit('message', data);
+                //console.log(`No event handler for ${packet.type}`);
+                break;
         }
     }
 
@@ -235,6 +222,7 @@ class DiepSocket extends EventEmitter {
      */
     _onclose(code, reason) {
         clearTimeout(this._connectTimeout);
+        clearTimeout(this._acceptTimeout);
         super.emit('close', code, reason);
     }
 
@@ -294,29 +282,20 @@ class DiepSocket extends EventEmitter {
     }
 
     /**
-     * Send a data message to the server.
+     * Built serverbound packet from content and send it.
      *
-     * @param  {...*} args The message to send
-     * @public
+     * @param {String} type The packet type
+     * @param {Object} content the content
      */
-    send(...args) {
-        // from cx
-        let data = args.map((r) =>
-            typeof r === 'number'
-                ? [r]
-                : typeof r === 'string'
-                ? Array.from(new TextEncoder().encode(r))
-                : r
-        );
-        let u8 = new Uint8Array([].concat(...data));
-
-        this.sendBinary(u8);
+    send(type, content) {
+        const data = new Builder({ type, content }).serverbound();
+        this.sendBinary(data);
     }
 
     /**
      * Send a data message to the server.
      *
-     * @param {*} data the message to send
+     * @param {Buffer} data the message to send
      * @public
      */
     sendBinary(data) {
@@ -329,7 +308,7 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     spawn(name = '') {
-        this.sendBinary(new Writer().vu(2).string(name).out());
+        this.send('spawn', { name });
     }
 
     /**
@@ -337,12 +316,12 @@ class DiepSocket extends EventEmitter {
      * @param {Integer} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
-     * @param {Float} movX The movement X 0 - 1 where 1 is the maximum speed
-     * @param {Float} movY The movement Y 0 - 1 where 1 is the maximum speed
+     * @param {Float} movementX The movement X 0 - 1 where 1 is the maximum speed
+     * @param {Float} movementY The movement Y 0 - 1 where 1 is the maximum speed
      * @public
      */
     move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
-        this.sendBinary(new Writer().vu(1).vu(flags).vf(mouseX).vf(mouseY).vf(movX).vf(movY).out());
+        this.send('input', { flags, mouseX, mouseY, movementX, movementY });
     }
 
     /**
@@ -437,73 +416,5 @@ class DiepSocket extends EventEmitter {
         });
     }
 }
-async function solve(prefix, difficulty, cb) {
-    let r;
-    for (;;) {
-        r = generateRandomString(16);
-        let msg = prefix + r + prefix;
-        let sha1 = crypto.createHash('sha1').update(msg).digest('hex');
-        if (solvesDifficulty(sha1, difficulty)) {
-            break;
-        }
-    }
-    cb(r);
-}
-function generateRandomString(len) {
-    var str = '';
-    var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for (var i = 0; i < len; ++i) str += CHARS[~~(Math.random() * CHARS.length)];
-    return str;
-}
-function solvesDifficulty(str, difficulty) {
-    for (var i = 0; i < ~~(difficulty / 4); ++i) {
-        if (str[i] != '0') return false;
-    }
-    for (var i = 4 * ~~(difficulty / 4); i < difficulty; ++i) {
-        var nibble = str[~~(i / 4)];
-        var num = nibbleToNumber(nibble);
-        if (!(num & (1 << (i & 3)))) {
-            return false;
-        }
-    }
-    return true;
-}
-function nibbleToNumber(ch) {
-    switch (ch.toLowerCase()) {
-        case '0':
-            return 0;
-        case '1':
-            return 1;
-        case '2':
-            return 2;
-        case '3':
-            return 3;
-        case '4':
-            return 4;
-        case '5':
-            return 5;
-        case '6':
-            return 6;
-        case '7':
-            return 7;
-        case '8':
-            return 8;
-        case '9':
-            return 9;
-        case 'a':
-            return 10;
-        case 'b':
-            return 11;
-        case 'c':
-            return 12;
-        case 'd':
-            return 13;
-        case 'e':
-            return 14;
-        case 'f':
-            return 15;
-        default:
-            return 0;
-    }
-}
+
 module.exports = DiepSocket;
