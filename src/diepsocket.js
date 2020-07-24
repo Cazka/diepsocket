@@ -376,7 +376,7 @@ class DiepSocket extends EventEmitter {
      */
     static findServer(gamemode, region, cb) {
         if (!GAMEMODES.includes(gamemode) || !REGIONS.includes(region)) {
-            cb(null);
+            cb();
             return;
         }
         https
@@ -390,17 +390,17 @@ class DiepSocket extends EventEmitter {
                 res.on('end', () => {
                     try {
                         data = JSON.parse(data);
-                        const server = data ? data.servers[`vultr-${region}`] : null;
-                        const id = server ? server.id : null;
-                        const link = id ? this.getLink(id) : null;
-                        cb(link);
                     } catch (error) {
                         cb();
+                        return;
                     }
+                    const id = data?.servers?.[`vultr-${region}`]?.id;
+                    const link = id ? this.getLink(id) : id;
+                    cb(link);
                 });
             })
             .on('error', (e) => {
-                cb(null);
+                cb();
             });
     }
     /**
