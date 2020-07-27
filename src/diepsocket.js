@@ -5,10 +5,11 @@ const WebSocket = require('ws');
 const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const url = require('url');
+const { Worker, parentPort, workerData } = require('worker_threads');
 
 const { Parser, Builder } = require('diep-protocol');
 
-let BUILD = '7e1b548e1d99f43e6f33307124a4b8f1070a7f2e';
+let BUILD = '7e1b548e1d99f43e6f33307124a4b8f1070a7f2';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
@@ -168,8 +169,9 @@ class DiepSocket extends EventEmitter {
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
                 BUILD = packet.content.build;
+                this._resetListeners();
                 this.close();
-                //this._connect();
+                this._connect();
                 break;
             case 'message':
                 super.emit('message', packet.content);
@@ -202,8 +204,11 @@ class DiepSocket extends EventEmitter {
                 break;
             case 'pow_request':
                 if (super.emit('pow_request', packet.content)) return;
-                //start a worker and send packet.content
-                //on response from worker this.send(response);
+                if (!this.pow_worker) {
+                    this.pow_worker = new Worker(__dirname + '/pow_worker.js');
+                    this.pow_worker.on('message', (result) => this.send('pow_result', { result }));
+                }
+                this.pow_worker.postMessage(packet.content);
                 break;
             case 'player_count':
                 super.emit('player_count', packet.content.playercount);
@@ -222,6 +227,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onclose(code, reason) {
+        if(this.pow_worker) this.pow_worker.terminate();
         clearTimeout(this._connectTimeout);
         clearTimeout(this._acceptTimeout);
         super.emit('close', code, reason);
@@ -376,10 +382,10 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServer(gamemode, region, cb) {
-        if(!GAMEMODES.includes(gamemode)){
+        if (!GAMEMODES.includes(gamemode)) {
             gamemode = GAMEMODES[Math.floor(Math.random() * GAMEMODES.length)];
         }
-        if(!REGIONS.includes(region)){
+        if (!REGIONS.includes(region)) {
             region = REGIONS[Math.floor(Math.random() * REGIONS.length)];
         }
         https
