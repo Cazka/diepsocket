@@ -5,5 +5,6 @@ DiepSocket.findServer('','', (link) => {
     socket.on('open', () => console.log('open'));
     socket.on('error', (err) => console.log(err));
     socket.on('message', (data) => console.log('message'))
-    socket.on('close', () => console.log('closed'))
+    socket.on('close', () => console.log('closed'));
+    socket.on('accept', () => console.log('accept'))
 });
