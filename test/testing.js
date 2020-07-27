@@ -1,5 +1,6 @@
 const DiepSocket = require('../src/diepsocket')
-const socket = new DiepSocket('diep.io/#2626537300C8CDA028D9');
+
+const socket = new DiepSocket('https://diep.io/#262683B6');
 
 socket.on('open', () => console.log('open'));
 socket.on('accept', () => console.log('accepted'))
@@ -8,7 +9,6 @@ socket.on('close', () => console.log('closed'));
 
 socket.on('pow_request', ({prefix, difficulty}) => {
     solve(prefix, difficulty, (result) => {
-        console.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
         socket.send('pow_result', {result})
     })
 });
