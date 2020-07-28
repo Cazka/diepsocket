@@ -327,7 +327,7 @@ class DiepSocket extends EventEmitter {
      * @param {Float} movementY The movement Y 0 - 1 where 1 is the maximum speed
      * @public
      */
-    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movX = 0, movY = 0) {
+    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movementX = 0, movementY = 0) {
         this.send('input', { flags, mouseX, mouseY, movementX, movementY });
     }
 
