@@ -425,5 +425,7 @@ class DiepSocket extends EventEmitter {
         });
     }
 }
+DiepSocket.Parser = Parser;
+DiepSocket.Builder = Builder;
 
 module.exports = DiepSocket;
