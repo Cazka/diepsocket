@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const url = require('url');
-const { Worker, parentPort, workerData } = require('worker_threads');
+const { Worker } = require('worker_threads');
 
 const { Parser, Builder } = require('diep-protocol');
 
