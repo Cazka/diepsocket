@@ -339,7 +339,7 @@ class DiepSocket extends EventEmitter {
      * @throws Will throw error if wsURL does not match regex.
      * @public
      */
-    static getLink(wsURL, party = '') {
+    static getLink(wsURL = '', party = '') {
         const match = wsURL.match(/(?<=wss:\/\/).[0-9a-z]{3}(?=.s.m28n.net\/)|^[0-9a-z]{4}$/);
         if (!match) throw new Error('Invalid wsURL: wrong format:', wsURL);
         let serverid = match[0];
@@ -357,7 +357,7 @@ class DiepSocket extends EventEmitter {
      * @throws Will throw error if link does not match regex.
      * @public
      */
-    static linkParse(link) {
+    static linkParse(link = '') {
         // from cx
         let match = link.match(/diep\.io\/#(([0-9A-F]{2})+)/);
         if (!match) throw new Error('Invalid Link: wrong format');
