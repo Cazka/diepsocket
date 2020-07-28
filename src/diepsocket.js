@@ -9,7 +9,7 @@ const { Worker, parentPort, workerData } = require('worker_threads');
 
 const { Parser, Builder } = require('diep-protocol');
 
-let BUILD = 'f691d44e5546ac1e927bc4a3738f71347de8afaa';
+let BUILD = '256d8afda8c5df5bf059ce46015840f376c78065';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
