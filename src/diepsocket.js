@@ -11,8 +11,8 @@ const { Parser, Builder } = require('diep-protocol');
 
 let BUILD = 'b041a0752955d65e8cd2d61ea4f397acc467aa0b';
 
-const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
-const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
+const GAMEMODE = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
+const REGION = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
 const INPUT = {
     leftMouse: 0b000000000001,
     upKey: 0b000000000010,
@@ -28,14 +28,14 @@ const INPUT = {
     constantOfTrue: 0b100000000000,
 };
 const DIRECTION = {
-    N: 0b000000000010,
-    W: 0b000000000100,
-    S: 0b000000001000,
-    E: 0b000000010000,
-    NE: 0b000000010010,
-    SE: 0b000000011000,
-    SW: 0b000000001100,
-    NW: 0b000000000110,
+    N: INPUT.upKey,
+    W: INPUT.leftKey,
+    S: INPUT.downKey,
+    E: INPUT.rightKey,
+    NE: INPUT.upKey | INPUT.rightKey,
+    SE: INPUT.downKey | INPUT.rightKey,
+    SW: INPUT.downKey | INPUT.leftKey,
+    NW: INPUT.upKey | INPUT.leftKey,
 };
 
 /**
@@ -158,7 +158,7 @@ class DiepSocket extends EventEmitter {
         try {
             packet = new Parser(data).clientbound();
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             return;
         }
 
@@ -204,11 +204,11 @@ class DiepSocket extends EventEmitter {
                 break;
             case 'pow_request':
                 if (super.emit('pow_request', packet.content)) return;
-                if (!this.pow_worker) {
-                    this.pow_worker = new Worker(__dirname + '/pow_worker.js');
-                    this.pow_worker.on('message', (result) => this.send('pow_result', { result }));
+                if (!this._pow_worker) {
+                    this._pow_worker = new Worker(__dirname + '/pow_worker.js');
+                    this._pow_worker.on('message', (result) => this.send('pow_result', { result }));
                 }
-                this.pow_worker.postMessage(packet.content);
+                this._pow_worker.postMessage(packet.content);
                 break;
             case 'player_count':
                 super.emit('player_count', packet.content.playercount);
@@ -382,11 +382,11 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServer(gamemode, region, cb) {
-        if (!GAMEMODES.includes(gamemode)) {
-            gamemode = GAMEMODES[Math.floor(Math.random() * GAMEMODES.length)];
+        if (!GAMEMODE.includes(gamemode)) {
+            gamemode = GAMEMODE[Math.floor(Math.random() * GAMEMODE.length)];
         }
-        if (!REGIONS.includes(region)) {
-            region = REGIONS[Math.floor(Math.random() * REGIONS.length)];
+        if (!REGION.includes(region)) {
+            region = REGION[Math.floor(Math.random() * REGION.length)];
         }
         https
             .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
@@ -427,5 +427,10 @@ class DiepSocket extends EventEmitter {
 }
 DiepSocket.Parser = Parser;
 DiepSocket.Builder = Builder;
+
+DiepSocket.GAMEMODE = GAMEMODE;
+DiepSocket.REGION = REGION;
+DiepSocket.INPUT = INPUT;
+DiepSocket.DIRECTION = DIRECTION;
 
 module.exports = DiepSocket;
