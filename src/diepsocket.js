@@ -63,15 +63,19 @@ class DiepSocket extends EventEmitter {
             timeout: 30000,
             ...options,
         };
-        this._connectTimeout = null;
-        this._acceptTimeout = null;
+        this._connectTimeout;
+        this._acceptTimeout;
 
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
         this._party = party;
         this._initialLink = this.link;
-        this._socket = null;
-        this._gamemode = null;
+        this._socket;
+        this._gamemode;
+
+        this._entityId;
+        this._tankX;
+        this._tankY;
 
         this._connect();
     }
@@ -90,6 +94,17 @@ class DiepSocket extends EventEmitter {
      */
     get link() {
         return this.constructor.getLink(this._id, this._party);
+    }
+
+    /**
+     * Returns the last tank position updates.
+     * 
+     */
+    get position() {
+        return {
+            x: this._tankX,
+            y: this._tankY,
+        }
     }
 
     /**
@@ -164,7 +179,13 @@ class DiepSocket extends EventEmitter {
 
         switch (packet.type) {
             case 'update':
-                super.emit('update', packet.content);
+                // The update packet is the most important, but hardest packet to parse.
+                // My parser can only parse the x and y coordinates of the tank,
+                // since thats the most valuable information for us.
+
+                // I either need to implement the parser in this switch case here or in update.js. not sure yet.
+                // I think there are two possible ways. Look for many 0e bytes like Hue suggests or use Shadams method
+                // by finding the entity Id in the creations.
                 break;
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
