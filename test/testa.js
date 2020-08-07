@@ -1,11 +1,9 @@
 const DiepSocket = require('../');
 
-const bot = new DiepSocket('https://diep.io/#2626866600E7C914D760');
-
-bot.on('accept', () => {
-    bot.spawn('shiraz');
-
-    setInterval(() => {
-        bot.move(2051);
-    }, 100);
+DiepSocket.findServer('sandbox', 'amsterdam',(link)=> {
+    console.log(link)
+    const socket = new DiepSocket(link);
+    socket.on('accept', () => {
+        console.log('ready');
+    });
 });

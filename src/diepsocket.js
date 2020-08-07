@@ -226,9 +226,15 @@ class DiepSocket extends EventEmitter {
             case 'pow_request':
                 if (super.emit('pow_request', packet.content)) return;
                 if (!this._pow_worker) {
+                    this.powTimes = [];
                     this._pow_worker = new Worker(__dirname + '/pow_worker.js');
-                    this._pow_worker.on('message', (result) => this.send('pow_result', { result }));
+                    this._pow_worker.on('message', (result) => {
+                        this.powTimes.push(Date.now() -this.powTime);
+                        if(this.powTimes.length === 100) console.log('avg',this.powTimes.reduce((x,acc) => acc+x)/this.powTimes.length);
+                        this.send('pow_result', { result })});
                 }
+
+                this.powTime = Date.now();
                 this._pow_worker.postMessage(packet.content);
                 break;
             case 'player_count':
