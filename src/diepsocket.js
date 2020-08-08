@@ -169,6 +169,8 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
+        super.emit('data', data);
+        
         let packet;
         try {
             packet = new Parser(data).clientbound();
