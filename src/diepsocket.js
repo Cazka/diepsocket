@@ -170,7 +170,7 @@ class DiepSocket extends EventEmitter {
      */
     _onmessage(data) {
         super.emit('data', data);
-        
+
         let packet;
         try {
             packet = new Parser(data).clientbound();
