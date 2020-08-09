@@ -238,7 +238,9 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onclose(code, reason) {
-        if (this.pow_worker) this.pow_worker.terminate();
+        if (this._pow_worker) {
+            this._pow_worker.terminate();
+        }
         clearTimeout(this._connectTimeout);
         super.emit('close', code, reason);
     }
