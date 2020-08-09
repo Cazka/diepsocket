@@ -251,8 +251,9 @@ class DiepSocket extends EventEmitter {
      */
     _onerror(error) {
         clearTimeout(this._connectTimeout);
-        this.close();
         this._resetListeners();
+        this.close();
+        this._onclose();
         if (!super.emit('error', error)) throw error;
     }
 
