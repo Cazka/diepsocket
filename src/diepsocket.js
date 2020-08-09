@@ -58,13 +58,11 @@ class DiepSocket extends EventEmitter {
     constructor(link, options) {
         super();
 
-        this._accepted = false;
         this._options = {
             timeout: 30000,
             ...options,
         };
         this._connectTimeout;
-        this._acceptTimeout;
 
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
@@ -151,14 +149,6 @@ class DiepSocket extends EventEmitter {
         this.send('initial', { build: BUILD, party: this._party });
         this.lastPing = Date.now();
 
-        this._acceptTimeout = setTimeout(() => {
-            if (!this._accepted) {
-                this._emitTimeout(
-                    new Error("Timeout: Socket openend, but didn't receive 07 packet")
-                );
-                this.close();
-            }
-        }, 40000);
         super.emit('open');
     }
 
@@ -210,7 +200,6 @@ class DiepSocket extends EventEmitter {
                 this._party = packet.content.party;
                 break;
             case 'accept':
-                this._accepted = true;
                 setTimeout(() => {
                     if (!this._options.forceTeam || this._initialLink === this.link)
                         super.emit('accept');
@@ -251,7 +240,6 @@ class DiepSocket extends EventEmitter {
     _onclose(code, reason) {
         if (this.pow_worker) this.pow_worker.terminate();
         clearTimeout(this._connectTimeout);
-        clearTimeout(this._acceptTimeout);
         super.emit('close', code, reason);
     }
 
@@ -263,7 +251,6 @@ class DiepSocket extends EventEmitter {
      */
     _onerror(error) {
         clearTimeout(this._connectTimeout);
-        clearTimeout(this._acceptTimeout);
         this.close();
         this._resetListeners();
         if (!super.emit('error', error)) throw error;
