@@ -212,6 +212,9 @@ class DiepSocket extends EventEmitter {
             case 'invalid_link':
                 this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
                 break;
+            case 'player_count':
+                super.emit('player_count', packet.content.playercount);
+                break;
             case 'pow_request':
                 if (super.emit('pow_request', packet.content)) return;
                 if (!this._pow_worker) {
@@ -219,9 +222,6 @@ class DiepSocket extends EventEmitter {
                     this._pow_worker.on('message', (result) => this.send('pow_result', { result }));
                 }
                 this._pow_worker.postMessage(packet.content);
-                break;
-            case 'player_count':
-                super.emit('player_count', packet.content.playercount);
                 break;
         }
         super.emit('data', data);
