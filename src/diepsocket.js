@@ -64,11 +64,13 @@ class DiepSocket extends EventEmitter {
         };
         this._connectTimeout;
 
+        this._socket;
+
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
         this._party = party;
         this._initialLink = this.link;
-        this._socket;
+
         this._gamemode;
 
         this._entityId;
@@ -111,8 +113,6 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _connect() {
-        clearTimeout(this._connectTimeout);
-
         const options = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
@@ -133,7 +133,7 @@ class DiepSocket extends EventEmitter {
         this._socket.on('error', (err) => this._onerror(err));
 
         this._connectTimeout = setTimeout(() => {
-            this._emitTimeout(new Error('Timeout: Connection took too long to establish'));
+            this._onerror(new Error('Connection took too long to establish'));
         }, this._options.timeout);
     }
 
@@ -147,7 +147,7 @@ class DiepSocket extends EventEmitter {
 
         this.send('heartbeat');
         this.send('initial', { build: BUILD, party: this._party });
-        this.lastPing = Date.now();
+        this._lastPing = Date.now();
 
         super.emit('open');
     }
@@ -194,16 +194,16 @@ class DiepSocket extends EventEmitter {
                 let now = Date.now();
                 super.emit('latency', now - this.lastPing);
                 this.send('heartbeat');
-                this.lastPing = now;
+                this._lastPing = now;
                 break;
             case 'party':
                 this._party = packet.content.party;
                 break;
             case 'accept':
                 setTimeout(() => {
-                    if (!this._options.forceTeam || this._initialLink === this.link)
-                        super.emit('accept');
-                    else this._onerror(new Error('The team you tried to join is full'));
+                    if (this._options.forceTeam && this._initialLink !== this.link)
+                        this._onerror(new Error('The team you tried to join is full'));
+                    else super.emit('accept');
                 }, 100);
                 break;
             case 'achievements':
@@ -223,9 +223,6 @@ class DiepSocket extends EventEmitter {
             case 'player_count':
                 super.emit('player_count', packet.content.playercount);
                 break;
-            default:
-                console.log(`No event handler for ${packet.type}`);
-                break;
         }
         super.emit('data', data);
     }
@@ -238,10 +235,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onclose(code, reason) {
-        if (this._pow_worker) {
-            this._pow_worker.terminate();
-        }
-        clearTimeout(this._connectTimeout);
+        if (this._pow_worker) this._pow_worker.terminate();
         super.emit('close', code, reason);
     }
 
@@ -253,21 +247,8 @@ class DiepSocket extends EventEmitter {
      */
     _onerror(error) {
         clearTimeout(this._connectTimeout);
-        this._resetListeners();
-        this.close();
-        this._onclose();
+        this.close(1006);
         if (!super.emit('error', error)) throw error;
-    }
-
-    /**
-     * Emit the `'timeout'` event.
-     *
-     * @param {Error} error The emitted error
-     * @private
-     */
-    _emitTimeout(error) {
-        this._resetListeners();
-        if (!super.emit('timeout', error)) this._onerror(error);
     }
 
     /**
