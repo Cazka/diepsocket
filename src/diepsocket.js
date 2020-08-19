@@ -170,7 +170,7 @@ class DiepSocket extends EventEmitter {
         switch (packet.type) {
             case 'update':
                 if (packet.content.id) this._entityId = packet.content.id;
-                else if(packet.content.parse){
+                else if (packet.content.parse) {
                     const pos = packet.content.parse(this._entityId);
                     this._tankX = pos?.x || this._tankX;
                     this._tankY = pos?.y || this._tankY;
@@ -324,6 +324,33 @@ class DiepSocket extends EventEmitter {
     }
 
     /**
+     * Send a movement packet that will move to the goalPos
+     * @param {Object} goalPos {x,y}
+     */
+    moveTo(goalPos, mouseX = 0, mouseY = 0) {
+        if (this.slow) {
+            this.move(2048, mouseX, mouseY);
+            return;
+        }
+        this.slow = true;
+
+        // BLOCKWIDTH = 50 units.
+        const tolerance = 2 * 50;
+        const euclid_distance = Math.sqrt(
+            Math.pow(this._tankX - goalPos.x, 2) + Math.pow(this._tankY - goalPos.y, 2)
+        );
+
+        // there is probably a better function to calc the speed relative to the distance from the fixed position. if you have a better one pls tell me.
+        // Formula to slow down movement when getting near the goal.
+        let timeout = (-Math.log(euclid_distance - 150) + 5.3) * 100;
+        timeout = timeout !== timeout || timeout >= 250 ? 250 : timeout <= 0 ? 0 : timeout;
+        setTimeout(() => (this.slow = false), timeout);
+        const flags = calcFlags(this.position, goalPos);
+        if (euclid_distance > tolerance) this.move(flags, mouseX, mouseY);
+        else this.move(2048, mouseX, mouseY);
+    }
+
+    /**
      * Get the party link from the server id and the party code.
      *
      * @param {String} wsURL The server id or wsURL
@@ -417,6 +444,24 @@ class DiepSocket extends EventEmitter {
         });
     }
 }
+
+function calcFlags(curPos, goalPos) {
+    let flags = 2048;
+    const distanceX = curPos.x - goalPos.x;
+    const distanceY = curPos.y - goalPos.y;
+    if (distanceX > 0) {
+        flags += 4; // move west
+    } else if (distanceX < 0) {
+        flags += 16; //move east
+    }
+    if (distanceY > 0) {
+        flags += 2; // move north
+    } else if (distanceY < 0) {
+        flags += 8; // move south
+    }
+    return flags;
+}
+
 DiepSocket.Parser = Parser;
 DiepSocket.Builder = Builder;
 
