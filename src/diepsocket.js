@@ -74,8 +74,8 @@ class DiepSocket extends EventEmitter {
         this._gamemode;
 
         this._entityId;
-        this._tankX;
-        this._tankY;
+        this._tankX = 0;
+        this._tankY = 0;
 
         this._connect();
     }
@@ -169,13 +169,12 @@ class DiepSocket extends EventEmitter {
 
         switch (packet.type) {
             case 'update':
-                // The update packet is the most important, but hardest packet to parse.
-                // My parser can only parse the x and y coordinates of the tank,
-                // since thats the most valuable information for us.
-
-                // I either need to implement the parser in this switch case here or in update.js. not sure yet.
-                // I think there are two possible ways. Look for many 0e bytes like Hue suggests or use Shadams method
-                // by finding the entity Id in the creations.
+                if (packet.content.id) this._entityId = packet.content.id;
+                else if(packet.content.parse){
+                    const pos = packet.content.parse(this._entityId);
+                    this._tankX = pos?.x || this._tankX;
+                    this._tankY = pos?.y || this._tankY;
+                }
                 break;
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');

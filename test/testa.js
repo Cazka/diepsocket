@@ -1,11 +1,11 @@
 const DiepSocket = require('../');
 
-const bot = new DiepSocket('https://diep.io/#2636635300566C28100F3A');
-bot.on('open', () => {
-    console.log('open');
-});
+const bot = new DiepSocket('diep.io/#26366323006CDEC980DD55');
 bot.on('accept', () => {
-    console.log('accept');
+    bot.spawn('test');
+    setInterval(() => {
+        console.log(bot.position);
+    },100);
 });
 bot.on('close', (code, reason) => {
     console.log(code, reason);
