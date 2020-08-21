@@ -315,19 +315,29 @@ class DiepSocket extends EventEmitter {
      * @param {Integer} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
-     * @param {Float} movementX The movement X 0 - 1 where 1 is the maximum speed
-     * @param {Float} movementY The movement Y 0 - 1 where 1 is the maximum speed
+     * @param {Float} velocityX The velocity X 0 - 1 where 1 is the maximum speed
+     * @param {Float} velocityY The velocity Y 0 - 1 where 1 is the maximum speed
      * @public
      */
-    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, movementX = 0, movementY = 0) {
-        this.send('input', { flags, mouseX, mouseY, movementX, movementY });
+    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, velocityX = 0, velocityY = 0) {
+        flags |= INPUT.constantOfTrue;
+        this.send('input', { flags, mouseX, mouseY, velocityX, velocityY });
     }
 
     /**
      * Send a movement packet that will move to the goalPos
      * @param {Object} goalPos {x,y}
      */
-    moveTo(goalPos, mouseX = 0, mouseY = 0) {
+    moveTo(goalPos, flags = 2048, mouseX = 0, mouseY = 0) {
+        //TODO use vx vy
+        flags |= calcFlags(this.position, goalPos);
+        this.move(flags, mouseX, mouseY);
+    }
+    /**
+     * Send a movement packet that will move to the goalPos
+     * @param {Object} goalPos {x,y}
+     */
+    /*moveTo(goalPos, mouseX = 0, mouseY = 0) {
         if (this.slow) {
             this.move(2048, mouseX, mouseY);
             return;
@@ -348,7 +358,7 @@ class DiepSocket extends EventEmitter {
         const flags = calcFlags(this.position, goalPos);
         if (euclid_distance > tolerance) this.move(flags, mouseX, mouseY);
         else this.move(2048, mouseX, mouseY);
-    }
+    }*/
 
     /**
      * Get the party link from the server id and the party code.
