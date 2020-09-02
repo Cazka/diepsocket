@@ -329,9 +329,15 @@ class DiepSocket extends EventEmitter {
      * @param {Object} goalPos {x,y}
      */
     moveTo(goalPos, flags = 2048, mouseX = 0, mouseY = 0) {
-        //TODO use vx vy
-        flags |= calcFlags(this.position, goalPos);
-        this.move(flags, mouseX, mouseY);
+        flags |= INPUT.gamepad;
+        const distanceX = goalPos.x - this.position.x;
+        const distanceY = goalPos.y - this.position.y;
+
+        const normalizer = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+        const velocityX = distanceX / normalizer;
+        const velocityY = distanceY / normalizer;
+        this.move(flags, mouseX, mouseY, velocityX, velocityY);
     }
     /**
      * Send a movement packet that will move to the goalPos
@@ -453,23 +459,6 @@ class DiepSocket extends EventEmitter {
             this.findServer(gamemode, region, resolve);
         });
     }
-}
-
-function calcFlags(curPos, goalPos) {
-    let flags = 2048;
-    const distanceX = curPos.x - goalPos.x;
-    const distanceY = curPos.y - goalPos.y;
-    if (distanceX > 0) {
-        flags += 4; // move west
-    } else if (distanceX < 0) {
-        flags += 16; //move east
-    }
-    if (distanceY > 0) {
-        flags += 2; // move north
-    } else if (distanceY < 0) {
-        flags += 8; // move south
-    }
-    return flags;
 }
 
 DiepSocket.Parser = Parser;
