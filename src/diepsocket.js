@@ -327,6 +327,9 @@ class DiepSocket extends EventEmitter {
     /**
      * Send a movement packet that will move to the goalPos
      * @param {Object} goalPos {x,y}
+     * @param {Number} flags input flags
+     * @param {Number} mouseX the x coord of the mouse
+     * @param {Number} mouseY the y coord of the mouse
      */
     moveTo(goalPos, flags = 2048, mouseX = 0, mouseY = 0) {
         flags |= INPUT.gamepad;
@@ -339,32 +342,6 @@ class DiepSocket extends EventEmitter {
         const velocityY = distanceY / normalizer;
         this.move(flags, mouseX, mouseY, velocityX, velocityY);
     }
-    /**
-     * Send a movement packet that will move to the goalPos
-     * @param {Object} goalPos {x,y}
-     */
-    /*moveTo(goalPos, mouseX = 0, mouseY = 0) {
-        if (this.slow) {
-            this.move(2048, mouseX, mouseY);
-            return;
-        }
-        this.slow = true;
-
-        // BLOCKWIDTH = 50 units.
-        const tolerance = 2 * 50;
-        const euclid_distance = Math.sqrt(
-            Math.pow(this._tankX - goalPos.x, 2) + Math.pow(this._tankY - goalPos.y, 2)
-        );
-
-        // there is probably a better function to calc the speed relative to the distance from the fixed position. if you have a better one pls tell me.
-        // Formula to slow down movement when getting near the goal.
-        let timeout = (-Math.log(euclid_distance - 150) + 5.3) * 100;
-        timeout = timeout !== timeout || timeout >= 250 ? 250 : timeout <= 0 ? 0 : timeout;
-        setTimeout(() => (this.slow = false), timeout);
-        const flags = calcFlags(this.position, goalPos);
-        if (euclid_distance > tolerance) this.move(flags, mouseX, mouseY);
-        else this.move(2048, mouseX, mouseY);
-    }*/
 
     /**
      * Get the party link from the server id and the party code.
