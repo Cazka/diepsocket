@@ -4,6 +4,10 @@ const path = require('path');
 const CLIENTBOUND = retrieveDataSpecs(path.join(__dirname, 'clientbound'));
 const SERVERBOUND = retrieveDataSpecs(path.join(__dirname, 'serverbound'));
 
+/**
+ * retrieve and validate the dataSpecs in that path.
+ * @param {String} dataPath the path for the dataSpecs
+ */
 function retrieveDataSpecs(dataPath) {
     const dataSpecs = {};
     const files = fs.readdirSync(dataPath);
@@ -32,6 +36,11 @@ function retrieveDataSpecs(dataPath) {
     };
     return dataSpecs;
 }
+
+/**
+ *  checks if dat has implemented the interface
+ * @param {Object} data the data that contains the parser and builder for it packet
+ */
 function usesInterface(data) {
     if (!data) return false;
     if (data.id === undefined) return false;

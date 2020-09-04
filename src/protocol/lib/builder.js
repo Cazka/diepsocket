@@ -26,7 +26,7 @@ class Builder extends Writer {
 
         if (!packet instanceof Object)
             throw new TypeError(`Expected Object, got '${data ? data.constructor.name : data}'`);
-        if(!packet.id && !packet.type)
+        if (!packet.id && !packet.type)
             throw new TypeError(`Must specify either packet.id or packet.type`);
         this.data;
         this._packet = packet;
@@ -36,8 +36,8 @@ class Builder extends Writer {
      * Builds the data as a clientbound packet.
      * @public
      */
-    clientbound(){
-        if(!this.data) this.build(CLIENTBOUND);
+    clientbound() {
+        if (!this.data) this.build(CLIENTBOUND);
         return this.data;
     }
 
@@ -45,8 +45,8 @@ class Builder extends Writer {
      * Builds the data as a serverbound packet.
      * @public
      */
-    serverbound(){
-        if(!this.data) this.build(SERVERBOUND);
+    serverbound() {
+        if (!this.data) this.build(SERVERBOUND);
         return this.data;
     }
 

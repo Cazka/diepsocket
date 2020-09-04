@@ -58,7 +58,8 @@ class Parser extends Reader {
      * @private
      */
     parse(dataSpecs) {
-        if (!dataSpecs) throw new Error('packet id does not exist\n' + this.debugStringFullBuffer());
+        if (!dataSpecs)
+            throw new Error('packet id does not exist\n' + this.debugStringFullBuffer());
         let packet = {
             id: dataSpecs.id,
             type: dataSpecs.type,
