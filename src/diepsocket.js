@@ -7,7 +7,7 @@ const https = require('https');
 const url = require('url');
 const { Worker } = require('worker_threads');
 
-const { Parser, Builder } = require('diep-protocol');
+const { Parser, Builder } = require('./protocol');
 
 let BUILD = '6f59094d60f98fafc14371671d3ff31ef4d75d9e';
 
@@ -74,8 +74,8 @@ class DiepSocket extends EventEmitter {
         this._gamemode;
 
         this._entityId;
-        this._tankX = 0;
-        this._tankY = 0;
+        this._tankX = 0.1;
+        this._tankY = 0.1;
 
         this._connect();
     }
@@ -159,22 +159,18 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
-        let packet;
-        try {
-            packet = new Parser(data).clientbound();
-        } catch (error) {
-            //console.log(error);
-            return;
-        }
+        const packet = new Parser(data).clientbound();
 
         switch (packet.type) {
             case 'update':
-                if (packet.content.id) this._entityId = packet.content.id;
-                else if (packet.content.parse) {
-                    const pos = packet.content.parse(this._entityId);
-                    this._tankX = pos?.x || this._tankX;
-                    this._tankY = pos?.y || this._tankY;
+                this._entityId = packet.content.id || this._entityId;
+                const parsed = packet.content.parse(this._entityId);
+                if (parsed.dead) {
+                    this._entityId = undefined;
+                    super.emit('dead');
                 }
+                this._tankX = parsed.x || this._tankX;
+                this._tankY = parsed.y || this._tankY;
                 break;
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
@@ -303,6 +299,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Spawn with the given name.
+     * 
      * @param {String} name The name
      * @public
      */
@@ -312,6 +309,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Send a movement packet. Note: use DiepSocket.INPUT to build the flags.
+     * 
      * @param {Integer} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
@@ -326,6 +324,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Send a movement packet that will move to the goalPos
+     * 
      * @param {Object} goalPos {x,y}
      * @param {Number} flags input flags
      * @param {Number} mouseX the x coord of the mouse
@@ -336,7 +335,7 @@ class DiepSocket extends EventEmitter {
         const distanceX = goalPos.x - this.position.x;
         const distanceY = goalPos.y - this.position.y;
 
-        const normalizer = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+        const normalizer = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         const velocityX = distanceX / normalizer;
         const velocityY = distanceY / normalizer;
