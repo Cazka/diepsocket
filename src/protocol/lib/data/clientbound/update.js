@@ -110,6 +110,7 @@ const UPGRADE_ARRAY = [
     0,
 ];
 const TANK_CREATION = [1, 0, 2, 0, 5, 3, 0, 3, 1];
+
 /**
  * Returns the index of query in arr otherwise -1
  * @param {Array} arr The array
@@ -117,9 +118,9 @@ const TANK_CREATION = [1, 0, 2, 0, 5, 3, 0, 3, 1];
  */
 function indexOf(arr, query) {
     if (query.length > arr.length) return -1;
-    for (let i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         let found = true;
-        for (let j = 0; j < query.length; j++) {
+        for (var j = 0; j < query.length; j++) {
             if (arr[i + j] !== query[j]) {
                 found = false;
                 break;
@@ -131,42 +132,90 @@ function indexOf(arr, query) {
 }
 /**
  *
- * @param {Array} id The entity from our tank
- * @returns {Object} contains eiter {x, y, angle} or {parse}, where parse is a function.
+ * @returns {Object} contains {id, parse}. id is the entity id when a new gets created. parse is a function that gets the current entity id.
  */
-function locationParser(parser) {
-    if (indexOf(parser.buffer, UPGRADE_ARRAY) !== -1) {
-        const creationIndex = indexOf(parser.buffer, TANK_CREATION);
-        parser.at = creationIndex;
-        parser.rv();
-        parser.rv();
-        const id = Array.from(parser.buffer.slice(parser.at, creationIndex));
-        return { id };
-    }
+function parseUpdate(parser) {
+    //console.log(parser.debugStringFullBuffer());
+    /**
+     * This is the main function to parse. It requires an entity id and will return {died,x,y,angle}.
+     * @param {array} id array that contains the entity id.
+     */
     function parse(id) {
-        if (!id) return;
-        const updateIndex = indexOf(parser.buffer, id.concat([0, 1]));
-        if (updateIndex == -1) return;
+        const parsed = { dead: false };
+        //dont parse if id is undefined;
+        if (!id) return parsed;
 
+        //check if entity gets deleted
+        if (isDeleted(parser, id)) {
+            parsed.dead = true;
+            return parsed;
+        }
+
+        //check if entity gets updated
+        const updateIndex = indexOf(parser.buffer, id.concat([0, 1]));
+        if (updateIndex === -1) return parsed;
+
+        //parse {x,y,angle} fields in updates
         parser.at = updateIndex + id.length + 2;
-        const f = {};
         let prev = 0;
         while (parser.buffer[parser.at] !== 1) {
             prev += parser.vu() ^ 1;
             const field = FIELDS[prev];
             if (!field) break;
-            f[field.name] = parser[field.datatype]();
+            parsed[field.name] = parser[field.datatype]();
         }
-        return f;
+        return parsed;
     }
-    return { parse };
+    //check if new entity id gets created
+    let id;
+    if (indexOf(parser.buffer, UPGRADE_ARRAY) !== -1) {
+        const creationIndex = indexOf(parser.buffer, TANK_CREATION);
+        parser.at = creationIndex;
+        parser.rv();
+        parser.rv();
+        id = Array.from(parser.buffer.slice(parser.at, creationIndex));
+    }
+    return { id, parse };
+}
+
+/**
+ * checks whether the entity id gets deleted or not.
+ * @param {Parser} parser the parser
+ * @param {Array} id the entity id
+ * @returns {Boolean} if entity id gets deleted or not
+ */
+function isDeleted(parser, id) {
+    parser.at = 0;
+    //packet header
+    parser.vu();
+    // update id
+    parser.vu();
+    // loop through deletions
+    for (var i = 0, n = parser.vu(); i < n; i++) {
+        const start = parser.at;
+        parser.vu();
+        parser.vu();
+        const end = parser.at;
+        const deleted = Array.from(parser.buffer.slice(start, end));
+        //compare
+        if (id.length !== deleted.length) continue;
+        let isEqual = true;
+        for (var j = 0; j < id.length; j++) {
+            if (id[j] !== deleted[j]) {
+                isEqual = false;
+                break;
+            }
+        }
+        if (isEqual) return true;
+    }
+    return false;
 }
 
 module.exports = {
     id: 0,
     type: 'update',
     parse(parser) {
-        const { id, parse } = locationParser(parser);
+        const { id, parse } = parseUpdate(parser);
         return {
             id,
             parse,
