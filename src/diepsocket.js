@@ -50,7 +50,7 @@ class DiepSocket extends EventEmitter {
      * @param {String} link The link from the server to which to connect
      * @param {Object} options Connection options
      * @param {Number} options.timeout How long the connection is allowed to take to
-     * establish before the connection times out. Default 30,000 ms
+     * establish before the connection times out. Default 20,000 ms
      * @param {String} options.proxy The proxy that will be used. ip:port format
      * @param {String} options.ipv6 The ipv6 address which will be used
      * @param {boolean} options.forceTeam When set to true will only join same team otherwise throw an error
@@ -59,7 +59,7 @@ class DiepSocket extends EventEmitter {
         super();
 
         this._options = {
-            timeout: 30000,
+            timeout: 20000,
             ...options,
         };
         this._connectTimeout;
@@ -299,7 +299,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Spawn with the given name.
-     * 
+     *
      * @param {String} name The name
      * @public
      */
@@ -309,7 +309,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Send a movement packet. Note: use DiepSocket.INPUT to build the flags.
-     * 
+     *
      * @param {Integer} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
@@ -324,7 +324,7 @@ class DiepSocket extends EventEmitter {
 
     /**
      * Send a movement packet that will move to the goalPos
-     * 
+     *
      * @param {Object} goalPos {x,y}
      * @param {Number} flags input flags
      * @param {Number} mouseX the x coord of the mouse
@@ -332,14 +332,12 @@ class DiepSocket extends EventEmitter {
      */
     moveTo(goalPos, flags = 2048, mouseX = 0, mouseY = 0) {
         flags |= INPUT.gamepad;
-        const distanceX = goalPos.x - this.position.x;
-        const distanceY = goalPos.y - this.position.y;
+        const deltaX = goalPos.x - this.position.x;
+        const deltaY = goalPos.y - this.position.y;
 
-        const normalizer = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        const length = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
-        const velocityX = distanceX / normalizer;
-        const velocityY = distanceY / normalizer;
-        this.move(flags, mouseX, mouseY, velocityX, velocityY);
+        this.move(flags, mouseX, mouseY, deltaX / length, deltaY / length);
     }
 
     /**
@@ -403,9 +401,7 @@ class DiepSocket extends EventEmitter {
             .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
                 let data = '';
 
-                res.on('data', (chunk) => {
-                    data += chunk;
-                });
+                res.on('data', (chunk) => (data += chunk));
 
                 res.on('end', () => {
                     try {
@@ -419,9 +415,7 @@ class DiepSocket extends EventEmitter {
                     cb(link);
                 });
             })
-            .on('error', (e) => {
-                cb();
-            });
+            .on('error', (e) => cb());
     }
     /**
      * Get a random party link from the specified gamemode and region
@@ -431,9 +425,7 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServerSync(gamemode, region) {
-        return new Promise((resolve) => {
-            this.findServer(gamemode, region, resolve);
-        });
+        return new Promise((resolve) => this.findServer(gamemode, region, resolve));
     }
 }
 
