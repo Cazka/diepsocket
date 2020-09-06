@@ -335,7 +335,7 @@ class DiepSocket extends EventEmitter {
         const deltaX = goalPos.x - this.position.x;
         const deltaY = goalPos.y - this.position.y;
 
-        const length = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
 
         this.move(flags, mouseX, mouseY, deltaX / length, deltaY / length);
     }
