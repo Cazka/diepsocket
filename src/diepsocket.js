@@ -330,7 +330,7 @@ class DiepSocket extends EventEmitter {
      * @param {Number} mouseX the x coord of the mouse
      * @param {Number} mouseY the y coord of the mouse
      */
-    moveTo(goalPos, flags = 2048, mouseX = 0, mouseY = 0) {
+    moveTo(goalPos, flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0) {
         flags |= INPUT.gamepad;
         const deltaX = goalPos.x - this.position.x;
         const deltaY = goalPos.y - this.position.y;
