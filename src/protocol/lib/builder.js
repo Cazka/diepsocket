@@ -19,7 +19,9 @@ class Builder extends Writer {
     /**
      * Creates a new `Builder`.
      *
-     * @param {Object} packet The packet.
+     * @param {Object} packet The packet
+     * @param {String} packet.type The type of the packet
+     * @param {Object} packet.content The content of the packet
      */
     constructor(packet) {
         super();

@@ -310,7 +310,7 @@ class DiepSocket extends EventEmitter {
     /**
      * Send a movement packet. Note: use DiepSocket.INPUT to build the flags.
      *
-     * @param {Integer} flags The flags
+     * @param {Number} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
      * @param {Float} velocityX The velocity X 0 - 1 where 1 is the maximum speed
@@ -325,16 +325,18 @@ class DiepSocket extends EventEmitter {
     /**
      * Send a movement packet that will move to the goalPos
      *
-     * @param {Object} goalPos {x,y}
-     * @param {Number} flags input flags
-     * @param {Number} mouseX the x coord of the mouse
-     * @param {Number} mouseY the y coord of the mouse
+     * @param {Object} goalPos The goal position
+     * @param {Number} goalPos.x The goal X position
+     * @param {Number} goalPos.y The goal Y position
+     * @param {Number} flags The flags
+     * @param {Number} mouseX The mouse X position
+     * @param {Number} mouseY The mouse Y position
+     * @public
      */
     moveTo(goalPos, flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0) {
         flags |= INPUT.gamepad;
         const deltaX = goalPos.x - this.position.x;
         const deltaY = goalPos.y - this.position.y;
-
         const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
 
         this.move(flags, mouseX, mouseY, deltaX / length, deltaY / length);
