@@ -51,7 +51,7 @@ function decodeBlock(input, output, sIdx, eIdx) {
 }
 
 module.exports = {
-    id: 2,
+    id: 12, //old 2
     type: 'compressed',
     parse(parser) {
         const buffer = new Uint8Array(parser.u32());

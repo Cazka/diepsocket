@@ -1,5 +1,5 @@
 module.exports = {
-    id: 11,
+    id: 66, //old 11
     type: 'pow_request',
     parse(parser) {
         const difficulty = parser.vu();

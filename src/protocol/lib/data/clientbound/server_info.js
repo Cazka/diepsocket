@@ -1,5 +1,5 @@
 module.exports = {
-    id: 4,
+    id: 70, //old 4
     type: 'server_info',
     parse(parser) {
         const gamemode = parser.string();

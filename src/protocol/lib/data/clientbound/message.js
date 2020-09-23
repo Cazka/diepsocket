@@ -1,5 +1,5 @@
 module.exports = {
-    id: 0x03,
+    id: 46, //old 3
     type: 'message',
     parse(parser) {
         const message = parser.string();

@@ -1,5 +1,5 @@
 module.exports = {
-    id: 7,
+    id: 118, //old 7
     type: 'accept',
     parse(parser) {
         return {};

@@ -1,5 +1,5 @@
 module.exports = {
-    id: 8,
+    id: 120, //old 8
     type: 'achievements',
     parse(parser) {
         const ids = [];

@@ -1,5 +1,5 @@
 module.exports = {
-    id: 5,
+    id: 78, //old 5
     type: 'heartbeat',
     parse(parser) {
         return {};
