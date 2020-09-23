@@ -1,5 +1,5 @@
 module.exports = {
-    id: 9,
+    id: 27, //old 9
     type: 'take_tank',
     parse(parser) {
         return {};

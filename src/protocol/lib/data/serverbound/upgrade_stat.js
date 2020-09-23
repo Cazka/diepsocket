@@ -1,5 +1,5 @@
 module.exports = {
-    id: 3,
+    id: 35, //old 3
     type: 'upgrade_stat',
     parse(parser) {
         const id = parser.vi();

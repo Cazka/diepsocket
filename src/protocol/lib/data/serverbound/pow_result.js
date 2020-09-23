@@ -1,5 +1,5 @@
 module.exports = {
-    id: 10,
+    id: 31, //old 10
     type: 'pow_result',
     parse(parser) {
         const result = parser.string();
