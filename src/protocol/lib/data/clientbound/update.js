@@ -1,6 +1,6 @@
 const FIELDS = {
-    1: { name: 'x', datatype: 'vi' },
-    2: { name: 'y', datatype: 'vi' },
+    1: { name: 'y', datatype: 'vi' },
+    2: { name: 'x', datatype: 'vi' },
     3: { name: 'angle', datatype: 'vi' },
 };
 const UPGRADE_ARRAY = [
