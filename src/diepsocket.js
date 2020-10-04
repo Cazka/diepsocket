@@ -11,8 +11,8 @@ const { Parser, Builder } = require('./protocol');
 
 let BUILD = '3f3ca68d827abc43f08880043add02e88a4255e0';
 
-const GAMEMODE = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
-const REGION = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
+const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
+const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
 const INPUT = {
     leftMouse: 0b000000000001,
     upKey: 0b000000000010,
@@ -26,16 +26,6 @@ const INPUT = {
     gamepad: 0b001000000000,
     switchclass: 0b010000000000,
     constantOfTrue: 0b100000000000,
-};
-const DIRECTION = {
-    N: INPUT.upKey,
-    W: INPUT.leftKey,
-    S: INPUT.downKey,
-    E: INPUT.rightKey,
-    NE: INPUT.upKey | INPUT.rightKey,
-    SE: INPUT.downKey | INPUT.rightKey,
-    SW: INPUT.downKey | INPUT.leftKey,
-    NW: INPUT.upKey | INPUT.leftKey,
 };
 
 /**
@@ -145,9 +135,7 @@ class DiepSocket extends EventEmitter {
     _onopen() {
         clearTimeout(this._connectTimeout);
 
-        this.send('heartbeat');
         this.send('initial', { build: BUILD, party: this._party });
-        this._lastPing = Date.now();
 
         super.emit('open');
     }
@@ -187,7 +175,7 @@ class DiepSocket extends EventEmitter {
                 break;
             case 'heartbeat':
                 let now = Date.now();
-                super.emit('latency', now - this.lastPing);
+                super.emit('latency', now - this._lastPing);
                 this.send('heartbeat');
                 this._lastPing = now;
                 break;
@@ -195,14 +183,17 @@ class DiepSocket extends EventEmitter {
                 this._party = packet.content.party;
                 break;
             case 'accept':
+                this.send('heartbeat');
+                this._lastPing = Date.now();
+                
                 setTimeout(() => {
                     if (this._options.forceTeam && this._initialLink !== this.link)
                         this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
                 }, 100);
                 break;
-            case 'achievements':
-                super.emit('achievements', packet.content);
+            case 'event':
+                super.emit('event', packet.content);
                 break;
             case 'invalid_link':
                 this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
@@ -393,11 +384,11 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static findServer(gamemode, region, cb) {
-        if (!GAMEMODE.includes(gamemode)) {
-            gamemode = GAMEMODE[Math.floor(Math.random() * GAMEMODE.length)];
+        if (!GAMEMODES.includes(gamemode)) {
+            gamemode = GAMEMODES[Math.floor(Math.random() * GAMEMODES.length)];
         }
-        if (!REGION.includes(region)) {
-            region = REGION[Math.floor(Math.random() * REGION.length)];
+        if (!REGIONS.includes(region)) {
+            region = REGIONS[Math.floor(Math.random() * REGIONS.length)];
         }
         https
             .get(`https://api.n.m28.io/endpoint/diepio-${gamemode}/findEach/`, (res) => {
@@ -434,9 +425,8 @@ class DiepSocket extends EventEmitter {
 DiepSocket.Parser = Parser;
 DiepSocket.Builder = Builder;
 
-DiepSocket.GAMEMODE = GAMEMODE;
-DiepSocket.REGION = REGION;
+DiepSocket.GAMEMODE = GAMEMODES;
+DiepSocket.REGION = REGIONS;
 DiepSocket.INPUT = INPUT;
-DiepSocket.DIRECTION = DIRECTION;
 
 module.exports = DiepSocket;

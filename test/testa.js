@@ -1,7 +1,7 @@
 const DiepSocket = require('../');
 const { Reader } = require('../src/protocol/lib/coder');
 
-const bot = new DiepSocket('diep.io/#265687C60088CC30CAF4');
+const bot = new DiepSocket('diep.io/#265687C600887C30E699');
 bot.on('open', () => console.log('open'));
 bot.on('accept', () => {
     bot.spawn('test');

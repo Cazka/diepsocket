@@ -1,6 +1,6 @@
 module.exports = {
     id: 120, //old 8
-    type: 'achievements',
+    type: 'event',
     parse(parser) {
         const ids = [];
         for (let i = 0, n = parser.vu(); i < n; i++) {
