@@ -199,7 +199,7 @@ class DiepSocket extends EventEmitter {
                 this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
                 break;
             case 'player_count':
-                super.emit('player_count', packet.content.playercount);
+                super.emit('player_count', packet.content.count);
                 break;
             case 'pow_request':
                 if (super.emit('pow_request', packet.content)) return;
@@ -281,7 +281,7 @@ class DiepSocket extends EventEmitter {
     /**
      * Send a data message to the server.
      *
-     * @param {Buffer} data the message to send
+     * @param {*} data the message to send
      * @public
      */
     sendBinary(data) {
@@ -304,8 +304,8 @@ class DiepSocket extends EventEmitter {
      * @param {Number} flags The flags
      * @param {Float} mouseX The mouse X position
      * @param {Float} mouseY The mouse Y position
-     * @param {Float} velocityX The velocity X 0 - 1 where 1 is the maximum speed
-     * @param {Float} velocityY The velocity Y 0 - 1 where 1 is the maximum speed
+     * @param {Float} velocityX The velocity X
+     * @param {Float} velocityY The velocity Y
      * @public
      */
     move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, velocityX = 0, velocityY = 0) {
