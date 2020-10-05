@@ -7,7 +7,7 @@ const https = require('https');
 const url = require('url');
 const { Worker } = require('worker_threads');
 
-const { Parser, Builder } = require('./protocol');
+const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
 let BUILD = '3f3ca68d827abc43f08880043add02e88a4255e0';
 
