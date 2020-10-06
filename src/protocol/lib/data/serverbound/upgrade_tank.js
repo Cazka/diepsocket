@@ -1,5 +1,5 @@
 module.exports = {
-    id: 1, //old 4
+    id: 4,
     type: 'upgrade_tank',
     parse(parser) {
         const id = parser.vi();

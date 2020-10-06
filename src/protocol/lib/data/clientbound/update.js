@@ -212,7 +212,7 @@ function isDeleted(parser, id) {
 }
 
 module.exports = {
-    id: 72, //old 0
+    id: 0,
     type: 'update',
     parse(parser) {
         const { id, parse } = parseUpdate(parser);

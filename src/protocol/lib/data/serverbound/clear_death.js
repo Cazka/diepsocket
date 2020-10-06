@@ -1,5 +1,5 @@
 module.exports = {
-    id: 37,//old 8
+    id: 8,
     type: 'clear_death',
     parse(parser) {
         return {};

@@ -1,5 +1,5 @@
 module.exports = {
-    id: 94, //old 6
+    id: 6,
     type: 'party',
     parse(parser) {
         let party = '';

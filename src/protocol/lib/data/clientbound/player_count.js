@@ -1,5 +1,5 @@
 module.exports = {
-    id: 81, //old 10
+    id: 10,
     type: 'player_count',
     parse(parser) {
         const count = parser.vu();

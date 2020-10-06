@@ -1,5 +1,5 @@
 module.exports = {
-    id: 18, //old 9
+    id: 9,
     type: 'invalid_link',
     parse(parser) {
         return {};

@@ -1,5 +1,5 @@
 module.exports = {
-    id: 43, //old 2
+    id: 2,
     type: 'spawn',
     parse(parser) {
         const name = parser.string();

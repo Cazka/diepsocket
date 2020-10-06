@@ -1,5 +1,5 @@
 module.exports = {
-    id: 88, //old 1
+    id: 1,
     type: 'input',
     parse(parser) {
         const flags = parser.vu();

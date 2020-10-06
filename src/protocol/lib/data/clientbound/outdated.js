@@ -1,5 +1,5 @@
 module.exports = {
-    id: 1, //old 1
+    id: 1,
     type: 'outdated',
     parse(parser) {
         const build = parser.string();

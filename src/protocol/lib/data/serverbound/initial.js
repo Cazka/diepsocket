@@ -1,5 +1,5 @@
 module.exports = {
-    id: 0, //old 0
+    id: 0,
     type: 'initial',
     parse(parser) {
         const build = parser.string();
