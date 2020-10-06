@@ -9,7 +9,7 @@ const { Worker } = require('worker_threads');
 
 const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
-let BUILD = '3f3ca68d827abc43f08880043add02e88a4255e0';
+let BUILD = '0c63725cbf091f3eb33c5c86738d23eaf83e5c15';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
@@ -55,6 +55,9 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout;
 
         this._socket;
+        this._shuffler;
+        this._unshuffler;
+
 
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
@@ -135,6 +138,9 @@ class DiepSocket extends EventEmitter {
     _onopen() {
         clearTimeout(this._connectTimeout);
 
+        this._shuffler = new Shuffler();
+        this._unshuffler = new Unshuffler();
+
         this.send('initial', { build: BUILD, party: this._party });
 
         super.emit('open');
@@ -147,6 +153,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
+        data = this._unshuffler.unshuffle(data);
         const packet = new Parser(data).clientbound();
 
         switch (packet.type) {
@@ -285,7 +292,9 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     sendBinary(data) {
-        if (this._socket && this._socket.readyState === 1) this._socket.send(data);
+        if (!(this._socket && this._socket.readyState === 1)) return;
+        data = this._shuffler.shuffle(data);
+        this._socket.send(data);
     }
 
     /**
