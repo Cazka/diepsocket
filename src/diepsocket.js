@@ -58,7 +58,6 @@ class DiepSocket extends EventEmitter {
         this._shuffler;
         this._unshuffler;
 
-
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
         this._party = party;
@@ -158,6 +157,11 @@ class DiepSocket extends EventEmitter {
 
         switch (packet.type) {
             case 'update':
+                if (!this._pinged) {
+                    this._pinged = true;
+                    this.send('heartbeat');
+                    this._lastPing = Date.now();
+                }
                 this._entityId = packet.content.id || this._entityId;
                 const parsed = packet.content.parse(this._entityId);
                 if (parsed.dead) {
@@ -190,12 +194,8 @@ class DiepSocket extends EventEmitter {
                 this._party = packet.content.party;
                 break;
             case 'accept':
-                this.send('heartbeat');
-                this._lastPing = Date.now();
-                
                 setTimeout(() => {
-                    if (this._options.forceTeam && this._initialLink !== this.link)
-                        this._onerror(new Error('The team you tried to join is full'));
+                    if (this._options.forceTeam && this._initialLink !== this.link) this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
                 }, 100);
                 break;

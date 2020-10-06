@@ -10,8 +10,9 @@ const FUNCTION_GLOBAL$0 = {
     take_tank: 5425376,
     pow_result: 5426128,
 };
-const PTR_DATA = 5488896;
+const PTR_DATA = 10000;
 const PTR_MAGIC_NUMBER = 5434592;
+const PTR_BUILD_HASH = 4448;
 
 class Shuffler {
     constructor() {
@@ -25,10 +26,11 @@ class Shuffler {
         this.__wasm_intrinsics_temp_i64$hi = 0;
 
         this.HEAP32[PTR_MAGIC_NUMBER >> 2] = -1287889786;
-        this.HEAP8.set(new TextEncoder().encode('0c63725cbf091f3eb33c5c86738d23eaf83e5c15'), 4448);
+        this.HEAP8.set(new TextEncoder().encode('0c63725cbf091f3eb33c5c86738d23eaf83e5c15'), PTR_BUILD_HASH);
     }
 
     shuffle(data) {
+        data = new Uint8Array(data);
         switch (data[0]) {
             case 0:
                 this.global$0 = FUNCTION_GLOBAL$0.initial;
@@ -64,7 +66,7 @@ class Shuffler {
                 throw new Error('Unrecognized Packet');
         }
         this.HEAPU8.set(data, PTR_DATA);
-        $99(PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        this.$99(PTR_DATA, data.length, PTR_MAGIC_NUMBER);
         return this.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
 
@@ -111,13 +113,13 @@ class Shuffler {
             if (!$6_1) {
                 break label$1;
             }
-            $3_1 = $40(17 | 0) | 0;
-            $4_1 = $40(13 | 0) | 0;
-            $7_1 = $40(4 | 0) | 0;
+            $3_1 = this.$40(17 | 0) | 0;
+            $4_1 = this.$40(13 | 0) | 0;
+            $7_1 = this.$40(4 | 0) | 0;
             $24_1 = $2_1;
             i64toi32_i32$0 = 0;
             i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = __wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
             i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
             $8_1 = i64toi32_i32$1;
             $8$hi = i64toi32_i32$0;
@@ -125,7 +127,7 @@ class Shuffler {
             $28$hi = i64toi32_i32$0;
             i64toi32_i32$0 = 0;
             i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = __wasm_i64_mul($3_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($3_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
             i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
             i64toi32_i32$2 = i64toi32_i32$1;
             i64toi32_i32$1 = 0;
@@ -144,7 +146,7 @@ class Shuffler {
             $35$hi = i64toi32_i32$2;
             i64toi32_i32$2 = $9$hi;
             i64toi32_i32$5 = $35$hi;
-            i64toi32_i32$5 = __wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $35_1 | 0, i64toi32_i32$5 | 0) | 0;
+            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $35_1 | 0, i64toi32_i32$5 | 0) | 0;
             i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
             $36_1 = i64toi32_i32$5;
             $36$hi = i64toi32_i32$2;
@@ -158,13 +160,13 @@ class Shuffler {
                 i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
             }
             $37$hi = i64toi32_i32$4;
-            $4_1 = (($40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | ((($40(6 | 0) | 0) << 8) | 0) | 0 | ($40(7 | 0) | 0) | 0;
+            $4_1 = ((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0;
             i64toi32_i32$4 = 0;
             $10_1 = ((($4_1 >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
             $10$hi = i64toi32_i32$4;
             i64toi32_i32$4 = $37$hi;
             i64toi32_i32$0 = $10$hi;
-            i64toi32_i32$0 = __wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $10_1 | 0, i64toi32_i32$0 | 0) | 0;
+            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $10_1 | 0, i64toi32_i32$0 | 0) | 0;
             i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
             $7_1 = i64toi32_i32$0;
             this.HEAP32[$24_1 >> 2] = i64toi32_i32$0;
@@ -173,7 +175,7 @@ class Shuffler {
                 if (((this.HEAPU8[105096 >> 0] | 0) & 1) | 0) {
                     break label$2;
                 }
-                if (!($5(105096 | 0) | 0)) {
+                if (!(this.$5(105096 | 0) | 0)) {
                     break label$2;
                 }
                 this.HEAP32[$5_1 >> 2] = $4_1;
@@ -188,8 +190,8 @@ class Shuffler {
                 }
                 this.HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
                 this.HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
-                $470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
-                $4(105096 | 0);
+                this.$470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
+                this.$4(105096 | 0);
             }
             $4_1 = ($7_1 & 15) | 0;
             label$4: while (1) {
@@ -202,7 +204,7 @@ class Shuffler {
                 break label$4;
             }
             this.HEAP8[$0_1 >> 0] = $6_1;
-            $4_1 = (((($40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
+            $4_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
             $6_1 = this.HEAP32[$2_1 >> 2] | 0;
             $3_1 = 0;
             label$5: while (1) {
@@ -212,7 +214,7 @@ class Shuffler {
                 $101$hi = i64toi32_i32$4;
                 i64toi32_i32$4 = $9$hi;
                 i64toi32_i32$0 = $101$hi;
-                i64toi32_i32$0 = __wasm_i64_mul($9_1 | 0, i64toi32_i32$4 | 0, $6_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$0 = this.__wasm_i64_mul($9_1 | 0, i64toi32_i32$4 | 0, $6_1 | 0, i64toi32_i32$0 | 0) | 0;
                 i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
                 $102$hi = i64toi32_i32$4;
                 i64toi32_i32$4 = $8$hi;
@@ -229,7 +231,7 @@ class Shuffler {
                 i64toi32_i32$1 = $10$hi;
                 i64toi32_i32$1 = $104$hi;
                 i64toi32_i32$2 = $10$hi;
-                i64toi32_i32$2 = __wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $10_1 | 0, i64toi32_i32$2 | 0) | 0;
+                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $10_1 | 0, i64toi32_i32$2 | 0) | 0;
                 i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
                 this.HEAP8[$98_1 >> 0] = i64toi32_i32$2;
                 $6_1 = i64toi32_i32$2;
@@ -396,7 +398,7 @@ class Shuffler {
             this.HEAP32[$1_1 >> 2] = $0_1;
             this.HEAP32[(($1_1 + 8) | 0) >> 2] = ($0_1 + 1) | 0;
         }
-        $0_1 = $1038($1_1 | 0) | 0;
+        $0_1 = this.$1038($1_1 | 0) | 0;
         this.global$0 = ($1_1 + 16) | 0;
         return $0_1 | 0;
     }
@@ -465,21 +467,21 @@ class Shuffler {
             if (!$1_1) {
                 break label$1;
             }
-            $4_1 = $40(17 | 0) | 0;
-            $5_1 = $40(13 | 0) | 0;
-            $6_1 = $40(4 | 0) | 0;
+            $4_1 = this.$40(17 | 0) | 0;
+            $5_1 = this.$40(13 | 0) | 0;
+            $6_1 = this.$40(4 | 0) | 0;
             i64toi32_i32$0 = 0;
-            $7_1 = (((((($40(5 | 0) | 0) << 16) | 0 | (($6_1 << 24) | 0) | 0 | ((($40(6 | 0) | 0) << 8) | 0) | 0 | ($40(7 | 0) | 0) | 0) >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
+            $7_1 = ((((((this.$40(5 | 0) | 0) << 16) | 0 | (($6_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0) >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
             $7$hi = i64toi32_i32$0;
             i64toi32_i32$0 = 0;
             i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = __wasm_i64_mul($5_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($5_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
             i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
             $8_1 = i64toi32_i32$1;
             $8$hi = i64toi32_i32$0;
             i64toi32_i32$0 = 0;
             i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = __wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
             i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
             i64toi32_i32$2 = i64toi32_i32$1;
             i64toi32_i32$1 = 0;
@@ -501,7 +503,7 @@ class Shuffler {
                 $45$hi = i64toi32_i32$2;
                 i64toi32_i32$2 = $9$hi;
                 i64toi32_i32$5 = $45$hi;
-                i64toi32_i32$5 = __wasm_i64_mul($9_1 | 0, i64toi32_i32$2 | 0, $45_1 | 0, i64toi32_i32$5 | 0) | 0;
+                i64toi32_i32$5 = this.__wasm_i64_mul($9_1 | 0, i64toi32_i32$2 | 0, $45_1 | 0, i64toi32_i32$5 | 0) | 0;
                 i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
                 $46$hi = i64toi32_i32$2;
                 i64toi32_i32$2 = $8$hi;
@@ -518,7 +520,7 @@ class Shuffler {
                 i64toi32_i32$4 = $7$hi;
                 i64toi32_i32$4 = $48$hi;
                 i64toi32_i32$0 = $7$hi;
-                i64toi32_i32$0 = __wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $7_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $7_1 | 0, i64toi32_i32$0 | 0) | 0;
                 i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
                 $4_1 = i64toi32_i32$0;
                 this.HEAP32[$42_1 >> 2] = i64toi32_i32$0;
@@ -548,7 +550,7 @@ class Shuffler {
             this.HEAP32[$1_1 >> 2] = $0_1;
             this.HEAP32[(($1_1 + 8) | 0) >> 2] = ($0_1 + 1) | 0;
         }
-        $1037($1_1 | 0);
+        this.$1037($1_1 | 0);
         this.global$0 = ($1_1 + 16) | 0;
     }
     $1037($0_1) {
@@ -573,7 +575,7 @@ class Shuffler {
         i64toi32_i32$0 = var$1$hi;
         i64toi32_i32$0 = var$0$hi;
         i64toi32_i32$1 = var$1$hi;
-        i64toi32_i32$1 = _ZN17compiler_builtins3int3mul3Mul3mul17h070e9a1c69faec5bE(var$0 | 0, i64toi32_i32$0 | 0, var$1 | 0, i64toi32_i32$1 | 0) | 0;
+        i64toi32_i32$1 = this._ZN17compiler_builtins3int3mul3Mul3mul17h070e9a1c69faec5bE(var$0 | 0, i64toi32_i32$0 | 0, var$1 | 0, i64toi32_i32$1 | 0) | 0;
         i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
         this.i64toi32_i32$HIGH_BITS = i64toi32_i32$0;
         return i64toi32_i32$1 | 0;
@@ -678,7 +680,7 @@ class Shuffler {
         i64toi32_i32$0 = var$1$hi;
         i64toi32_i32$0 = var$0$hi;
         i64toi32_i32$1 = var$1$hi;
-        i64toi32_i32$1 = _ZN17compiler_builtins3int4udiv10divmod_u6417h6026910b5ed08e40E(var$0 | 0, i64toi32_i32$0 | 0, var$1 | 0, i64toi32_i32$1 | 0) | 0;
+        i64toi32_i32$1 = this._ZN17compiler_builtins3int4udiv10divmod_u6417h6026910b5ed08e40E(var$0 | 0, i64toi32_i32$0 | 0, var$1 | 0, i64toi32_i32$1 | 0) | 0;
         i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
         i64toi32_i32$0 = this.__wasm_intrinsics_temp_i64$hi;
         i64toi32_i32$1 = this.__wasm_intrinsics_temp_i64;
@@ -862,7 +864,7 @@ class Shuffler {
                                                 this.__wasm_intrinsics_temp_i64 = i64toi32_i32$3 | i64toi32_i32$0 | 0;
                                                 this.__wasm_intrinsics_temp_i64$hi = i64toi32_i32$1;
                                                 i64toi32_i32$1 = 0;
-                                                i64toi32_i32$3 = (var$2 >>> (((__wasm_ctz_i32(var$3 | 0) | 0) & 31) | 0)) | 0;
+                                                i64toi32_i32$3 = (var$2 >>> (((this.__wasm_ctz_i32(var$3 | 0) | 0) & 31) | 0)) | 0;
                                                 this.i64toi32_i32$HIGH_BITS = i64toi32_i32$1;
                                                 return i64toi32_i32$3 | 0;
                                             }
@@ -918,7 +920,7 @@ class Shuffler {
                         i64toi32_i32$2 = var$0$hi;
                         i64toi32_i32$3 = var$0;
                         i64toi32_i32$1 = $120$hi;
-                        i64toi32_i32$0 = __wasm_ctz_i32(var$3 | 0) | 0;
+                        i64toi32_i32$0 = this.__wasm_ctz_i32(var$3 | 0) | 0;
                         i64toi32_i32$4 = (i64toi32_i32$0 & 31) | 0;
                         if (32 >>> 0 <= ((i64toi32_i32$0 & 63) | 0) >>> 0) {
                             i64toi32_i32$1 = 0;
