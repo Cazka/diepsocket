@@ -27,7 +27,6 @@ class Shuffler {
 
         HEAP32[PTR_MAGIC_NUMBER >> 2] = -1287889786;
         HEAP8.set(new TextEncoder().encode('0c63725cbf091f3eb33c5c86738d23eaf83e5c15'),4448);
-
     }
 
     shuffle(data){
@@ -103,9 +102,8 @@ class Shuffler {
             $101$hi = 0,
             $102$hi = 0,
             $104$hi = 0;
-        //global$0 is used to indicate the function call stack
-        $5_1 = (global$0 - 48) | 0;
-        global$0 = $5_1;
+        $5_1 = (this.global$0 - 48) | 0;
+        this.global$0 = $5_1;
         label$1: {
             //if packet length 0, break;
             if (!$1_1) {
@@ -280,8 +278,7 @@ class Shuffler {
                 break label$6;
             }
         }
-        //change function call stack, since we are exiting the function
-        global$0 = ($5_1 + 48) | 0;
+        this.global$0 = ($5_1 + 48) | 0;
     }
     
     $40($0_1) {
@@ -413,8 +410,8 @@ class Shuffler {
     $5($0_1) {
         $0_1 = $0_1 | 0;
         var $1_1 = 0;
-        $1_1 = global$0 - 16 | 0;
-        global$0 = $1_1;
+        $1_1 = this.global$0 - 16 | 0;
+        this.global$0 = $1_1;
         label$1 : {
             HEAP32[($1_1 + 12 | 0) >> 2] = 0;
             HEAP32[($1_1 + 4 | 0) >> 2] = $0_1;
@@ -422,14 +419,14 @@ class Shuffler {
             HEAP32[($1_1 + 8 | 0) >> 2] = $0_1 + 1 | 0;
         }
         $0_1 = $1038($1_1 | 0) | 0;
-        global$0 = $1_1 + 16 | 0;
+        this.global$0 = $1_1 + 16 | 0;
         return $0_1 | 0;
     }
     $1038($0_1) {
         $0_1 = $0_1 | 0;
         var $2_1 = 0, $1_1 = 0, $26_1 = 0, $28_1 = 0;
-        $2_1 = global$0 - 16 | 0;
-        global$0 = $2_1;
+        $2_1 = this.global$0 - 16 | 0;
+        this.global$0 = $2_1;
         HEAP32[($2_1 + 8 | 0) >> 2] = HEAP32[($0_1 + 4 | 0) >> 2] | 0;
         if (!(HEAPU8[(HEAP32[($2_1 + 8 | 0) >> 2] | 0) >> 0] | 0)) {
             label$3 : {
@@ -452,7 +449,7 @@ class Shuffler {
             }
             $1_1 = $28_1;
         }
-        global$0 = $2_1 + 16 | 0;
+        this.global$0 = $2_1 + 16 | 0;
         return $1_1 | 0;
     }
     
@@ -542,8 +539,8 @@ class Shuffler {
     $4($0_1) {
         $0_1 = $0_1 | 0;
         var $1_1 = 0;
-        $1_1 = global$0 - 16 | 0;
-        global$0 = $1_1;
+        $1_1 = this.global$0 - 16 | 0;
+        this.global$0 = $1_1;
         label$1 : {
             HEAP32[($1_1 + 12 | 0) >> 2] = 0;
             HEAP32[($1_1 + 4 | 0) >> 2] = $0_1;
@@ -551,17 +548,17 @@ class Shuffler {
             HEAP32[($1_1 + 8 | 0) >> 2] = $0_1 + 1 | 0;
         }
         $1037($1_1 | 0);
-        global$0 = $1_1 + 16 | 0;
+        this.global$0 = $1_1 + 16 | 0;
     }
     $1037($0_1) {
         $0_1 = $0_1 | 0;
         var $1_1 = 0;
-        $1_1 = global$0 - 16 | 0;
-        global$0 = $1_1;
+        $1_1 = this.global$0 - 16 | 0;
+        this.global$0 = $1_1;
         HEAP32[($1_1 + 8 | 0) >> 2] = HEAP32[($0_1 + 4 | 0) >> 2] | 0;
         HEAP8[(HEAP32[($1_1 + 8 | 0) >> 2] | 0) >> 0] = 1;
         HEAP8[(HEAP32[($0_1 + 8 | 0) >> 2] | 0) >> 0] = 1;
-        global$0 = $1_1 + 16 | 0;
+        this.global$0 = $1_1 + 16 | 0;
     }
     
     __wasm_i64_mul(var$0, var$0$hi, var$1, var$1$hi) {
