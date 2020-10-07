@@ -433,6 +433,8 @@ class DiepSocket extends EventEmitter {
 
 DiepSocket.Parser = Parser;
 DiepSocket.Builder = Builder;
+DiepSocket.Shuffler = Shuffler;
+DiepSocket.Unshuffler = Unshuffler;
 
 DiepSocket.GAMEMODE = GAMEMODES;
 DiepSocket.REGION = REGIONS;

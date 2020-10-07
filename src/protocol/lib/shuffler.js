@@ -1,15 +1,3 @@
-const FUNCTION_GLOBAL$0 = {
-    initial: 5425872,
-    input: 5425376,
-    spawn: 5419600,
-    upgrade_stat: 5418336,
-    upgrade_tank: 5419008,
-    ping: 5425968,
-    extension_found: undefined,
-    clear_death: 5419296,
-    take_tank: 5425376,
-    pow_result: 5426128,
-};
 const PTR_DATA = 10000;
 const PTR_MAGIC_NUMBER = 5434592;
 const PTR_BUILD_HASH = 4448;
@@ -31,40 +19,7 @@ class Shuffler {
 
     shuffle(data) {
         data = new Uint8Array(data);
-        switch (data[0]) {
-            case 0:
-                this.global$0 = FUNCTION_GLOBAL$0.initial;
-                break;
-            case 1:
-                this.global$0 = FUNCTION_GLOBAL$0.input;
-                break;
-            case 2:
-                this.global$0 = FUNCTION_GLOBAL$0.spawn;
-                break;
-            case 3:
-                this.global$0 = FUNCTION_GLOBAL$0.upgrade_stats;
-                break;
-            case 4:
-                this.global$0 = FUNCTION_GLOBAL$0.upgrade_tank;
-                break;
-            case 5:
-                this.global$0 = FUNCTION_GLOBAL$0.ping;
-                break;
-            case 7:
-                this.global$0 = FUNCTION_GLOBAL$0.extension_found;
-                break;
-            case 8:
-                this.global$0 = FUNCTION_GLOBAL$0.clear_death;
-                break;
-            case 9:
-                this.global$0 = FUNCTION_GLOBAL$0.take_tank;
-                break;
-            case 10:
-                this.global$0 = FUNCTION_GLOBAL$0.pow_result;
-                break;
-            default:
-                throw new Error('Unrecognized Packet');
-        }
+        this.global$0 = 6108410;
         this.HEAPU8.set(data, PTR_DATA);
         this.$99(PTR_DATA, data.length, PTR_MAGIC_NUMBER);
         return this.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
