@@ -1,8 +1,13 @@
-const PTR_DATA = 10000;
-const PTR_MAGIC_NUMBER = 5434592;
 const PTR_BUILD_HASH = 4448;
+const PTR_DATA = 1000000;
+const PTR_MAGIC_NUMBER = 1100000;
+const GLOBAL$0 = 1300000;
 
-class Shuffler {
+const BUILD_HASH = '0c63725cbf091f3eb33c5c86738d23eaf83e5c15';
+const MAGIC_NUMBER_CLIENTBOUND = 1938629610;
+const MAGIC_NUMBER_SERVERBOUND = -1287889786;
+
+class Crypto_Framework {
     constructor() {
         const buffer = new ArrayBuffer(67108864);
         this.HEAP8 = new Int8Array(buffer);
@@ -13,205 +18,7 @@ class Shuffler {
         this.__wasm_intrinsics_temp_i64 = 0;
         this.__wasm_intrinsics_temp_i64$hi = 0;
 
-        this.HEAP32[PTR_MAGIC_NUMBER >> 2] = -1287889786;
-        this.HEAP8.set(new TextEncoder().encode('0c63725cbf091f3eb33c5c86738d23eaf83e5c15'), PTR_BUILD_HASH);
-    }
-
-    shuffle(data) {
-        data = new Uint8Array(data);
-        this.global$0 = 6108410;
-        this.HEAPU8.set(data, PTR_DATA);
-        this.$99(PTR_DATA, data.length, PTR_MAGIC_NUMBER);
-        return this.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
-    }
-
-    $99($0_1, $1_1, $2_1) {
-        $0_1 = $0_1 | 0;
-        $1_1 = $1_1 | 0;
-        $2_1 = $2_1 | 0;
-        var i64toi32_i32$0 = 0,
-            i64toi32_i32$4 = 0,
-            i64toi32_i32$1 = 0,
-            $3_1 = 0,
-            i64toi32_i32$2 = 0,
-            $4_1 = 0,
-            i64toi32_i32$5 = 0,
-            $5_1 = 0,
-            $6_1 = 0,
-            i64toi32_i32$3 = 0,
-            $7_1 = 0,
-            $9$hi = 0,
-            $10$hi = 0,
-            $8$hi = 0,
-            $10_1 = 0,
-            $24_1 = 0,
-            $8_1 = 0,
-            $28_1 = 0,
-            $28$hi = 0,
-            $9_1 = 0,
-            $35_1 = 0,
-            $35$hi = 0,
-            $36_1 = 0,
-            $36$hi = 0,
-            $37$hi = 0,
-            $98_1 = 0,
-            $101$hi = 0,
-            $102$hi = 0,
-            $104$hi = 0;
-        $5_1 = (this.global$0 - 48) | 0;
-        this.global$0 = $5_1;
-        label$1: {
-            if (!$1_1) {
-                break label$1;
-            }
-            $6_1 = this.HEAPU8[$0_1 >> 0] | 0;
-            if (!$6_1) {
-                break label$1;
-            }
-            $3_1 = this.$40(17 | 0) | 0;
-            $4_1 = this.$40(13 | 0) | 0;
-            $7_1 = this.$40(4 | 0) | 0;
-            $24_1 = $2_1;
-            i64toi32_i32$0 = 0;
-            i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = this.__wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
-            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
-            $8_1 = i64toi32_i32$1;
-            $8$hi = i64toi32_i32$0;
-            $28_1 = i64toi32_i32$1;
-            $28$hi = i64toi32_i32$0;
-            i64toi32_i32$0 = 0;
-            i64toi32_i32$1 = 0;
-            i64toi32_i32$1 = this.__wasm_i64_mul($3_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
-            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
-            i64toi32_i32$2 = i64toi32_i32$1;
-            i64toi32_i32$1 = 0;
-            i64toi32_i32$3 = 48271;
-            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
-            i64toi32_i32$5 = (i64toi32_i32$0 + i64toi32_i32$1) | 0;
-            if (i64toi32_i32$4 >>> 0 < i64toi32_i32$3 >>> 0) {
-                i64toi32_i32$5 = (i64toi32_i32$5 + 1) | 0;
-            }
-            $9_1 = i64toi32_i32$4;
-            $9$hi = i64toi32_i32$5;
-            i64toi32_i32$0 = $2_1;
-            i64toi32_i32$5 = this.HEAP32[i64toi32_i32$0 >> 2] | 0;
-            i64toi32_i32$2 = 0;
-            $35_1 = i64toi32_i32$5;
-            $35$hi = i64toi32_i32$2;
-            i64toi32_i32$2 = $9$hi;
-            i64toi32_i32$5 = $35$hi;
-            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $35_1 | 0, i64toi32_i32$5 | 0) | 0;
-            i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
-            $36_1 = i64toi32_i32$5;
-            $36$hi = i64toi32_i32$2;
-            i64toi32_i32$2 = $28$hi;
-            i64toi32_i32$0 = $28_1;
-            i64toi32_i32$5 = $36$hi;
-            i64toi32_i32$3 = $36_1;
-            i64toi32_i32$1 = (i64toi32_i32$0 + i64toi32_i32$3) | 0;
-            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$5) | 0;
-            if (i64toi32_i32$1 >>> 0 < i64toi32_i32$3 >>> 0) {
-                i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
-            }
-            $37$hi = i64toi32_i32$4;
-            $4_1 = ((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0;
-            i64toi32_i32$4 = 0;
-            $10_1 = ((($4_1 >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
-            $10$hi = i64toi32_i32$4;
-            i64toi32_i32$4 = $37$hi;
-            i64toi32_i32$0 = $10$hi;
-            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $10_1 | 0, i64toi32_i32$0 | 0) | 0;
-            i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
-            $7_1 = i64toi32_i32$0;
-            this.HEAP32[$24_1 >> 2] = i64toi32_i32$0;
-            $3_1 = 0;
-            label$2: {
-                if (((this.HEAPU8[105096 >> 0] | 0) & 1) | 0) {
-                    break label$2;
-                }
-                if (!(this.$5(105096 | 0) | 0)) {
-                    break label$2;
-                }
-                this.HEAP32[$5_1 >> 2] = $4_1;
-                $4_1 = 0;
-                label$3: while (1) {
-                    this.HEAP8[(($4_1 + 104968) | 0) >> 0] = $4_1;
-                    $4_1 = ($4_1 + 1) | 0;
-                    if (($4_1 | 0) != (128 | 0)) {
-                        continue label$3;
-                    }
-                    break label$3;
-                }
-                this.HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
-                this.HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
-                this.$470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
-                this.$4(105096 | 0);
-            }
-            $4_1 = ($7_1 & 15) | 0;
-            label$4: while (1) {
-                $7_1 = ($3_1 | 0) == ($4_1 | 0);
-                $6_1 = this.HEAPU8[(((($6_1 & 255) | 0) + 104968) | 0) >> 0] | 0;
-                $3_1 = ($3_1 + 1) | 0;
-                if (!$7_1) {
-                    continue label$4;
-                }
-                break label$4;
-            }
-            this.HEAP8[$0_1 >> 0] = $6_1;
-            $4_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
-            $6_1 = this.HEAP32[$2_1 >> 2] | 0;
-            $3_1 = 0;
-            label$5: while (1) {
-                $98_1 = ($3_1 + $5_1) | 0;
-                i64toi32_i32$4 = $9$hi;
-                i64toi32_i32$4 = 0;
-                $101$hi = i64toi32_i32$4;
-                i64toi32_i32$4 = $9$hi;
-                i64toi32_i32$0 = $101$hi;
-                i64toi32_i32$0 = this.__wasm_i64_mul($9_1 | 0, i64toi32_i32$4 | 0, $6_1 | 0, i64toi32_i32$0 | 0) | 0;
-                i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
-                $102$hi = i64toi32_i32$4;
-                i64toi32_i32$4 = $8$hi;
-                i64toi32_i32$4 = $102$hi;
-                i64toi32_i32$2 = i64toi32_i32$0;
-                i64toi32_i32$0 = $8$hi;
-                i64toi32_i32$3 = $8_1;
-                i64toi32_i32$5 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
-                i64toi32_i32$1 = (i64toi32_i32$4 + i64toi32_i32$0) | 0;
-                if (i64toi32_i32$5 >>> 0 < i64toi32_i32$3 >>> 0) {
-                    i64toi32_i32$1 = (i64toi32_i32$1 + 1) | 0;
-                }
-                $104$hi = i64toi32_i32$1;
-                i64toi32_i32$1 = $10$hi;
-                i64toi32_i32$1 = $104$hi;
-                i64toi32_i32$2 = $10$hi;
-                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $10_1 | 0, i64toi32_i32$2 | 0) | 0;
-                i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
-                this.HEAP8[$98_1 >> 0] = i64toi32_i32$2;
-                $6_1 = i64toi32_i32$2;
-                $3_1 = ($3_1 + 1) | 0;
-                if (($3_1 | 0) != ($4_1 | 0)) {
-                    continue label$5;
-                }
-                break label$5;
-            }
-            this.HEAP32[$2_1 >> 2] = $6_1;
-            $3_1 = 1;
-            if ($1_1 >>> 0 <= 1 >>> 0) {
-                break label$1;
-            }
-            label$6: while (1) {
-                $2_1 = ($0_1 + $3_1) | 0;
-                this.HEAP8[$2_1 >> 0] = ((this.HEAPU8[$2_1 >> 0] | 0) ^ (this.HEAPU8[(($5_1 + (($3_1 >>> 0) % ($4_1 >>> 0) | 0)) | 0) >> 0] | 0)) | 0;
-                $3_1 = ($3_1 + 1) | 0;
-                if (($3_1 | 0) != ($1_1 | 0)) {
-                    continue label$6;
-                }
-                break label$6;
-            }
-        }
-        this.global$0 = ($5_1 + 48) | 0;
+        this.HEAP8.set(new TextEncoder().encode(BUILD_HASH), PTR_BUILD_HASH);
     }
 
     $40($0_1) {
@@ -1103,5 +910,851 @@ class Shuffler {
         return 32 | 0;
     }
 }
+class Shuffler {
+    constructor() {
+        this.shuffler_clientbound = new Crypto_Framework();
+        this.shuffler_serverbound = new Crypto_Framework();
 
-module.exports = Shuffler;
+        this.shuffler_clientbound.HEAP32[PTR_MAGIC_NUMBER >> 2] = MAGIC_NUMBER_CLIENTBOUND;
+        this.shuffler_serverbound.HEAP32[PTR_MAGIC_NUMBER >> 2] = MAGIC_NUMBER_SERVERBOUND;
+    }
+
+    clientbound(data) {
+        this.shuffler_clientbound.global$0 = GLOBAL$0;
+
+        this.shuffler_clientbound.HEAPU8.set(data, PTR_DATA);
+        this._clientbound.call(this.shuffler_clientbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        return this.shuffler_clientbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
+    }
+    serverbound(data) {
+        this.shuffler_serverbound.global$0 = GLOBAL$0;
+
+        this.shuffler_serverbound.HEAPU8.set(data, PTR_DATA);
+        this._serverbound.call(this.shuffler_serverbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        return this.shuffler_serverbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
+    }
+    _clientbound($0_1, $1_1, $2_1) {
+        $0_1 = $0_1 | 0;
+        $1_1 = $1_1 | 0;
+        $2_1 = $2_1 | 0;
+        var i64toi32_i32$0 = 0,
+            i64toi32_i32$4 = 0,
+            i64toi32_i32$1 = 0,
+            $3_1 = 0,
+            i64toi32_i32$2 = 0,
+            $4_1 = 0,
+            i64toi32_i32$5 = 0,
+            $5_1 = 0,
+            $6_1 = 0,
+            i64toi32_i32$3 = 0,
+            $7_1 = 0,
+            $9$hi = 0,
+            $10$hi = 0,
+            $8$hi = 0,
+            $10_1 = 0,
+            $24_1 = 0,
+            $8_1 = 0,
+            $28_1 = 0,
+            $28$hi = 0,
+            $9_1 = 0,
+            $35_1 = 0,
+            $35$hi = 0,
+            $36_1 = 0,
+            $36$hi = 0,
+            $37$hi = 0,
+            $98_1 = 0,
+            $101$hi = 0,
+            $102$hi = 0,
+            $104$hi = 0;
+        $5_1 = (this.global$0 - 48) | 0;
+        this.global$0 = $5_1;
+        label$1: {
+            if (!$1_1) {
+                break label$1;
+            }
+            $6_1 = this.HEAPU8[$0_1 >> 0] | 0;
+            if (($6_1 | 0) == (1 | 0)) {
+                break label$1;
+            }
+            $3_1 = this.$40(17 | 0) | 0;
+            $4_1 = this.$40(13 | 0) | 0;
+            $7_1 = this.$40(4 | 0) | 0;
+            $24_1 = $2_1;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            $8_1 = i64toi32_i32$1;
+            $8$hi = i64toi32_i32$0;
+            $28_1 = i64toi32_i32$1;
+            $28$hi = i64toi32_i32$0;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($3_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            i64toi32_i32$2 = i64toi32_i32$1;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$3 = 48271;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+            i64toi32_i32$5 = (i64toi32_i32$0 + i64toi32_i32$1) | 0;
+            if (i64toi32_i32$4 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$5 = (i64toi32_i32$5 + 1) | 0;
+            }
+            $9_1 = i64toi32_i32$4;
+            $9$hi = i64toi32_i32$5;
+            i64toi32_i32$0 = $2_1;
+            i64toi32_i32$5 = this.HEAP32[i64toi32_i32$0 >> 2] | 0;
+            i64toi32_i32$2 = 0;
+            $35_1 = i64toi32_i32$5;
+            $35$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $9$hi;
+            i64toi32_i32$5 = $35$hi;
+            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $35_1 | 0, i64toi32_i32$5 | 0) | 0;
+            i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
+            $36_1 = i64toi32_i32$5;
+            $36$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $28$hi;
+            i64toi32_i32$0 = $28_1;
+            i64toi32_i32$5 = $36$hi;
+            i64toi32_i32$3 = $36_1;
+            i64toi32_i32$1 = (i64toi32_i32$0 + i64toi32_i32$3) | 0;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$5) | 0;
+            if (i64toi32_i32$1 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
+            }
+            $37$hi = i64toi32_i32$4;
+            $4_1 = ((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0;
+            i64toi32_i32$4 = 0;
+            $10_1 = ((($4_1 >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
+            $10$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = $37$hi;
+            i64toi32_i32$0 = $10$hi;
+            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $10_1 | 0, i64toi32_i32$0 | 0) | 0;
+            i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+            $7_1 = i64toi32_i32$0;
+            this.HEAP32[$24_1 >> 2] = i64toi32_i32$0;
+            $3_1 = 0;
+            label$2: {
+                if (((this.HEAPU8[105096 >> 0] | 0) & 1) | 0) {
+                    break label$2;
+                }
+                if (!(this.$5(105096 | 0) | 0)) {
+                    break label$2;
+                }
+                this.HEAP32[$5_1 >> 2] = ((this.$40(1 | 0) | 0) << 16) | 0 | (((this.$40(0 | 0) | 0) << 24) | 0) | 0 | (((this.$40(2 | 0) | 0) << 8) | 0) | 0 | (this.$40(3 | 0) | 0) | 0;
+                $4_1 = 0;
+                label$3: while (1) {
+                    this.HEAP8[(($4_1 + 104968) | 0) >> 0] = $4_1;
+                    $4_1 = ($4_1 + 1) | 0;
+                    if (($4_1 | 0) != (128 | 0)) {
+                        continue label$3;
+                    }
+                    break label$3;
+                }
+                $4_1 = this.HEAPU8[104969 >> 0] | 0;
+                this.HEAP8[104969 >> 0] = this.HEAPU8[104968 >> 0] | 0;
+                this.HEAP8[104968 >> 0] = $4_1;
+                this.HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
+                this.HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
+                this.$470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
+                $4_1 = this.HEAPU8[104968 >> 0] | 0;
+                this.HEAP8[104968 >> 0] = this.HEAPU8[104969 >> 0] | 0;
+                this.HEAP8[104969 >> 0] = $4_1;
+                this.$4(105096 | 0);
+            }
+            $4_1 = ($7_1 & 15) | 0;
+            label$4: while (1) {
+                $7_1 = ($3_1 | 0) == ($4_1 | 0);
+                $6_1 = this.HEAPU8[(((($6_1 & 255) | 0) + 104968) | 0) >> 0] | 0;
+                $3_1 = ($3_1 + 1) | 0;
+                if (!$7_1) {
+                    continue label$4;
+                }
+                break label$4;
+            }
+            this.HEAP8[$0_1 >> 0] = $6_1;
+            $4_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
+            $6_1 = this.HEAP32[$2_1 >> 2] | 0;
+            $3_1 = 0;
+            label$5: while (1) {
+                $98_1 = ($3_1 + $5_1) | 0;
+                i64toi32_i32$4 = $9$hi;
+                i64toi32_i32$4 = 0;
+                $101$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $9$hi;
+                i64toi32_i32$0 = $101$hi;
+                i64toi32_i32$0 = this.__wasm_i64_mul($9_1 | 0, i64toi32_i32$4 | 0, $6_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+                $102$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $8$hi;
+                i64toi32_i32$4 = $102$hi;
+                i64toi32_i32$2 = i64toi32_i32$0;
+                i64toi32_i32$0 = $8$hi;
+                i64toi32_i32$3 = $8_1;
+                i64toi32_i32$5 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+                i64toi32_i32$1 = (i64toi32_i32$4 + i64toi32_i32$0) | 0;
+                if (i64toi32_i32$5 >>> 0 < i64toi32_i32$3 >>> 0) {
+                    i64toi32_i32$1 = (i64toi32_i32$1 + 1) | 0;
+                }
+                $104$hi = i64toi32_i32$1;
+                i64toi32_i32$1 = $10$hi;
+                i64toi32_i32$1 = $104$hi;
+                i64toi32_i32$2 = $10$hi;
+                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $10_1 | 0, i64toi32_i32$2 | 0) | 0;
+                i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
+                this.HEAP8[$98_1 >> 0] = i64toi32_i32$2;
+                $6_1 = i64toi32_i32$2;
+                $3_1 = ($3_1 + 1) | 0;
+                if (($3_1 | 0) != ($4_1 | 0)) {
+                    continue label$5;
+                }
+                break label$5;
+            }
+            this.HEAP32[$2_1 >> 2] = $6_1;
+            $3_1 = 1;
+            if ($1_1 >>> 0 <= 1 >>> 0) {
+                break label$1;
+            }
+            label$6: while (1) {
+                $2_1 = ($0_1 + $3_1) | 0;
+                this.HEAP8[$2_1 >> 0] = ((this.HEAPU8[$2_1 >> 0] | 0) ^ (this.HEAPU8[(($5_1 + (($3_1 >>> 0) % ($4_1 >>> 0) | 0)) | 0) >> 0] | 0)) | 0;
+                $3_1 = ($3_1 + 1) | 0;
+                if (($3_1 | 0) != ($1_1 | 0)) {
+                    continue label$6;
+                }
+                break label$6;
+            }
+        }
+        this.global$0 = ($5_1 + 48) | 0;
+    }
+    _serverbound($0_1, $1_1, $2_1) {
+        $0_1 = $0_1 | 0;
+        $1_1 = $1_1 | 0;
+        $2_1 = $2_1 | 0;
+        var i64toi32_i32$0 = 0,
+            i64toi32_i32$4 = 0,
+            i64toi32_i32$1 = 0,
+            $3_1 = 0,
+            i64toi32_i32$2 = 0,
+            $4_1 = 0,
+            i64toi32_i32$5 = 0,
+            $5_1 = 0,
+            $6_1 = 0,
+            i64toi32_i32$3 = 0,
+            $7_1 = 0,
+            $9$hi = 0,
+            $10$hi = 0,
+            $8$hi = 0,
+            $10_1 = 0,
+            $24_1 = 0,
+            $8_1 = 0,
+            $28_1 = 0,
+            $28$hi = 0,
+            $9_1 = 0,
+            $35_1 = 0,
+            $35$hi = 0,
+            $36_1 = 0,
+            $36$hi = 0,
+            $37$hi = 0,
+            $98_1 = 0,
+            $101$hi = 0,
+            $102$hi = 0,
+            $104$hi = 0;
+        $5_1 = (this.global$0 - 48) | 0;
+        this.global$0 = $5_1;
+        label$1: {
+            if (!$1_1) {
+                break label$1;
+            }
+            $6_1 = this.HEAPU8[$0_1 >> 0] | 0;
+            if (!$6_1) {
+                break label$1;
+            }
+            $3_1 = this.$40(17 | 0) | 0;
+            $4_1 = this.$40(13 | 0) | 0;
+            $7_1 = this.$40(4 | 0) | 0;
+            $24_1 = $2_1;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($4_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            $8_1 = i64toi32_i32$1;
+            $8$hi = i64toi32_i32$0;
+            $28_1 = i64toi32_i32$1;
+            $28$hi = i64toi32_i32$0;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($3_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            i64toi32_i32$2 = i64toi32_i32$1;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$3 = 48271;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+            i64toi32_i32$5 = (i64toi32_i32$0 + i64toi32_i32$1) | 0;
+            if (i64toi32_i32$4 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$5 = (i64toi32_i32$5 + 1) | 0;
+            }
+            $9_1 = i64toi32_i32$4;
+            $9$hi = i64toi32_i32$5;
+            i64toi32_i32$0 = $2_1;
+            i64toi32_i32$5 = this.HEAP32[i64toi32_i32$0 >> 2] | 0;
+            i64toi32_i32$2 = 0;
+            $35_1 = i64toi32_i32$5;
+            $35$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $9$hi;
+            i64toi32_i32$5 = $35$hi;
+            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $35_1 | 0, i64toi32_i32$5 | 0) | 0;
+            i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
+            $36_1 = i64toi32_i32$5;
+            $36$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $28$hi;
+            i64toi32_i32$0 = $28_1;
+            i64toi32_i32$5 = $36$hi;
+            i64toi32_i32$3 = $36_1;
+            i64toi32_i32$1 = (i64toi32_i32$0 + i64toi32_i32$3) | 0;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$5) | 0;
+            if (i64toi32_i32$1 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
+            }
+            $37$hi = i64toi32_i32$4;
+            $4_1 = ((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0;
+            i64toi32_i32$4 = 0;
+            $10_1 = ((($4_1 >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
+            $10$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = $37$hi;
+            i64toi32_i32$0 = $10$hi;
+            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $10_1 | 0, i64toi32_i32$0 | 0) | 0;
+            i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+            $7_1 = i64toi32_i32$0;
+            this.HEAP32[$24_1 >> 2] = i64toi32_i32$0;
+            $3_1 = 0;
+            label$2: {
+                if (((this.HEAPU8[105096 >> 0] | 0) & 1) | 0) {
+                    break label$2;
+                }
+                if (!(this.$5(105096 | 0) | 0)) {
+                    break label$2;
+                }
+                this.HEAP32[$5_1 >> 2] = $4_1;
+                $4_1 = 0;
+                label$3: while (1) {
+                    this.HEAP8[(($4_1 + 104968) | 0) >> 0] = $4_1;
+                    $4_1 = ($4_1 + 1) | 0;
+                    if (($4_1 | 0) != (128 | 0)) {
+                        continue label$3;
+                    }
+                    break label$3;
+                }
+                this.HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
+                this.HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
+                this.$470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
+                this.$4(105096 | 0);
+            }
+            $4_1 = ($7_1 & 15) | 0;
+            label$4: while (1) {
+                $7_1 = ($3_1 | 0) == ($4_1 | 0);
+                $6_1 = this.HEAPU8[(((($6_1 & 255) | 0) + 104968) | 0) >> 0] | 0;
+                $3_1 = ($3_1 + 1) | 0;
+                if (!$7_1) {
+                    continue label$4;
+                }
+                break label$4;
+            }
+            this.HEAP8[$0_1 >> 0] = $6_1;
+            $4_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
+            $6_1 = this.HEAP32[$2_1 >> 2] | 0;
+            $3_1 = 0;
+            label$5: while (1) {
+                $98_1 = ($3_1 + $5_1) | 0;
+                i64toi32_i32$4 = $9$hi;
+                i64toi32_i32$4 = 0;
+                $101$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $9$hi;
+                i64toi32_i32$0 = $101$hi;
+                i64toi32_i32$0 = this.__wasm_i64_mul($9_1 | 0, i64toi32_i32$4 | 0, $6_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+                $102$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $8$hi;
+                i64toi32_i32$4 = $102$hi;
+                i64toi32_i32$2 = i64toi32_i32$0;
+                i64toi32_i32$0 = $8$hi;
+                i64toi32_i32$3 = $8_1;
+                i64toi32_i32$5 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+                i64toi32_i32$1 = (i64toi32_i32$4 + i64toi32_i32$0) | 0;
+                if (i64toi32_i32$5 >>> 0 < i64toi32_i32$3 >>> 0) {
+                    i64toi32_i32$1 = (i64toi32_i32$1 + 1) | 0;
+                }
+                $104$hi = i64toi32_i32$1;
+                i64toi32_i32$1 = $10$hi;
+                i64toi32_i32$1 = $104$hi;
+                i64toi32_i32$2 = $10$hi;
+                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $10_1 | 0, i64toi32_i32$2 | 0) | 0;
+                i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
+                this.HEAP8[$98_1 >> 0] = i64toi32_i32$2;
+                $6_1 = i64toi32_i32$2;
+                $3_1 = ($3_1 + 1) | 0;
+                if (($3_1 | 0) != ($4_1 | 0)) {
+                    continue label$5;
+                }
+                break label$5;
+            }
+            this.HEAP32[$2_1 >> 2] = $6_1;
+            $3_1 = 1;
+            if ($1_1 >>> 0 <= 1 >>> 0) {
+                break label$1;
+            }
+            label$6: while (1) {
+                $2_1 = ($0_1 + $3_1) | 0;
+                this.HEAP8[$2_1 >> 0] = ((this.HEAPU8[$2_1 >> 0] | 0) ^ (this.HEAPU8[(($5_1 + (($3_1 >>> 0) % ($4_1 >>> 0) | 0)) | 0) >> 0] | 0)) | 0;
+                $3_1 = ($3_1 + 1) | 0;
+                if (($3_1 | 0) != ($1_1 | 0)) {
+                    continue label$6;
+                }
+                break label$6;
+            }
+        }
+        this.global$0 = ($5_1 + 48) | 0;
+    }
+}
+class Unshuffler {
+    constructor() {
+        this.unshuffler_clientbound = new Crypto_Framework();
+        this.unshuffler_serverbound = new Crypto_Framework();
+
+        this.unshuffler_clientbound.HEAP32[((PTR_MAGIC_NUMBER + 12) | 0) >> 2] = MAGIC_NUMBER_CLIENTBOUND;
+        this.unshuffler_serverbound.HEAP32[((PTR_MAGIC_NUMBER + 12) | 0) >> 2] = MAGIC_NUMBER_SERVERBOUND;
+    }
+
+    clientbound(data) {
+        this.unshuffler_clientbound.global$0 = GLOBAL$0;
+
+        this.unshuffler_clientbound.HEAPU8.set(data, PTR_DATA);
+        this._clientbound.call(this.unshuffler_clientbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        return this.unshuffler_clientbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
+    }
+    serverbound(data) {
+        this.unshuffler_serverbound.global$0 = GLOBAL$0;
+
+        this.unshuffler_serverbound.HEAPU8.set(data, PTR_DATA);
+        this._serverbound.call(this.unshuffler_serverbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        return this.unshuffler_serverbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
+    }
+    _clientbound($8_1, $5_1, $3_1) {
+        $8_1 = $8_1 | 0;
+        $5_1 = $5_1 | 0;
+        $3_1 = $3_1 | 0;
+        var i64toi32_i32$0 = 0,
+            $4_1 = 0,
+            $2_1 = 0,
+            $7_1 = 0,
+            $328_1 = 0,
+            $12_1 = 0,
+            $12$hi = 0,
+            $332_1 = 0,
+            $332$hi = 0,
+            i64toi32_i32$2 = 0,
+            i64toi32_i32$3 = 0,
+            i64toi32_i32$4 = 0,
+            i64toi32_i32$5 = 0,
+            i64toi32_i32$1 = 0,
+            $13_1 = 0,
+            $13$hi = 0,
+            $339_1 = 0,
+            $339$hi = 0,
+            $340_1 = 0,
+            $340$hi = 0,
+            $341$hi = 0,
+            $14_1 = 0,
+            $14$hi = 0,
+            $1_1 = 0,
+            $432_1 = 0,
+            $435$hi = 0,
+            $436$hi = 0,
+            $438$hi = 0,
+            $0_1 = 0;
+        $1_1 = this.global$0 | 0;
+        this.global$0 = $1_1;
+        label$42: {
+            if (!$5_1) {
+                break label$42;
+            }
+            $4_1 = this.HEAPU8[$8_1 >> 0] | 0;
+            if (($4_1 | 0) == (1 | 0)) {
+                break label$42;
+            }
+            $0_1 = this.$40(17 | 0) | 0;
+            $2_1 = this.$40(13 | 0) | 0;
+            $7_1 = this.$40(4 | 0) | 0;
+            $328_1 = $3_1;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($2_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            $12_1 = i64toi32_i32$1;
+            $12$hi = i64toi32_i32$0;
+            $332_1 = i64toi32_i32$1;
+            $332$hi = i64toi32_i32$0;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($0_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            i64toi32_i32$2 = i64toi32_i32$1;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$3 = 48271;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+            i64toi32_i32$5 = (i64toi32_i32$0 + i64toi32_i32$1) | 0;
+            if (i64toi32_i32$4 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$5 = (i64toi32_i32$5 + 1) | 0;
+            }
+            $13_1 = i64toi32_i32$4;
+            $13$hi = i64toi32_i32$5;
+            i64toi32_i32$0 = $3_1;
+            i64toi32_i32$5 = this.HEAP32[(($3_1 + 12) | 0) >> 2] | 0;
+            i64toi32_i32$2 = 0;
+            $339_1 = i64toi32_i32$5;
+            $339$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $13$hi;
+            i64toi32_i32$5 = $339$hi;
+            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $339_1 | 0, i64toi32_i32$5 | 0) | 0;
+            i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
+            $340_1 = i64toi32_i32$5;
+            $340$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $332$hi;
+            i64toi32_i32$0 = $332_1;
+            i64toi32_i32$5 = $340$hi;
+            i64toi32_i32$3 = $340_1;
+            i64toi32_i32$1 = (i64toi32_i32$0 + i64toi32_i32$3) | 0;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$5) | 0;
+            if (i64toi32_i32$1 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
+            }
+            $341$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = 0;
+            $14_1 = ((((((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0) >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
+            $14$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = $341$hi;
+            i64toi32_i32$0 = $14$hi;
+            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $14_1 | 0, i64toi32_i32$0 | 0) | 0;
+            i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+            $0_1 = i64toi32_i32$0;
+            this.HEAP32[(($328_1 + 12) | 0) >> 2] = $0_1;
+            label$43: {
+                if (((this.HEAPU8[179604 >> 0] | 0) & 1) | 0) {
+                    break label$43;
+                }
+                if (!(this.$5(179604 | 0) | 0)) {
+                    break label$43;
+                }
+                label$44: {
+                    if (((this.HEAPU8[179472 >> 0] | 0) & 1) | 0) {
+                        break label$44;
+                    }
+                    if (!(this.$5(179472 | 0) | 0)) {
+                        break label$44;
+                    }
+                    $2_1 = 0;
+                    $7_1 = this.$40(0 | 0) | 0;
+                    this.HEAP32[(($1_1 + 144) | 0) >> 2] = ((this.$40(1 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(2 | 0) | 0) << 8) | 0) | 0 | (this.$40(3 | 0) | 0) | 0;
+                    label$45: while (1) {
+                        this.HEAP8[(($2_1 + 179476) | 0) >> 0] = $2_1;
+                        $2_1 = ($2_1 + 1) | 0;
+                        if (($2_1 | 0) != (128 | 0)) {
+                            continue label$45;
+                        }
+                        break label$45;
+                    }
+                    $2_1 = this.HEAPU8[179477 >> 0] | 0;
+                    this.HEAP8[179477 >> 0] = this.HEAPU8[179476 >> 0] | 0;
+                    this.HEAP8[179476 >> 0] = $2_1;
+                    this.HEAP32[(($1_1 + 188) | 0) >> 2] = 179477;
+                    this.HEAP32[(($1_1 + 184) | 0) >> 2] = 179604;
+                    this.$470(($1_1 + 188) | 0 | 0, ($1_1 + 184) | 0 | 0, ($1_1 + 144) | 0 | 0);
+                    $2_1 = this.HEAPU8[179476 >> 0] | 0;
+                    this.HEAP8[179476 >> 0] = this.HEAPU8[179477 >> 0] | 0;
+                    this.HEAP8[179477 >> 0] = $2_1;
+                    this.$4(179472 | 0);
+                }
+                $2_1 = 0;
+                label$46: while (1) {
+                    this.HEAP8[(((this.HEAPU8[(($2_1 + 179476) | 0) >> 0] | 0) + 179608) | 0) >> 0] = $2_1;
+                    $2_1 = ($2_1 + 1) | 0;
+                    if (($2_1 | 0) != (128 | 0)) {
+                        continue label$46;
+                    }
+                    break label$46;
+                }
+                this.$4(179604 | 0);
+            }
+            $2_1 = ($0_1 & 15) | 0;
+            $0_1 = 0;
+            label$47: while (1) {
+                $7_1 = ($0_1 | 0) == ($2_1 | 0);
+                $4_1 = this.HEAPU8[(((($4_1 & 255) | 0) + 179608) | 0) >> 0] | 0;
+                $0_1 = ($0_1 + 1) | 0;
+                if (!$7_1) {
+                    continue label$47;
+                }
+                break label$47;
+            }
+            this.HEAP8[$8_1 >> 0] = $4_1;
+            $2_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
+            $4_1 = this.HEAP32[(($3_1 + 12) | 0) >> 2] | 0;
+            $0_1 = 0;
+            label$48: while (1) {
+                $432_1 = ((($1_1 + 144) | 0) + $0_1) | 0;
+                i64toi32_i32$4 = $13$hi;
+                i64toi32_i32$4 = 0;
+                $435$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $13$hi;
+                i64toi32_i32$0 = $435$hi;
+                i64toi32_i32$0 = this.__wasm_i64_mul($13_1 | 0, i64toi32_i32$4 | 0, $4_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+                $436$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $12$hi;
+                i64toi32_i32$4 = $436$hi;
+                i64toi32_i32$2 = i64toi32_i32$0;
+                i64toi32_i32$0 = $12$hi;
+                i64toi32_i32$3 = $12_1;
+                i64toi32_i32$5 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+                i64toi32_i32$1 = (i64toi32_i32$4 + i64toi32_i32$0) | 0;
+                if (i64toi32_i32$5 >>> 0 < i64toi32_i32$3 >>> 0) {
+                    i64toi32_i32$1 = (i64toi32_i32$1 + 1) | 0;
+                }
+                $438$hi = i64toi32_i32$1;
+                i64toi32_i32$1 = $14$hi;
+                i64toi32_i32$1 = $438$hi;
+                i64toi32_i32$2 = $14$hi;
+                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $14_1 | 0, i64toi32_i32$2 | 0) | 0;
+                i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
+                this.HEAP8[$432_1 >> 0] = i64toi32_i32$2;
+                $4_1 = i64toi32_i32$2;
+                $0_1 = ($0_1 + 1) | 0;
+                if (($0_1 | 0) != ($2_1 | 0)) {
+                    continue label$48;
+                }
+                break label$48;
+            }
+            this.HEAP32[(($3_1 + 12) | 0) >> 2] = $4_1;
+            $0_1 = 1;
+            if ($5_1 >>> 0 <= 1 >>> 0) {
+                break label$42;
+            }
+            label$49: while (1) {
+                $4_1 = ($0_1 + $8_1) | 0;
+                this.HEAP8[$4_1 >> 0] = ((this.HEAPU8[$4_1 >> 0] | 0) ^ (this.HEAPU8[(((($1_1 + 144) | 0) + (($0_1 >>> 0) % ($2_1 >>> 0) | 0)) | 0) >> 0] | 0)) | 0;
+                $0_1 = ($0_1 + 1) | 0;
+                if (($0_1 | 0) != ($5_1 | 0)) {
+                    continue label$49;
+                }
+                break label$49;
+            }
+        }
+    }
+    _serverbound($8_1, $5_1, $3_1) {
+        $8_1 = $8_1 | 0;
+        $5_1 = $5_1 | 0;
+        $3_1 = $3_1 | 0;
+        var i64toi32_i32$0 = 0,
+            $4_1 = 0,
+            $2_1 = 0,
+            $7_1 = 0,
+            $328_1 = 0,
+            $12_1 = 0,
+            $12$hi = 0,
+            $332_1 = 0,
+            $332$hi = 0,
+            i64toi32_i32$2 = 0,
+            i64toi32_i32$3 = 0,
+            i64toi32_i32$4 = 0,
+            i64toi32_i32$5 = 0,
+            i64toi32_i32$1 = 0,
+            $13_1 = 0,
+            $13$hi = 0,
+            $339_1 = 0,
+            $339$hi = 0,
+            $340_1 = 0,
+            $340$hi = 0,
+            $341$hi = 0,
+            $14_1 = 0,
+            $14$hi = 0,
+            $1_1 = 0,
+            $432_1 = 0,
+            $435$hi = 0,
+            $436$hi = 0,
+            $438$hi = 0,
+            $0_1 = 0;
+        $1_1 = this.global$0 | 0;
+        this.global$0 = $1_1;
+        label$42: {
+            if (!$5_1) {
+                break label$42;
+            }
+            $4_1 = this.HEAPU8[$8_1 >> 0] | 0;
+            if (($4_1 | 0) == (0 | 0)) {
+                break label$42;
+            }
+            $0_1 = this.$40(17 | 0) | 0;
+            $2_1 = this.$40(13 | 0) | 0;
+            $7_1 = this.$40(4 | 0) | 0;
+            $328_1 = $3_1;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($2_1 | 0, i64toi32_i32$0 | 0, 7 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            $12_1 = i64toi32_i32$1;
+            $12$hi = i64toi32_i32$0;
+            $332_1 = i64toi32_i32$1;
+            $332$hi = i64toi32_i32$0;
+            i64toi32_i32$0 = 0;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$1 = this.__wasm_i64_mul($0_1 | 0, i64toi32_i32$0 | 0, 387 | 0, i64toi32_i32$1 | 0) | 0;
+            i64toi32_i32$0 = this.i64toi32_i32$HIGH_BITS;
+            i64toi32_i32$2 = i64toi32_i32$1;
+            i64toi32_i32$1 = 0;
+            i64toi32_i32$3 = 48271;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+            i64toi32_i32$5 = (i64toi32_i32$0 + i64toi32_i32$1) | 0;
+            if (i64toi32_i32$4 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$5 = (i64toi32_i32$5 + 1) | 0;
+            }
+            $13_1 = i64toi32_i32$4;
+            $13$hi = i64toi32_i32$5;
+            i64toi32_i32$0 = $3_1;
+            i64toi32_i32$5 = this.HEAP32[(($3_1 + 12) | 0) >> 2] | 0;
+            i64toi32_i32$2 = 0;
+            $339_1 = i64toi32_i32$5;
+            $339$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $13$hi;
+            i64toi32_i32$5 = $339$hi;
+            i64toi32_i32$5 = this.__wasm_i64_mul(i64toi32_i32$4 | 0, i64toi32_i32$2 | 0, $339_1 | 0, i64toi32_i32$5 | 0) | 0;
+            i64toi32_i32$2 = this.i64toi32_i32$HIGH_BITS;
+            $340_1 = i64toi32_i32$5;
+            $340$hi = i64toi32_i32$2;
+            i64toi32_i32$2 = $332$hi;
+            i64toi32_i32$0 = $332_1;
+            i64toi32_i32$5 = $340$hi;
+            i64toi32_i32$3 = $340_1;
+            i64toi32_i32$1 = (i64toi32_i32$0 + i64toi32_i32$3) | 0;
+            i64toi32_i32$4 = (i64toi32_i32$2 + i64toi32_i32$5) | 0;
+            if (i64toi32_i32$1 >>> 0 < i64toi32_i32$3 >>> 0) {
+                i64toi32_i32$4 = (i64toi32_i32$4 + 1) | 0;
+            }
+            $341$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = 0;
+            $14_1 = ((((((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0) >>> 0) % (382739 >>> 0) | 0) ^ 2147483647) | 0;
+            $14$hi = i64toi32_i32$4;
+            i64toi32_i32$4 = $341$hi;
+            i64toi32_i32$0 = $14$hi;
+            i64toi32_i32$0 = this.__wasm_i64_urem(i64toi32_i32$1 | 0, i64toi32_i32$4 | 0, $14_1 | 0, i64toi32_i32$0 | 0) | 0;
+            i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+            $0_1 = i64toi32_i32$0;
+            this.HEAP32[(($328_1 + 12) | 0) >> 2] = $0_1;
+            label$43: {
+                if (((this.HEAPU8[179604 >> 0] | 0) & 1) | 0) {
+                    break label$43;
+                }
+                if (!(this.$5(179604 | 0) | 0)) {
+                    break label$43;
+                }
+                label$44: {
+                    if (((this.HEAPU8[179472 >> 0] | 0) & 1) | 0) {
+                        break label$44;
+                    }
+                    if (!(this.$5(179472 | 0) | 0)) {
+                        break label$44;
+                    }
+                    $2_1 = 0;
+                    $7_1 = this.$40(4 | 0) | 0;
+                    this.HEAP32[(($1_1 + 144) | 0) >> 2] = ((this.$40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | (((this.$40(6 | 0) | 0) << 8) | 0) | 0 | (this.$40(7 | 0) | 0) | 0;
+                    label$45: while (1) {
+                        this.HEAP8[(($2_1 + 179476) | 0) >> 0] = $2_1;
+                        $2_1 = ($2_1 + 1) | 0;
+                        if (($2_1 | 0) != (128 | 0)) {
+                            continue label$45;
+                        }
+                        break label$45;
+                    }
+                    this.HEAP32[(($1_1 + 188) | 0) >> 2] = 179477;
+                    this.HEAP32[(($1_1 + 184) | 0) >> 2] = 179604;
+                    this.$470(($1_1 + 188) | 0 | 0, ($1_1 + 184) | 0 | 0, ($1_1 + 144) | 0 | 0);
+                    this.$4(179472 | 0);
+                }
+                $2_1 = 0;
+                label$46: while (1) {
+                    this.HEAP8[(((this.HEAPU8[(($2_1 + 179476) | 0) >> 0] | 0) + 179608) | 0) >> 0] = $2_1;
+                    $2_1 = ($2_1 + 1) | 0;
+                    if (($2_1 | 0) != (128 | 0)) {
+                        continue label$46;
+                    }
+                    break label$46;
+                }
+                this.$4(179604 | 0);
+            }
+            $2_1 = ($0_1 & 15) | 0;
+            $0_1 = 0;
+            label$47: while (1) {
+                $7_1 = ($0_1 | 0) == ($2_1 | 0);
+                $4_1 = this.HEAPU8[(((($4_1 & 255) | 0) + 179608) | 0) >> 0] | 0;
+                $0_1 = ($0_1 + 1) | 0;
+                if (!$7_1) {
+                    continue label$47;
+                }
+                break label$47;
+            }
+            this.HEAP8[$8_1 >> 0] = $4_1;
+            $2_1 = ((((this.$40(19 | 0) | 0) >>> 0) % (10 >>> 0) | 0) + 17) | 0;
+            $4_1 = this.HEAP32[(($3_1 + 12) | 0) >> 2] | 0;
+            $0_1 = 0;
+            label$48: while (1) {
+                $432_1 = ((($1_1 + 144) | 0) + $0_1) | 0;
+                i64toi32_i32$4 = $13$hi;
+                i64toi32_i32$4 = 0;
+                $435$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $13$hi;
+                i64toi32_i32$0 = $435$hi;
+                i64toi32_i32$0 = this.__wasm_i64_mul($13_1 | 0, i64toi32_i32$4 | 0, $4_1 | 0, i64toi32_i32$0 | 0) | 0;
+                i64toi32_i32$4 = this.i64toi32_i32$HIGH_BITS;
+                $436$hi = i64toi32_i32$4;
+                i64toi32_i32$4 = $12$hi;
+                i64toi32_i32$4 = $436$hi;
+                i64toi32_i32$2 = i64toi32_i32$0;
+                i64toi32_i32$0 = $12$hi;
+                i64toi32_i32$3 = $12_1;
+                i64toi32_i32$5 = (i64toi32_i32$2 + i64toi32_i32$3) | 0;
+                i64toi32_i32$1 = (i64toi32_i32$4 + i64toi32_i32$0) | 0;
+                if (i64toi32_i32$5 >>> 0 < i64toi32_i32$3 >>> 0) {
+                    i64toi32_i32$1 = (i64toi32_i32$1 + 1) | 0;
+                }
+                $438$hi = i64toi32_i32$1;
+                i64toi32_i32$1 = $14$hi;
+                i64toi32_i32$1 = $438$hi;
+                i64toi32_i32$2 = $14$hi;
+                i64toi32_i32$2 = this.__wasm_i64_urem(i64toi32_i32$5 | 0, i64toi32_i32$1 | 0, $14_1 | 0, i64toi32_i32$2 | 0) | 0;
+                i64toi32_i32$1 = this.i64toi32_i32$HIGH_BITS;
+                this.HEAP8[$432_1 >> 0] = i64toi32_i32$2;
+                $4_1 = i64toi32_i32$2;
+                $0_1 = ($0_1 + 1) | 0;
+                if (($0_1 | 0) != ($2_1 | 0)) {
+                    continue label$48;
+                }
+                break label$48;
+            }
+            this.HEAP32[(($3_1 + 12) | 0) >> 2] = $4_1;
+            $0_1 = 1;
+            if ($5_1 >>> 0 <= 1 >>> 0) {
+                break label$42;
+            }
+            label$49: while (1) {
+                $4_1 = ($0_1 + $8_1) | 0;
+                this.HEAP8[$4_1 >> 0] = ((this.HEAPU8[$4_1 >> 0] | 0) ^ (this.HEAPU8[(((($1_1 + 144) | 0) + (($0_1 >>> 0) % ($2_1 >>> 0) | 0)) | 0) >> 0] | 0)) | 0;
+                $0_1 = ($0_1 + 1) | 0;
+                if (($0_1 | 0) != ($5_1 | 0)) {
+                    continue label$49;
+                }
+                break label$49;
+            }
+        }
+    }
+}
+
+module.exports = { Shuffler, Unshuffler };

@@ -1,6 +1,5 @@
 const Parser = require('./lib/parser');
 const Builder = require('./lib/builder');
-const Shuffler = require('./lib/shuffler');
-const Unshuffler = require('./lib/unshuffler');
+const {Shuffler, Unshuffler} = require('./lib/crypto');
 
 module.exports = { Parser, Builder, Shuffler, Unshuffler };
