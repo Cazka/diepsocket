@@ -152,7 +152,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
-        data = this._unshuffler.unshuffle(data);
+        data = this._unshuffler.clientbound(data);
         const packet = new Parser(data).clientbound();
 
         switch (packet.type) {
@@ -293,7 +293,7 @@ class DiepSocket extends EventEmitter {
      */
     sendBinary(data) {
         if (!(this._socket && this._socket.readyState === 1)) return;
-        data = this._shuffler.shuffle(data);
+        data = this._shuffler.serverbound(data);
         this._socket.send(data);
     }
 
