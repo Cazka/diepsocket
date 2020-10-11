@@ -9,7 +9,7 @@ const { Worker } = require('worker_threads');
 
 const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
-let BUILD = '0c63725cbf091f3eb33c5c86738d23eaf83e5c15';
+let BUILD = '37cc7eb61d562bcb87461095032487312635d86e';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
