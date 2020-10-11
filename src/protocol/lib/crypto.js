@@ -1,11 +1,11 @@
 const PTR_BUILD_HASH = 4448;
 const PTR_DATA = 1000000;
-const PTR_MAGIC_NUMBER = 1100000;
+const PTR_SEED = 1100000;
 const GLOBAL$0 = 1300000;
 
-const BUILD_HASH = '0c63725cbf091f3eb33c5c86738d23eaf83e5c15';
-const MAGIC_NUMBER_CLIENTBOUND = 1938629610;
-const MAGIC_NUMBER_SERVERBOUND = -1287889786;
+const BUILD_HASH = '37cc7eb61d562bcb87461095032487312635d86e';
+const SEED_CLIENTBOUND = 52725553;
+const SEED_SERVERBOUND = -2025451371;
 
 class Crypto_Framework {
     constructor() {
@@ -915,22 +915,22 @@ class Shuffler {
         this.shuffler_clientbound = new Crypto_Framework();
         this.shuffler_serverbound = new Crypto_Framework();
 
-        this.shuffler_clientbound.HEAP32[PTR_MAGIC_NUMBER >> 2] = MAGIC_NUMBER_CLIENTBOUND;
-        this.shuffler_serverbound.HEAP32[PTR_MAGIC_NUMBER >> 2] = MAGIC_NUMBER_SERVERBOUND;
+        this.shuffler_clientbound.HEAP32[PTR_SEED >> 2] = SEED_CLIENTBOUND;
+        this.shuffler_serverbound.HEAP32[PTR_SEED >> 2] = SEED_SERVERBOUND;
     }
 
     clientbound(data) {
         this.shuffler_clientbound.global$0 = GLOBAL$0;
 
         this.shuffler_clientbound.HEAPU8.set(data, PTR_DATA);
-        this._clientbound.call(this.shuffler_clientbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        this._clientbound.call(this.shuffler_clientbound, PTR_DATA, data.length, PTR_SEED);
         return this.shuffler_clientbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
     serverbound(data) {
         this.shuffler_serverbound.global$0 = GLOBAL$0;
 
         this.shuffler_serverbound.HEAPU8.set(data, PTR_DATA);
-        this._serverbound.call(this.shuffler_serverbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        this._serverbound.call(this.shuffler_serverbound, PTR_DATA, data.length, PTR_SEED);
         return this.shuffler_serverbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
     _clientbound($0_1, $1_1, $2_1) {
@@ -1321,22 +1321,22 @@ class Unshuffler {
         this.unshuffler_clientbound = new Crypto_Framework();
         this.unshuffler_serverbound = new Crypto_Framework();
 
-        this.unshuffler_clientbound.HEAP32[((PTR_MAGIC_NUMBER + 12) | 0) >> 2] = MAGIC_NUMBER_CLIENTBOUND;
-        this.unshuffler_serverbound.HEAP32[((PTR_MAGIC_NUMBER + 12) | 0) >> 2] = MAGIC_NUMBER_SERVERBOUND;
+        this.unshuffler_clientbound.HEAP32[((PTR_SEED + 12) | 0) >> 2] = SEED_CLIENTBOUND;
+        this.unshuffler_serverbound.HEAP32[((PTR_SEED + 12) | 0) >> 2] = SEED_SERVERBOUND;
     }
 
     clientbound(data) {
         this.unshuffler_clientbound.global$0 = GLOBAL$0;
 
         this.unshuffler_clientbound.HEAPU8.set(data, PTR_DATA);
-        this._clientbound.call(this.unshuffler_clientbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        this._clientbound.call(this.unshuffler_clientbound, PTR_DATA, data.length, PTR_SEED);
         return this.unshuffler_clientbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
     serverbound(data) {
         this.unshuffler_serverbound.global$0 = GLOBAL$0;
 
         this.unshuffler_serverbound.HEAPU8.set(data, PTR_DATA);
-        this._serverbound.call(this.unshuffler_serverbound, PTR_DATA, data.length, PTR_MAGIC_NUMBER);
+        this._serverbound.call(this.unshuffler_serverbound, PTR_DATA, data.length, PTR_SEED);
         return this.unshuffler_serverbound.HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
     _clientbound($8_1, $5_1, $3_1) {
