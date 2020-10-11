@@ -1,4 +1,8 @@
 const PTR_BUILD_HASH = 4448;
+const PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND = 100000;
+const PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND = 200000;
+const PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND = 300000;
+const PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND = 400000;
 const PTR_DATA = 1000000;
 const PTR_SEED = 1100000;
 const GLOBAL$0 = 1300000;
@@ -897,7 +901,7 @@ function _ZN17compiler_builtins3int4udiv10divmod_u6417h6026910b5ed08e40E(var$0, 
     }
     i64toi32_i32$3 = var$0$hi;
     i64toi32_i32$5 = var$0;
-    ti64toi32_i32$HIGH_BITS = i64toi32_i32$3;
+    i64toi32_i32$HIGH_BITS = i64toi32_i32$3;
     return i64toi32_i32$5 | 0;
 }
 function __wasm_ctz_i32(var$0) {
@@ -1040,37 +1044,37 @@ class Shuffler {
             HEAP32[$24_1 >> 2] = i64toi32_i32$0;
             $3_1 = 0;
             label$2: {
-                if (((HEAPU8[105096 >> 0] | 0) & 1) | 0) {
+                if (((HEAPU8[(PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) >> 0] | 0) & 1) | 0) {
                     break label$2;
                 }
-                if (!($5(105096 | 0) | 0)) {
+                if (!($5((PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) | 0) | 0)) {
                     break label$2;
                 }
                 HEAP32[$5_1 >> 2] = (($40(1 | 0) | 0) << 16) | 0 | ((($40(0 | 0) | 0) << 24) | 0) | 0 | ((($40(2 | 0) | 0) << 8) | 0) | 0 | ($40(3 | 0) | 0) | 0;
                 $4_1 = 0;
                 label$3: while (1) {
-                    HEAP8[(($4_1 + 104968) | 0) >> 0] = $4_1;
+                    HEAP8[(($4_1 + PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND) | 0) >> 0] = $4_1;
                     $4_1 = ($4_1 + 1) | 0;
                     if (($4_1 | 0) != (128 | 0)) {
                         continue label$3;
                     }
                     break label$3;
                 }
-                $4_1 = HEAPU8[104969 >> 0] | 0;
-                HEAP8[104969 >> 0] = HEAPU8[104968 >> 0] | 0;
-                HEAP8[104968 >> 0] = $4_1;
-                HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
-                HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
+                $4_1 = HEAPU8[(PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) >> 0] | 0;
+                HEAP8[(PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) >> 0] = HEAPU8[PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND >> 0] | 0;
+                HEAP8[PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND >> 0] = $4_1;
+                HEAP32[(($5_1 + 44) | 0) >> 2] = PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1;
+                HEAP32[(($5_1 + 40) | 0) >> 2] = PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 128;
                 $470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
-                $4_1 = HEAPU8[104968 >> 0] | 0;
-                HEAP8[104968 >> 0] = HEAPU8[104969 >> 0] | 0;
-                HEAP8[104969 >> 0] = $4_1;
-                $4(105096 | 0);
+                $4_1 = HEAPU8[PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND >> 0] | 0;
+                HEAP8[PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND >> 0] = HEAPU8[(PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) >> 0] | 0;
+                HEAP8[(PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 1) >> 0] = $4_1;
+                $4((PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND + 128) | 0);
             }
             $4_1 = ($7_1 & 15) | 0;
             label$4: while (1) {
                 $7_1 = ($3_1 | 0) == ($4_1 | 0);
-                $6_1 = HEAPU8[(((($6_1 & 255) | 0) + 104968) | 0) >> 0] | 0;
+                $6_1 = HEAPU8[(((($6_1 & 255) | 0) + PTR_JUMP_TABLE_SHUFFLER_CLIENTBOUND) | 0) >> 0] | 0;
                 $3_1 = ($3_1 + 1) | 0;
                 if (!$7_1) {
                     continue label$4;
@@ -1234,31 +1238,31 @@ class Shuffler {
             HEAP32[$24_1 >> 2] = i64toi32_i32$0;
             $3_1 = 0;
             label$2: {
-                if (((HEAPU8[105096 >> 0] | 0) & 1) | 0) {
+                if (((HEAPU8[(PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND + 128) >> 0] | 0) & 1) | 0) {
                     break label$2;
                 }
-                if (!($5(105096 | 0) | 0)) {
+                if (!($5((PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND + 128) | 0) | 0)) {
                     break label$2;
                 }
                 HEAP32[$5_1 >> 2] = $4_1;
                 $4_1 = 0;
                 label$3: while (1) {
-                    HEAP8[(($4_1 + 104968) | 0) >> 0] = $4_1;
+                    HEAP8[(($4_1 + PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND) | 0) >> 0] = $4_1;
                     $4_1 = ($4_1 + 1) | 0;
                     if (($4_1 | 0) != (128 | 0)) {
                         continue label$3;
                     }
                     break label$3;
                 }
-                HEAP32[(($5_1 + 44) | 0) >> 2] = 104969;
-                HEAP32[(($5_1 + 40) | 0) >> 2] = 105096;
+                HEAP32[(($5_1 + 44) | 0) >> 2] = PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND + 1;
+                HEAP32[(($5_1 + 40) | 0) >> 2] = PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND + 128;
                 $470(($5_1 + 44) | 0 | 0, ($5_1 + 40) | 0 | 0, $5_1 | 0);
-                $4(105096 | 0);
+                $4((PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND + 128) | 0);
             }
             $4_1 = ($7_1 & 15) | 0;
             label$4: while (1) {
                 $7_1 = ($3_1 | 0) == ($4_1 | 0);
-                $6_1 = HEAPU8[(((($6_1 & 255) | 0) + 104968) | 0) >> 0] | 0;
+                $6_1 = HEAPU8[(((($6_1 & 255) | 0) + PTR_JUMP_TABLE_SHUFFLER_SERVERBOUND) | 0) >> 0] | 0;
                 $3_1 = ($3_1 + 1) | 0;
                 if (!$7_1) {
                     continue label$4;
@@ -1332,8 +1336,8 @@ class Unshuffler {
         HEAP32[((PTR_SEED + 12) | 0) >> 2] = this.seed_clientbound;
 
         HEAPU8.set(data, PTR_DATA);
-        
-        this._clientbound( PTR_DATA, data.length, PTR_SEED);
+
+        this._clientbound(PTR_DATA, data.length, PTR_SEED);
         this.seed_clientbound = HEAP32[((PTR_SEED + 12) | 0) >> 2];
         return HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
     }
@@ -1342,7 +1346,7 @@ class Unshuffler {
         HEAP32[((PTR_SEED + 12) | 0) >> 2] = this.seed_serverbound;
 
         HEAPU8.set(data, PTR_DATA);
-        this._serverbound( PTR_DATA, data.length, PTR_SEED);
+        this._serverbound(PTR_DATA, data.length, PTR_SEED);
 
         this.seed_serverbound = HEAP32[((PTR_SEED + 12) | 0) >> 2];
         return HEAPU8.slice(PTR_DATA, PTR_DATA + data.length);
@@ -1447,57 +1451,57 @@ class Unshuffler {
             $0_1 = i64toi32_i32$0;
             HEAP32[(($328_1 + 12) | 0) >> 2] = $0_1;
             label$43: {
-                if (((HEAPU8[179604 >> 0] | 0) & 1) | 0) {
+                if (((HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 4) >> 0] | 0) & 1) | 0) {
                     break label$43;
                 }
-                if (!($5(179604 | 0) | 0)) {
+                if (!($5((PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 4) | 0) | 0)) {
                     break label$43;
                 }
                 label$44: {
-                    if (((HEAPU8[179472 >> 0] | 0) & 1) | 0) {
+                    if (((HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 136) >> 0] | 0) & 1) | 0) {
                         break label$44;
                     }
-                    if (!($5(179472 | 0) | 0)) {
+                    if (!($5((PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 136) | 0) | 0)) {
                         break label$44;
                     }
                     $2_1 = 0;
                     $7_1 = $40(0 | 0) | 0;
                     HEAP32[(($1_1 + 144) | 0) >> 2] = (($40(1 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | ((($40(2 | 0) | 0) << 8) | 0) | 0 | ($40(3 | 0) | 0) | 0;
                     label$45: while (1) {
-                        HEAP8[(($2_1 + 179476) | 0) >> 0] = $2_1;
+                        HEAP8[(($2_1 + PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) | 0) >> 0] = $2_1;
                         $2_1 = ($2_1 + 1) | 0;
                         if (($2_1 | 0) != (128 | 0)) {
                             continue label$45;
                         }
                         break label$45;
                     }
-                    $2_1 = HEAPU8[179477 >> 0] | 0;
-                    HEAP8[179477 >> 0] = HEAPU8[179476 >> 0] | 0;
-                    HEAP8[179476 >> 0] = $2_1;
-                    HEAP32[(($1_1 + 188) | 0) >> 2] = 179477;
-                    HEAP32[(($1_1 + 184) | 0) >> 2] = 179604;
+                    $2_1 = HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 131) >> 0] | 0;
+                    HEAP8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 131) >> 0] = HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) >> 0] | 0;
+                    HEAP8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) >> 0] = $2_1;
+                    HEAP32[(($1_1 + 188) | 0) >> 2] = PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 131;
+                    HEAP32[(($1_1 + 184) | 0) >> 2] = PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 4;
                     $470(($1_1 + 188) | 0 | 0, ($1_1 + 184) | 0 | 0, ($1_1 + 144) | 0 | 0);
-                    $2_1 = HEAPU8[179476 >> 0] | 0;
-                    HEAP8[179476 >> 0] = HEAPU8[179477 >> 0] | 0;
-                    HEAP8[179477 >> 0] = $2_1;
-                    $4(179472 | 0);
+                    $2_1 = HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) >> 0] | 0;
+                    HEAP8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) >> 0] = HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 131) >> 0] | 0;
+                    HEAP8[(PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 131) >> 0] = $2_1;
+                    $4((PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 136) | 0);
                 }
                 $2_1 = 0;
                 label$46: while (1) {
-                    HEAP8[(((HEAPU8[(($2_1 + 179476) | 0) >> 0] | 0) + 179608) | 0) >> 0] = $2_1;
+                    HEAP8[(((HEAPU8[(($2_1 + PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 132) | 0) >> 0] | 0) + PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND) | 0) >> 0] = $2_1;
                     $2_1 = ($2_1 + 1) | 0;
                     if (($2_1 | 0) != (128 | 0)) {
                         continue label$46;
                     }
                     break label$46;
                 }
-                $4(179604 | 0);
+                $4((PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND - 4) | 0);
             }
             $2_1 = ($0_1 & 15) | 0;
             $0_1 = 0;
             label$47: while (1) {
                 $7_1 = ($0_1 | 0) == ($2_1 | 0);
-                $4_1 = HEAPU8[(((($4_1 & 255) | 0) + 179608) | 0) >> 0] | 0;
+                $4_1 = HEAPU8[(((($4_1 & 255) | 0) + PTR_JUMP_TABLE_UNSHUFFLER_CLIENTBOUND) | 0) >> 0] | 0;
                 $0_1 = ($0_1 + 1) | 0;
                 if (!$7_1) {
                     continue label$47;
@@ -1658,51 +1662,51 @@ class Unshuffler {
             $0_1 = i64toi32_i32$0;
             HEAP32[(($328_1 + 12) | 0) >> 2] = $0_1;
             label$43: {
-                if (((HEAPU8[179604 >> 0] | 0) & 1) | 0) {
+                if (((HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 4) >> 0] | 0) & 1) | 0) {
                     break label$43;
                 }
-                if (!($5(179604 | 0) | 0)) {
+                if (!($5((PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 4) | 0) | 0)) {
                     break label$43;
                 }
                 label$44: {
-                    if (((HEAPU8[179472 >> 0] | 0) & 1) | 0) {
+                    if (((HEAPU8[(PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 136) >> 0] | 0) & 1) | 0) {
                         break label$44;
                     }
-                    if (!($5(179472 | 0) | 0)) {
+                    if (!($5((PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 136) | 0) | 0)) {
                         break label$44;
                     }
                     $2_1 = 0;
                     $7_1 = $40(4 | 0) | 0;
                     HEAP32[(($1_1 + 144) | 0) >> 2] = (($40(5 | 0) | 0) << 16) | 0 | (($7_1 << 24) | 0) | 0 | ((($40(6 | 0) | 0) << 8) | 0) | 0 | ($40(7 | 0) | 0) | 0;
                     label$45: while (1) {
-                        HEAP8[(($2_1 + 179476) | 0) >> 0] = $2_1;
+                        HEAP8[(($2_1 + PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 132) | 0) >> 0] = $2_1;
                         $2_1 = ($2_1 + 1) | 0;
                         if (($2_1 | 0) != (128 | 0)) {
                             continue label$45;
                         }
                         break label$45;
                     }
-                    HEAP32[(($1_1 + 188) | 0) >> 2] = 179477;
-                    HEAP32[(($1_1 + 184) | 0) >> 2] = 179604;
+                    HEAP32[(($1_1 + 188) | 0) >> 2] = PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 131;
+                    HEAP32[(($1_1 + 184) | 0) >> 2] = PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 4;
                     $470(($1_1 + 188) | 0 | 0, ($1_1 + 184) | 0 | 0, ($1_1 + 144) | 0 | 0);
-                    $4(179472 | 0);
+                    $4((PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 136) | 0);
                 }
                 $2_1 = 0;
                 label$46: while (1) {
-                    HEAP8[(((HEAPU8[(($2_1 + 179476) | 0) >> 0] | 0) + 179608) | 0) >> 0] = $2_1;
+                    HEAP8[(((HEAPU8[(($2_1 + PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 132) | 0) >> 0] | 0) + PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND) | 0) >> 0] = $2_1;
                     $2_1 = ($2_1 + 1) | 0;
                     if (($2_1 | 0) != (128 | 0)) {
                         continue label$46;
                     }
                     break label$46;
                 }
-                $4(179604 | 0);
+                $4((PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND - 4) | 0);
             }
             $2_1 = ($0_1 & 15) | 0;
             $0_1 = 0;
             label$47: while (1) {
                 $7_1 = ($0_1 | 0) == ($2_1 | 0);
-                $4_1 = HEAPU8[(((($4_1 & 255) | 0) + 179608) | 0) >> 0] | 0;
+                $4_1 = HEAPU8[(((($4_1 & 255) | 0) + PTR_JUMP_TABLE_UNSHUFFLER_SERVERBOUND) | 0) >> 0] | 0;
                 $0_1 = ($0_1 + 1) | 0;
                 if (!$7_1) {
                     continue label$47;
