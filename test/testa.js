@@ -1,7 +1,7 @@
 const DiepSocket = require('../');
 
 function join() {
-    const bot = new DiepSocket('diep.io/#26765657009399D19E8D');
+    const bot = new DiepSocket('diep.io/#2676864700F4CB62DCB7');
     bot.on('open', () => console.log('open'));
     bot.on('accept', () => {
         console.log('accept');
@@ -22,5 +22,4 @@ function join() {
         console.log(err);
     });
 }
-join();
 join();
