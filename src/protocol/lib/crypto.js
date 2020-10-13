@@ -11,7 +11,7 @@ const JUMP_TABLE_SHUFFLER_SERVERBOUND = [0, 33, 87, 24, 51, 74, 77, 89, 10, 8, 2
 const JUMP_TABLE_SHUFFLER_CLIENTBOUND = invertJumpTable(JUMP_TABLE_UNSHUFFLER_CLIENTBOUND);
 const JUMP_TABLE_UNSHUFFLER_SERVERBOUND = invertJumpTable(JUMP_TABLE_SHUFFLER_SERVERBOUND);
 
-const buffer = new ArrayBuffer(67108864);
+const buffer = new ArrayBuffer(17108864);
 const HEAP8 = new Int8Array(buffer);
 const HEAP32 = new Int32Array(buffer);
 const HEAPU8 = new Uint8Array(buffer);
