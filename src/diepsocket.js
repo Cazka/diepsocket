@@ -9,7 +9,7 @@ const { Worker } = require('worker_threads');
 
 const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
-let BUILD = '761c7a18305159ceb5d7f7368b33c796c8d1ba94';
+let BUILD = '4baba6da73b994b28e428564e23612d8b2b44708';
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
@@ -108,6 +108,9 @@ class DiepSocket extends EventEmitter {
         const options = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36',
+            },
         };
         if (this._options.proxy) {
             const agent = new HttpsProxyAgent(url.parse(`http://${this._options.proxy}`));
