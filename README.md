@@ -26,7 +26,7 @@ bot.on('accept', () => console.log('Succesfully connected!'))
 bot.on('error', (err) => console.log(err));
 ```
 ### This is not working anymore
-both files needs to be fixed.
+both files needs to be fixed. 
 https://github.com/Cazka/diepsocket/blob/master/src/protocol/lib/data/clientbound/update.js 
 https://github.com/Cazka/diepsocket/blob/master/src/protocol/lib/crypto.js 
 
