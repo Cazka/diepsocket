@@ -13,6 +13,7 @@
 	"homepage": "https://github.com/Cazka/diepsocket",
 	"dependencies": {
 		"https-proxy-agent": "^5.0.0",
+		"node-fetch": "^2.6.1",
 		"ws": "^7.3.1"
 	}
 }
