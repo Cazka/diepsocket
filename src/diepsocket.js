@@ -9,7 +9,7 @@ const { Worker } = require('worker_threads');
 
 const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
-let BUILD = '4baba6da73b994b28e428564e23612d8b2b44708';
+let BUILD = '7cfc34fd65cffe7ef51d03a8f128ea59e85dbe31'; //08.11.2020
 
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
@@ -26,6 +26,29 @@ const INPUT = {
     gamepad: 0b001000000000,
     switchclass: 0b010000000000,
     constantOfTrue: 0b100000000000,
+};
+
+//Thanks to binary-guy for this hack. Changes the order of header fields to match the order of WebSocket API
+const _https_get = https.get;
+https.get = function (...args) {
+    if (args[0]?.headers) {
+        args[0].headers = {
+            Host: args[0].host,
+            Connection: undefined,
+            Pragma: undefined,
+            'Cache-Control': undefined,
+            'User-Agent': undefined,
+            Upgrade: undefined,
+            Origin: undefined,
+            'Sec-WebSocket-Version': undefined,
+            'Accept-Encoding': undefined,
+            'Accept-Language': undefined,
+            'Sec-WebSocket-Key': undefined,
+            'Sec-WebSocket-Extensions': undefined,
+            ...args[0].headers,
+        };
+    }
+    return _https_get(...args);
 };
 
 /**
@@ -104,12 +127,21 @@ class DiepSocket extends EventEmitter {
      *
      * @private
      */
-    _connect() {
+    async _connect() {
+        this._shuffler = new Shuffler();
+        this._unshuffler = new Unshuffler();
+        await this._unshuffler.reset();
+
         const options = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
+            family: 6,
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36',
+                Pragma: 'no-cache',
+                'Cache-Control': 'no-cache',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
             },
         };
         if (this._options.proxy) {
@@ -139,9 +171,6 @@ class DiepSocket extends EventEmitter {
      */
     _onopen() {
         clearTimeout(this._connectTimeout);
-
-        this._shuffler = new Shuffler();
-        this._unshuffler = new Unshuffler();
 
         this.send('initial', { build: BUILD, party: this._party });
 
