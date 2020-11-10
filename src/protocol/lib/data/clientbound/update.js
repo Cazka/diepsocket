@@ -1,7 +1,7 @@
 const FIELDS = {
-    1: { name: 'y', datatype: 'vi' },
-    3: { name: 'x', datatype: 'vi' },
-    2: { name: 'angle', datatype: 'vi' },
+    53: { name: 'y', datatype: 'vi' },
+    48: { name: 'x', datatype: 'vi' },
+    43: { name: 'angle', datatype: 'vi' },
 };
 const UPGRADE_ARRAY = [
     77,
