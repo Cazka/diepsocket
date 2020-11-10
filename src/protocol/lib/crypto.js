@@ -1,5 +1,5 @@
 'use strict';
-const fetch = require('node-fetch');
+const fs = require('fs');
 
 const buffer = new ArrayBuffer(67108864);
 var HEAP8 = new Int8Array(buffer);
@@ -5383,8 +5383,8 @@ class Shuffler {
     }
 
     async reset() {
-        const res = await fetch('https://diep-custom.glitch.me/mem');
-        const buffer = new Uint8Array(await res.arrayBuffer());
+        const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
+        const buffer = new Uint8Array(res);
         HEAPU8.set(buffer, 0);
     }
 }
@@ -5404,8 +5404,8 @@ class Unshuffler {
     }
 
     async reset() {
-        const res = await fetch('https://diep-custom.glitch.me/mem');
-        const buffer = new Uint8Array(await res.arrayBuffer());
+        const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
+        const buffer = new Uint8Array(res);
         HEAPU8.set(buffer, 0);
     }
 }
