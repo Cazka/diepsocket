@@ -249,7 +249,7 @@ class DiepSocket extends EventEmitter {
                 this._pow_worker.postMessage(packet.content);
                 break;
         }
-        super.emit('data', data);
+        super.emit('message', data);
     }
 
     /**
