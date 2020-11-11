@@ -88,7 +88,7 @@ class Reader {
     }
     assertNotOOB() {
         if (this.at > this.buffer.byteLength) {
-            throw new Error(`Error at ${this.at}: Out of Bounds.\n${this.debugStringFullBuffer()}`);
+            throw new Error(`Error at ${this.at}: Out of Bounds.\n${this.hexdump()}`);
         }
     }
 
@@ -99,7 +99,7 @@ class Reader {
         this.at--;
         while (this.buffer[this.at - 1] & 0x80) this.at--;
     }
-    debugStringFullBuffer() {
+    hexdump() {
         const s = this.buffer.reduce((acc, x, i) => {
             x = x.toString(16).padStart(2, 0).toUpperCase();
             if (this.at === i) x = `>${x}`;
