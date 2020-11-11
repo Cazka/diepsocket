@@ -1,6 +1,6 @@
 module.exports = {
     id: 3,
-    type: 'message',
+    type: 'notification',
     parse(parser) {
         const message = parser.string();
         const color = parser.u32();

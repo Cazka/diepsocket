@@ -210,8 +210,8 @@ class DiepSocket extends EventEmitter {
                 this.close();
                 this._connect();
                 break;
-            case 'message':
-                super.emit('message', packet.content);
+            case 'notification':
+                super.emit('notification', packet.content);
                 break;
             case 'server_info':
                 this._gamemode = packet.content.gamemode;
