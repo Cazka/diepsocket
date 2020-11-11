@@ -1,6 +1,6 @@
 {
 	"name": "diepsocket",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "connect to a diep.io server",
 	"main": "./index.js",
 	"repository": "github:Cazka/diepsocket",
