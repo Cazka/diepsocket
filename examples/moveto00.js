@@ -13,11 +13,13 @@ bot.on('accept', () => {
         bot.spawn('DiepSocket');
     });
 
-    // setInterval to perform an action every 20 ms
+    // setInterval to perform an action every 30 ms
+    // you can increase the timeinterval, but you will get laggy movement.
+    // you should now decrease it as the real game client also sends this packet every 30-35 ms
     setInterval(() => {
         // send a movement packet that will move to the middle of the map
         bot.moveTo({ x: 0, y: 0 });
-    }, 20);
+    }, 30);
 });
 // eventlistener for the close event
 bot.on('close', (code, reason) => {
