@@ -25,10 +25,9 @@ const bot = new DiepSocket('diep.io/#26331613006B57F647');
 bot.on('accept', () => console.log('Succesfully connected!'))
 bot.on('error', (err) => console.log(err));
 ```
-### This is not working anymore
-both files needs to be fixed. 
-https://github.com/Cazka/diepsocket/blob/master/src/protocol/lib/data/clientbound/update.js 
-https://github.com/Cazka/diepsocket/blob/master/src/protocol/lib/crypto.js 
+## Doocumentation
+
+The documentation is still in progress https://github.com/Cazka/diepsocket/blob/master/docs/diepsocket.md  
 
 If you want to learn the server protocol I suggest visiting these sites:
 
