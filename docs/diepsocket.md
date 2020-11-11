@@ -1,3 +1,38 @@
+# diepsocket
+
+## Table of Contents
+
+-   [Class: DiepSocket](#class-diepsocket)
+    -   [new DiepSocket(link[, options])](#new-diepsocketlink-options)
+    -   The following events are from the internal websocket connection
+    -   [Event: 'close'](#event-close)
+    -   [Event: 'error'](#event-error)
+    -   [Event: 'open'](#event-open)
+    -   [Event: 'message'](#event-message)
+    -   The following events are bot events
+    -   [Event: 'accept'](#event-accept)
+    -   [Event: 'achievement'](#event-achievement)
+    -   [Event: 'dead'](#event-dead)
+    -   [Event: 'latency'](#event-latency)
+    -   [Event: 'notification'](#event-notification)
+    -   [Event: 'player_count'](#event-player_count)
+    -   [Event: 'pow_request'](#event-pow_request)
+    -   [diepsocket.close([code[, reason]])](#diepsocketclosecode-reason)
+    -   [diepsocket.gamemode](#diepsocketgamemode)
+    -   [diepsocket.link](#diepsocketlink)
+    -   [diepsocket.move([flags[,mouseX[,mouseY[,velocityX[,velocityY]]]]])](#diepsocketmoveflags-mouseX-mouseY-velocityX-velocityY)
+    -   [diepsocket.moveTo(goalPos[,flags[,mouseX[,mouseY]]])](#diepsocketmoveTogoalPos-flags-mouseX-mouseY)
+    -   [diepsocket.position](#diepsocketposition)
+    -   [diepsocket.send(type, content)](#diepsocketsendtype-content)
+    -   [diepsocket.sendBinary(data)](#diepsocketsendBinarydata)
+    -   [diepsocket.spawn([name])](#diepsocketspawnname)
+- [DiepSocket.getLink(wsURL[,party])](#diepsocketgetLinkwsURL-party)
+- [DiepSocket.linkParse(link)](#diepsocketlinkParselink)
+- [DiepSocket.findServer([gamemode[,region]],cb)](#diepsocketfindServergamemode-region-cb)
+- [DiepSocket.findServerSync([gamemode[,region]])](#diepsocketfindServerSyncgamemode-region-cb)
+
+
+
 ```js
 /**
  * Class: This is DiepSocket, it is used to connect to a diep.io server.
