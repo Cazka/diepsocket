@@ -31,11 +31,11 @@ var i64toi32_i32$HIGH_BITS = 0;
 
 const fimport$13 = function _emscripten_memcpy_big(dest, src, num) {
     HEAPU8.copyWithin(dest, src, src + num);
-}
+};
 const fimport$6 = function _emscripten_resize_heap(requestedSize) {
     requestedSize = requestedSize >>> 0;
     abortOnCannotGrowMemory(requestedSize);
-}
+};
 function abortOnCannotGrowMemory(requestedSize) {
     abort('OOM');
 }
@@ -4328,7 +4328,7 @@ function $465($5_1, $9_1, $8_1) {
         $1661 = 0;
     $4_1 = (global$0 - 784) | 0;
     global$0 = $4_1;
-    label$26 :{
+    label$26: {
         label$42: {
             if (((HEAPU8[106864 >> 0] | 0) & 1) | 0) {
                 break label$42;
@@ -5367,35 +5367,41 @@ function $465($5_1, $9_1, $8_1) {
     global$0 = ($4_1 + 784) | 0;
 }
 
-
 class Shuffler {
     clientbound(data) {
         throw new Error('Not supported');
     }
 
     serverbound(data) {
+        //replace global buffer with this.buf
+        HEAPU8.set(this.buf, 0);
+
         data = new Uint8Array(data);
         HEAPU8.set(data, 5000000);
 
         $86(5451072, 5000000, data.length);
-
+        //replace this.buf with global buffer
+        this.buf = new Uint8Array(HEAPU8);
         return HEAPU8.slice(5000000, 5000000 + data.length);
     }
 
     async reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
-        const buffer = new Uint8Array(res);
-        HEAPU8.set(buffer, 0);
+        this.buf = new Uint8Array(res);
     }
 }
 
 class Unshuffler {
     clientbound(data) {
+        //replace global buffer with this.buf
+        HEAPU8.set(this.buf, 0);
+
         data = new Uint8Array(data);
         HEAPU8.set(data, 5000000);
-    
-        $465(5451072,5000000, data.length);
-    
+
+        $465(5451072, 5000000, data.length);
+        //replace this.buf with global buffer
+        this.buf = new Uint8Array(HEAPU8);
         return HEAPU8.slice(5000000, 5000000 + data.length);
     }
 
@@ -5405,8 +5411,7 @@ class Unshuffler {
 
     async reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
-        const buffer = new Uint8Array(res);
-        HEAPU8.set(buffer, 0);
+        this.buf = new Uint8Array(res);
     }
 }
 

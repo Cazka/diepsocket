@@ -131,6 +131,7 @@ class DiepSocket extends EventEmitter {
         this._shuffler = new Shuffler();
         this._unshuffler = new Unshuffler();
         await this._unshuffler.reset();
+        await this._shuffler.reset();
 
         const options = {
             origin: 'https://diep.io',
