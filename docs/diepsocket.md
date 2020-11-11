@@ -26,12 +26,18 @@
     -   [diepsocket.send(type, content)](#diepsocketsendtype-content)
     -   [diepsocket.sendBinary(data)](#diepsocketsendBinarydata)
     -   [diepsocket.spawn([name])](#diepsocketspawnname)
-- [DiepSocket.getLink(wsURL[,party])](#diepsocketgetLinkwsURL-party)
-- [DiepSocket.linkParse(link)](#diepsocketlinkParselink)
-- [DiepSocket.findServer([gamemode[,region]],cb)](#diepsocketfindServergamemode-region-cb)
-- [DiepSocket.findServerSync([gamemode[,region]])](#diepsocketfindServerSyncgamemode-region-cb)
-
-
+-   [Class: DiepSocket.Builder](#class-diepsocketbuilder)
+    -   [new DiepSocket.Builder(packet)](#new-diepsocketbuilderpacket)
+    -   [builder.clientbound()](#builderclientbound)
+    -   [builder.serverbound()](#builderserverbound)
+-   [Class: DiepSocket.Parser](#class-diepsocketparser)
+    -   [new DiepSocket.Parser(data)](#new-diepsocketparserdata)
+    -   [parser.clientbound()](#parserclientbound)
+    -   [parser.serverbound()](#parserserverbound)
+-   [DiepSocket.getLink(wsURL[,party])](#diepsocketgetLinkwsURL-party)
+-   [DiepSocket.linkParse(link)](#diepsocketlinkParselink)
+-   [DiepSocket.findServer([gamemode[,region]],cb)](#diepsocketfindServergamemode-region-cb)
+-   [DiepSocket.findServerSync([gamemode[,region]])](#diepsocketfindServerSyncgamemode-region-cb)
 
 ```js
 /**
