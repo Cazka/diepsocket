@@ -1,6 +1,6 @@
 # diepsocket
 
-[![NPM version](https://badge.fury.io/js/diepsocket.svg)](https://www.npmjs.com/package/diepbuddy-client)
+[![NPM version](https://badge.fury.io/js/diepsocket.svg)](https://www.npmjs.com/package/diepsocket)
 [![license](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 ## Description
