@@ -231,8 +231,8 @@ class DiepSocket extends EventEmitter {
                     else super.emit('accept');
                 }, 100);
                 break;
-            case 'event':
-                super.emit('event', packet.content);
+            case 'achievement':
+                super.emit('achievement', packet.content);
                 break;
             case 'invalid_link':
                 this._onerror(new Error(`Link is invalid: ${this._initialLink}`));
