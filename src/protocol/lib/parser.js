@@ -59,7 +59,7 @@ class Parser extends Reader {
      */
     parse(dataSpecs) {
         if (!dataSpecs)
-            throw new Error('packet id does not exist\n' + this.debugStringFullBuffer());
+            throw new Error('packet id does not exist\n' + this.hexdump());
         let packet = {
             id: dataSpecs.id,
             type: dataSpecs.type,
