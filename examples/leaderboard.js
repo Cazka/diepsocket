@@ -1,7 +1,7 @@
 const DiepSocket = require('../');
 
 async function main() {
-    const link = await DiepSocket.findServerSync('4teams');
+    const link = await DiepSocket.findServerSync('maze', 'amsterdam');
 
     const bot = new DiepSocket(link);
 
