@@ -2,6 +2,7 @@ const FIELDS = {
     53: { name: 'y', datatype: 'vi' },
     48: { name: 'x', datatype: 'vi' },
     43: { name: 'angle', datatype: 'vi' },
+    39: { name: 'unknown', datatype: 'float'},
 };
 const UPGRADE_ARRAY = [
     77,
@@ -135,7 +136,7 @@ function indexOf(arr, query) {
  * @returns {Object} contains {id, parse}. id is the entity id when a new gets created. parse is a function that gets the current entity id.
  */
 function parseUpdate(parser) {
-    //console.log(parser.debugStringFullBuffer());
+    //console.log(parser.hexdump());
     /**
      * This is the main function to parse. It requires an entity id and will return {died,x,y,angle}.
      * @param {array} id array that contains the entity id.
@@ -160,8 +161,12 @@ function parseUpdate(parser) {
         let prev = 0;
         while (parser.buffer[parser.at] !== 1) {
             prev += parser.vu() ^ 1;
-            const field = FIELDS[prev];
-            if (!field) break;
+            let field = FIELDS[prev];
+            if (!field) {
+                //console.log('UNKOWN FIELD ID:', prev);
+                //console.log(parser.hexdump());
+                break;
+            }
             parsed[field.name] = parser[field.datatype]();
         }
         return parsed;
