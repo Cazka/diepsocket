@@ -67,6 +67,7 @@ class DiepSocket extends EventEmitter {
      * @param {String} options.proxy The proxy that will be used. ip:port format
      * @param {String} options.ipv6 The ipv6 address which will be used
      * @param {boolean} options.forceTeam When set to true will only join same team otherwise throw an error
+     * @param {Object} options.ws_options Options to pass to the WebSocket constructor
      */
     constructor(link, options) {
         super();
