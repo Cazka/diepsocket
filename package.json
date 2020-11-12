@@ -1,6 +1,6 @@
 {
 	"name": "diepsocket",
-	"version": "1.1.3",
+	"version": "1.1.4",
 	"description": "connect to a diep.io server",
 	"main": "./index.js",
 	"repository": "github:Cazka/diepsocket",
@@ -13,7 +13,6 @@
 	"homepage": "https://github.com/Cazka/diepsocket",
 	"dependencies": {
 		"https-proxy-agent": "^5.0.0",
-		"node-fetch": "^2.6.1",
 		"ws": "^7.3.1"
 	}
 }
