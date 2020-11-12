@@ -148,6 +148,7 @@ class DiepSocket extends EventEmitter {
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
             },
+            ...this._options.ws_options,
         };
         if (this._options.proxy) {
             const agent = new HttpsProxyAgent(url.parse(`http://${this._options.proxy}`));
