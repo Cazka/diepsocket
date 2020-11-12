@@ -123,7 +123,7 @@ class DiepSocket extends EventEmitter {
     }
 
     /**
-     * Returns the leaderboard information
+     * Returns the leaderboard information. credits to ABC
      */
     get leaderboard() {
         return this._leaderboard;
@@ -202,7 +202,7 @@ class DiepSocket extends EventEmitter {
 
                 this._entityId = packet.content.id || this._entityId;
                 this._leaderboard = packet.content.leaderboard || this._leaderboard;
-                
+
                 const parsed = packet.content.parse(this._entityId);
                 this._tankX = parsed.x || this._tankX;
                 this._tankY = parsed.y || this._tankY;
