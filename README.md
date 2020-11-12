@@ -25,11 +25,14 @@ const bot = new DiepSocket('diep.io/#26331613006B57F647');
 bot.on('accept', () => console.log('Succesfully connected!'))
 bot.on('error', (err) => console.log(err));
 ```
-## Doocumentation
+## Documentation
 
 The documentation is still in progress https://github.com/Cazka/diepsocket/blob/master/docs/diepsocket.md  
+
+## External Links
 
 If you want to learn the server protocol I suggest visiting these sites:
 
 https://github.com/cx88/diepssect  
-https://github.com/HueHanaejistla/diep.io-protocol-wiki
+https://github.com/HueHanaejistla/diep.io-protocol-wiki  
+https://packet-prettifier.surge.sh/  
