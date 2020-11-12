@@ -19,6 +19,7 @@
     -   [Event: 'pow_request'](#event-pow_request)
     -   [diepsocket.close([code[, reason]])](#diepsocketclosecode-reason)
     -   [diepsocket.gamemode](#diepsocketgamemode)
+    -   [diepsocket.leaderboard](#diepsocketleaderboard)
     -   [diepsocket.link](#diepsocketlink)
     -   [diepsocket.move([flags[,mouseX[,mouseY[,velocityX[,velocityY]]]]])](#diepsocketmoveflags-mouseX-mouseY-velocityX-velocityY)
     -   [diepsocket.moveTo(goalPos[,flags[,mouseX[,mouseY]]])](#diepsocketmoveTogoalPos-flags-mouseX-mouseY)
