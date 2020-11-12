@@ -7,8 +7,8 @@
     -   The following events are from the internal websocket connection
     -   [Event: 'close'](#event-close)
     -   [Event: 'error'](#event-error)
-    -   [Event: 'open'](#event-open)
     -   [Event: 'message'](#event-message)
+    -   [Event: 'open'](#event-open)
     -   The following events are bot events
     -   [Event: 'accept'](#event-accept)
     -   [Event: 'achievement'](#event-achievement)
@@ -39,6 +39,81 @@
 -   [DiepSocket.linkParse(link)](#diepsocketlinkParselink)
 -   [DiepSocket.findServer([gamemode[,region]],cb)](#diepsocketfindServergamemode-region-cb)
 -   [DiepSocket.findServerSync([gamemode[,region]])](#diepsocketfindServerSyncgamemode-region-cb)
+
+## Class: DiepSocket
+
+This class represents a DiepSocket. It extends the `EventEmitter`.
+
+### new DiepSocket(link[, options])
+
+-   `link` {String} The link to which to connect.
+-   `options` {Object}
+    -   `timeout` {Number} Timeout in milliseconds for the handshake request. Default 20,000 ms.
+    -   `proxy` {String} The http proxy that will be used.
+    -   `ipv6` {String} The ipv6 that will be used.
+    -   `forceTeam` {Boolean} When set to true will only join same team otherwise throw an error.
+    -   `ws_options` {Object} Options to pass to the WebSocket constructor.
+
+Create a new DiepSocket instance.
+
+### Event: 'close'
+
+-   `code` {Number}
+-   `reason` {String}
+
+Emitted when the connection is closed. `code` is a numeric value indicating the
+status code explaining why the connection has been closed. `reason` is a
+human-readable string explaining why the connection has been closed.
+
+### Event: 'error'
+
+-   `error` {Error}
+
+Emitted when an error occurs.  
+Important to note: This event can trigger after the `open` event but never after the `accept` event.
+
+### Event: 'message'
+
+-   `data` {String|Buffer|ArrayBuffer|Buffer[]}
+
+Emitted when a message is received from the server.
+
+### Event: 'open'
+
+Emitted when the connection is established.  
+Important to note: Only use this event if you know what you are doing. You will not need this 99% of the time. For example you can use this to implement your own Proof of Work Solver. Example in examples folder.
+
+### Event: 'accept'
+
+Emitted when the server accepts us as a client.
+Use this event to check for a successful connection.
+
+### Event: 'achievement'
+
+Emitted when the bot receives an achievement packet.  
+Could be used to detect various in game events like destroying shapes.
+
+### Event: 'dead'
+
+Emitted when the bot dies.
+
+### Event: 'latency'
+
+Emitted when the server responds to our heartbeat.
+
+### Event: 'notification'
+
+Emitted when the server sends a notification packet. For example 'You have killed ...'
+
+### Event: 'player_count'
+
+Emitted when the server sends a player_count packet.
+
+### Event: 'pow_request'
+
+Emitted when the server sends a Proof of Work request.  
+If a listener is attached to this event, diepsocket will not solve this pow.  
+Use this if you want to implement your own Proof of Work solver. See examples folder.
 
 ```js
 /**
