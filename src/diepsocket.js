@@ -125,7 +125,9 @@ class DiepSocket extends EventEmitter {
     /**
      * Returns the leaderboard information
      */
-    get leaderboard() {}
+    get leaderboard() {
+        return this._leaderboard;
+    }
 
     /**
      * Creates a WebSocket connection to the diep.io server.
@@ -199,13 +201,15 @@ class DiepSocket extends EventEmitter {
                 }
 
                 this._entityId = packet.content.id || this._entityId;
+                this._leaderboard = packet.content.leaderboard || this._leaderboard;
+                
                 const parsed = packet.content.parse(this._entityId);
+                this._tankX = parsed.x || this._tankX;
+                this._tankY = parsed.y || this._tankY;
                 if (parsed.dead) {
                     this._entityId = undefined;
                     super.emit('dead');
                 }
-                this._tankX = parsed.x || this._tankX;
-                this._tankY = parsed.y || this._tankY;
                 break;
             case 'outdated':
                 console.warn('DiepSocket: outdated client. Further use is not recommended.');
