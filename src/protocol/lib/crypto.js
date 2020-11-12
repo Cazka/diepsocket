@@ -5409,7 +5409,7 @@ class Shuffler {
         return HEAPU8.slice(5000000, 5000000 + data.length);
     }
 
-    async reset() {
+    reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
         this.views.u8.set(new Uint8Array(res), 0);
     }
@@ -5446,7 +5446,7 @@ class Unshuffler {
         throw new Error('Not supported');
     }
 
-    async reset() {
+    reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
         this.views.u8.set(new Uint8Array(res), 0);
     }

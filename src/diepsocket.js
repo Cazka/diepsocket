@@ -78,8 +78,8 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout;
 
         this._socket;
-        this._shuffler;
-        this._unshuffler;
+        this._shuffler = new Shuffler();
+        this._unshuffler = new Unshuffler();
 
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
@@ -123,20 +123,22 @@ class DiepSocket extends EventEmitter {
     }
 
     /**
+     * Returns the leaderboard information
+     */
+    get leaderboard() {}
+
+    /**
      * Creates a WebSocket connection to the diep.io server.
      *
      * @private
      */
-    async _connect() {
-        this._shuffler = new Shuffler();
-        this._unshuffler = new Unshuffler();
-        await this._unshuffler.reset();
-        await this._shuffler.reset();
+    _connect() {
+        this._shuffler.reset();
+        this._unshuffler.reset();
 
         const options = {
             origin: 'https://diep.io',
             rejectUnauthorized: false,
-            family: 6,
             headers: {
                 Pragma: 'no-cache',
                 'Cache-Control': 'no-cache',
@@ -190,11 +192,12 @@ class DiepSocket extends EventEmitter {
 
         switch (packet.type) {
             case 'update':
-                if (!this._pinged) {
-                    this._pinged = true;
+                if (!this._sentPing) {
+                    this._sentPing = true;
                     this.send('heartbeat');
                     this._lastPing = Date.now();
                 }
+
                 this._entityId = packet.content.id || this._entityId;
                 const parsed = packet.content.parse(this._entityId);
                 if (parsed.dead) {
@@ -227,6 +230,7 @@ class DiepSocket extends EventEmitter {
                 this._party = packet.content.party;
                 break;
             case 'accept':
+                //setTimeout to give the other packets time to arrive (party, gamemode, player_count...).
                 setTimeout(() => {
                     if (this._options.forceTeam && this._initialLink !== this.link) this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
