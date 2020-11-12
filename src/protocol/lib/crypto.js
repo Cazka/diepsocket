@@ -1,15 +1,15 @@
 'use strict';
 const fs = require('fs');
 
-const buffer = new ArrayBuffer(67108864);
-var HEAP8 = new Int8Array(buffer);
-var HEAP16 = new Int16Array(buffer);
-var HEAP32 = new Int32Array(buffer);
-var HEAPU8 = new Uint8Array(buffer);
-var HEAPU16 = new Uint16Array(buffer);
-var HEAPU32 = new Uint32Array(buffer);
-var HEAPF32 = new Float32Array(buffer);
-var HEAPF64 = new Float64Array(buffer);
+var buffer;
+var HEAP8;
+var HEAP16;
+var HEAP32;
+var HEAPU8;
+var HEAPU16;
+var HEAPU32;
+var HEAPF32;
+var HEAPF64;
 var Math_imul = Math.imul;
 var Math_fround = Math.fround;
 var Math_abs = Math.abs;
@@ -5367,41 +5367,78 @@ function $465($5_1, $9_1, $8_1) {
     global$0 = ($4_1 + 784) | 0;
 }
 
+function replaceBufferViews({ buf, i8, i16, i32, u8, u16, u32, f32, f64 }) {
+    buffer = buf;
+    HEAP8 = i8;
+    HEAP16 = i16;
+    HEAP32 = i32;
+    HEAPU8 = u8;
+    HEAPU16 = u16;
+    HEAPU32 = u32;
+    HEAPF32 = f32;
+    HEAPF64 = f64;
+}
 class Shuffler {
+    constructor() {
+        this.buffer = new ArrayBuffer(67108864);
+        this.views = {
+            buf: this.buffer,
+            i8: new Int8Array(this.buffer),
+            i16: new Int16Array(this.buffer),
+            i32: new Int32Array(this.buffer),
+            u8: new Uint8Array(this.buffer),
+            u16: new Uint16Array(this.buffer),
+            u32: new Uint32Array(this.buffer),
+            f32: new Float32Array(this.buffer),
+            f64: new Float64Array(this.buffer),
+        };
+    }
+
     clientbound(data) {
         throw new Error('Not supported');
     }
 
     serverbound(data) {
         //replace global buffer with this.buf
-        HEAPU8.set(this.buf, 0);
+        replaceBufferViews(this.views);
 
         data = new Uint8Array(data);
         HEAPU8.set(data, 5000000);
 
         $86(5451072, 5000000, data.length);
-        //replace this.buf with global buffer
-        this.buf = new Uint8Array(HEAPU8);
         return HEAPU8.slice(5000000, 5000000 + data.length);
     }
 
     async reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
-        this.buf = new Uint8Array(res);
+        this.views.u8.set(new Uint8Array(res), 0);
     }
 }
 
 class Unshuffler {
+    constructor() {
+        this.buffer = new ArrayBuffer(67108864);
+        this.views = {
+            buf: this.buffer,
+            i8: new Int8Array(this.buffer),
+            i16: new Int16Array(this.buffer),
+            i32: new Int32Array(this.buffer),
+            u8: new Uint8Array(this.buffer),
+            u16: new Uint16Array(this.buffer),
+            u32: new Uint32Array(this.buffer),
+            f32: new Float32Array(this.buffer),
+            f64: new Float64Array(this.buffer),
+        };
+    }
+
     clientbound(data) {
         //replace global buffer with this.buf
-        HEAPU8.set(this.buf, 0);
+        replaceBufferViews(this.views);
 
         data = new Uint8Array(data);
         HEAPU8.set(data, 5000000);
 
         $465(5451072, 5000000, data.length);
-        //replace this.buf with global buffer
-        this.buf = new Uint8Array(HEAPU8);
         return HEAPU8.slice(5000000, 5000000 + data.length);
     }
 
@@ -5411,7 +5448,7 @@ class Unshuffler {
 
     async reset() {
         const res = fs.readFileSync(__dirname + '/../../../lib/initial_buffer.mem');
-        this.buf = new Uint8Array(res);
+        this.views.u8.set(new Uint8Array(res), 0);
     }
 }
 
