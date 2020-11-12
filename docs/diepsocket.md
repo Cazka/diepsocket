@@ -90,6 +90,9 @@ Use this event to check for a successful connection.
 
 ### Event: 'achievement'
 
+- `achievement` {Object}
+- `achievement.ids` {Array}
+
 Emitted when the bot receives an achievement packet.  
 Could be used to detect various in game events like destroying shapes.
 
@@ -99,17 +102,31 @@ Emitted when the bot dies.
 
 ### Event: 'latency'
 
+-   `latency` {Number}
+
 Emitted when the server responds to our heartbeat.
 
 ### Event: 'notification'
+
+-   `notification` {Object}
+-   `notification.message` {String}
+-   `notification.color` {Number}
+-   `notification.time` {Number}
+-   `notification.unique` {String}
 
 Emitted when the server sends a notification packet. For example 'You have killed ...'
 
 ### Event: 'player_count'
 
+-   `player_count` {Number}
+
 Emitted when the server sends a player_count packet.
 
 ### Event: 'pow_request'
+
+-   `pow_request` {Object}
+-   `pow_request.difficulty` {Number}
+-   `pow_request.prefix` {String}
 
 Emitted when the server sends a Proof of Work request.  
 If a listener is attached to this event, diepsocket will not solve this pow.  
