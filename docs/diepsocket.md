@@ -24,6 +24,7 @@
     -   [diepsocket.move([flags[,mouseX[,mouseY[,velocityX[,velocityY]]]]])](#diepsocketmoveflags-mouseX-mouseY-velocityX-velocityY)
     -   [diepsocket.moveTo(goalPos[,flags[,mouseX[,mouseY]]])](#diepsocketmoveTogoalPos-flags-mouseX-mouseY)
     -   [diepsocket.position](#diepsocketposition)
+    -   [diepsoclet.region](#diepsocketregion)
     -   [diepsocket.send(type, content)](#diepsocketsendtype-content)
     -   [diepsocket.sendBinary(data)](#diepsocketsendBinarydata)
     -   [diepsocket.spawn([name])](#diepsocketspawnname)
@@ -76,7 +77,7 @@ Important to note: This event can trigger after the `open` event but never after
 
 -   `data` {String|Buffer|ArrayBuffer|Buffer[]}
 
-Emitted when a message is received from the server.
+Emitted when a message is received from the server. data is unshuffled.
 
 ### Event: 'open'
 
