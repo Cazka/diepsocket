@@ -47,6 +47,12 @@ https.get = function (...args) {
             'Sec-WebSocket-Extensions': undefined,
             ...args[0].headers,
         };
+        //remove unused header fields
+        Object.keys(args[0].headers).forEach(key => {
+            if(!args[0].headers[key]) {
+                delete args[0].headers[key];
+            }
+        });
     }
     return _https_get(...args);
 };
