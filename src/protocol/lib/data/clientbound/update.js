@@ -244,76 +244,12 @@ function parseLeaderboard(parser) {
     //we have an arena entity creation
     //------------------starting here------------------
     const leaderboard = [...Array(10)].map(() => Object());
-    const COLORS = {
-        3: 'BLUE',
-        4: 'RED',
-        5: 'PURPLE',
-        6: 'GREEN',
-    };
-    const TANKS = [
-        'Tank', // 0
-        'Twin',
-        'Triplet',
-        'Triple Shot',
-        'Quad Tank',
-        'Octo Tank',
-        'Sniper',
-        'Machine Gun',
-        'Flank Guard',
-        'Tri-Angle',
-        'Destroyer', // 10
-        'Overseer',
-        'Overlord',
-        'Twin-Flank',
-        'Penta Shot',
-        'Assassin',
-        'Arena Closer',
-        'Necromancer',
-        'Triple Twin',
-        'Hunter',
-        'Gunner', // 20
-        'Stalker',
-        'Ranger',
-        'Booster', // 23
-        'Fighter',
-        'Hybrid',
-        'Manager',
-        'Mothership',
-        'Predator',
-        'Sprayer',
-        '', // deleted
-        'Trapper',
-        'Gunner Trapper',
-        'Overtrapper',
-        'Mega Trapper',
-        'Tri-Trapper',
-        'Smasher',
-        '', // deleted
-        'Landmine',
-        'Auto Gunner',
-        'Auto 5',
-        'Auto 3',
-        'Spread Shot',
-        'Streamliner',
-        'Auto Trapper',
-        'Dominator', // Destroyer
-        'Dominator', // Gunner
-        'Dominator', // Trapper
-        'Battleship',
-        'Annihilator',
-        'Auto Smasher',
-        'Spike',
-        'Factory',
-        'Ball',
-        'Skimmer',
-        'Rocketeer',
-    ];
     //leaderX
     parser.float();
     //tankIds
     for (let i = 0; i < 10; i++) {
         const tank_id = parser.vi();
-        leaderboard[i].tank = TANKS[tank_id];
+        leaderboard[i].tank = tank_id;
     }
     //unknown
     parser.vu();
@@ -322,7 +258,7 @@ function parseLeaderboard(parser) {
     //labels
     for (let i = 0; i < 10; i++) {
         const label = parser.string();
-        if (label.length > 0) leaderboard[i].label = label;
+        leaderboard[i].label = label;
     }
     //unknown
     parser.vu();
@@ -337,7 +273,7 @@ function parseLeaderboard(parser) {
     //color
     for (let i = 0; i < 10; i++) {
         const color = parser.vu();
-        leaderboard[i].color = COLORS[color];
+        leaderboard[i].color = color;
     }
     //leaderY
     parser.float();
@@ -356,7 +292,7 @@ function parseLeaderboard(parser) {
     //scores
     for (let i = 0; i < 10; i++) {
         const score = parser.float();
-        leaderboard[i].score = Math.floor(score);
+        leaderboard[i].score = score;
     }
     return leaderboard.slice(0, leaderboard_length);
 }
