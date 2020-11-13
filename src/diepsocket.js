@@ -11,8 +11,6 @@ const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
 
 let BUILD = '7cfc34fd65cffe7ef51d03a8f128ea59e85dbe31'; //08.11.2020
 
-const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
-const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
 const INPUT = {
     leftMouse: 0b000000000001,
     upKey: 0b000000000010,
@@ -27,6 +25,87 @@ const INPUT = {
     switchclass: 0b010000000000,
     constantOfTrue: 0b100000000000,
 };
+const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
+const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
+const COLORS = [
+    'BASE_GRAY',
+    'BARREL_GRAY',
+    'BODY_BLUE',
+    'TEAM_BLUE',
+    'TEAM_RED',
+    'TEAM_PURPLE',
+    'TEAM_GREEN',
+    'SHINY_GREEN',
+    'SQUARE_YELLOW',
+    'TRIANGLE_RED',
+    'PENTAGON_PURPLE',
+    'CRASHER_PINK',
+    'CLOSER_YELLOW',
+    'SCOREBOARD_GREEN',
+    'MAZEWALL_GRAY',
+    'FFA_RED',
+    'NECRO_ORANGE',
+    'FALLEN_GRAY',
+    'GLITCH',
+];
+const TANKS = [
+    'Tank', // 0
+    'Twin',
+    'Triplet',
+    'Triple Shot',
+    'Quad Tank',
+    'Octo Tank',
+    'Sniper',
+    'Machine Gun',
+    'Flank Guard',
+    'Tri-Angle',
+    'Destroyer',
+    'Overseer',
+    'Overlord',
+    'Twin-Flank',
+    'Penta Shot',
+    'Assassin',
+    'Arena Closer',
+    'Necromancer',
+    'Triple Twin',
+    'Hunter',
+    'Gunner',
+    'Stalker',
+    'Ranger',
+    'Booster',
+    'Fighter',
+    'Hybrid',
+    'Manager',
+    'Mothership',
+    'Predator',
+    'Sprayer',
+    '', // deleted
+    'Trapper',
+    'Gunner Trapper',
+    'Overtrapper',
+    'Mega Trapper',
+    'Tri-Trapper',
+    'Smasher',
+    '', // deleted
+    'Landmine',
+    'Auto Gunner',
+    'Auto 5',
+    'Auto 3',
+    'Spread Shot',
+    'Streamliner',
+    'Auto Trapper',
+    'Dominator', // Destroyer
+    'Dominator', // Gunner
+    'Dominator', // Trapper
+    'Battleship',
+    'Annihilator',
+    'Auto Smasher',
+    'Spike',
+    'Factory',
+    'Ball',
+    'Skimmer',
+    'Rocketeer',
+];
 
 //Thanks to binary-guy for this hack. Changes the order of header fields to match the order of WebSocket API
 const _https_get = https.get;
@@ -48,8 +127,8 @@ https.get = function (...args) {
             ...args[0].headers,
         };
         //remove unused header fields
-        Object.keys(args[0].headers).forEach(key => {
-            if(!args[0].headers[key]) {
+        Object.keys(args[0].headers).forEach((key) => {
+            if (!args[0].headers[key]) {
                 delete args[0].headers[key];
             }
         });
@@ -151,7 +230,8 @@ class DiepSocket extends EventEmitter {
             headers: {
                 Pragma: 'no-cache',
                 'Cache-Control': 'no-cache',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
             },
@@ -244,7 +324,8 @@ class DiepSocket extends EventEmitter {
             case 'accept':
                 //setTimeout to give the other packets time to arrive (party, gamemode, player_count...).
                 setTimeout(() => {
-                    if (this._options.forceTeam && this._initialLink !== this.link) this._onerror(new Error('The team you tried to join is full'));
+                    if (this._options.forceTeam && this._initialLink !== this.link)
+                        this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
                 }, 100);
                 break;
@@ -485,8 +566,10 @@ DiepSocket.Builder = Builder;
 DiepSocket.Shuffler = Shuffler;
 DiepSocket.Unshuffler = Unshuffler;
 
-DiepSocket.GAMEMODE = GAMEMODES;
-DiepSocket.REGION = REGIONS;
 DiepSocket.INPUT = INPUT;
+DiepSocket.GAMEMODES = GAMEMODES;
+DiepSocket.REGIONS = REGIONS;
+DiepSocket.COLORS = COLORS;
+DiepSocket.TANKS = TANKS;
 
 module.exports = DiepSocket;
