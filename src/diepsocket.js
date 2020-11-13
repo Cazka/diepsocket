@@ -173,6 +173,7 @@ class DiepSocket extends EventEmitter {
         this._initialLink = this.link;
 
         this._gamemode;
+        this._leaderboard;
 
         this._entityId;
         this._tankX = 0.1;
@@ -212,7 +213,7 @@ class DiepSocket extends EventEmitter {
      * Returns the leaderboard information. credits to ABC
      */
     get leaderboard() {
-        return this._leaderboard;
+        return this._leaderboard || [];
     }
 
     /**
@@ -322,12 +323,12 @@ class DiepSocket extends EventEmitter {
                 this._party = packet.content.party;
                 break;
             case 'accept':
-                //setTimeout to give the other packets time to arrive (party, gamemode, player_count...).
+                //setTimeout to give the other packets time to arrive (party, gamemode, player_count,leaderboard,...).
                 setTimeout(() => {
                     if (this._options.forceTeam && this._initialLink !== this.link)
                         this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
-                }, 100);
+                }, 300);
                 break;
             case 'achievement':
                 super.emit('achievement', packet.content);
