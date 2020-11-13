@@ -173,6 +173,7 @@ class DiepSocket extends EventEmitter {
         this._initialLink = this.link;
 
         this._gamemode;
+        this._region;
         this._leaderboard;
 
         this._entityId;
@@ -190,6 +191,13 @@ class DiepSocket extends EventEmitter {
         return this._gamemode;
     }
 
+    /**
+     * Returns the region.
+     */
+    get region() {
+        return this._region;
+    }
+    
     /**
      * Returns the party link.
      *
@@ -312,6 +320,7 @@ class DiepSocket extends EventEmitter {
                 break;
             case 'server_info':
                 this._gamemode = packet.content.gamemode;
+                this._region = packet.content.region;
                 break;
             case 'heartbeat':
                 let now = Date.now();
