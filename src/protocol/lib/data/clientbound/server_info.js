@@ -4,7 +4,7 @@ module.exports = {
     parse(parser) {
         const gamemode = parser.string();
         const host_region = parser.string();
-        const [host, region] = host_region.split['-'];
+        const [host, region] = host_region.split('-');
         return {
             gamemode,
             host,
