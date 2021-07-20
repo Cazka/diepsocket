@@ -6,10 +6,24 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const https = require('https');
 const url = require('url');
 const { Worker } = require('worker_threads');
+const fs = require('fs');
+const crypto = require('crypto');
 
-const { Parser, Builder, Shuffler, Unshuffler } = require('./protocol');
+const { Parser, Builder, DiepCrypto } = require('./protocol');
 
-let BUILD = '7cfc34fd65cffe7ef51d03a8f128ea59e85dbe31'; //08.11.2020
+let BUILD = '5327085435ba93c4eb8fb515dfb381101ccba3b7';
+
+const EVAL_TABLE = (function getEvalTable() {
+    const eval_table = {};
+    const data = fs.readFileSync(`${__dirname}/../lib/eval_table.txt`, { encoding: 'utf8' }).split('\n');
+
+    data.forEach((entry) => {
+        const [sha1, result] = entry.split('=');
+        eval_table[sha1] = result;
+    });
+
+    return eval_table;
+})();
 
 const INPUT = {
     leftMouse: 0b000000000001,
@@ -23,31 +37,11 @@ const INPUT = {
     instantUpg: 0b000100000000,
     gamepad: 0b001000000000,
     switchclass: 0b010000000000,
-    constantOfTrue: 0b100000000000,
+    adblock: 0b100000000000,
 };
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
-const COLORS = [
-    'BASE_GRAY',
-    'BARREL_GRAY',
-    'BODY_BLUE',
-    'TEAM_BLUE',
-    'TEAM_RED',
-    'TEAM_PURPLE',
-    'TEAM_GREEN',
-    'SHINY_GREEN',
-    'SQUARE_YELLOW',
-    'TRIANGLE_RED',
-    'PENTAGON_PURPLE',
-    'CRASHER_PINK',
-    'CLOSER_YELLOW',
-    'SCOREBOARD_GREEN',
-    'MAZEWALL_GRAY',
-    'FFA_RED',
-    'NECRO_ORANGE',
-    'FALLEN_GRAY',
-    'GLITCH',
-];
+const COLORS = ['BASE_GRAY', 'BARREL_GRAY', 'BODY_BLUE', 'TEAM_BLUE', 'TEAM_RED', 'TEAM_PURPLE', 'TEAM_GREEN', 'SHINY_GREEN', 'SQUARE_YELLOW', 'TRIANGLE_RED', 'PENTAGON_PURPLE', 'CRASHER_PINK', 'CLOSER_YELLOW', 'SCOREBOARD_GREEN', 'MAZEWALL_GRAY', 'FFA_RED', 'NECRO_ORANGE', 'FALLEN_GRAY', 'GLITCH'];
 const TANKS = [
     'Tank', // 0
     'Twin',
@@ -164,8 +158,7 @@ class DiepSocket extends EventEmitter {
         this._connectTimeout;
 
         this._socket;
-        this._shuffler = new Shuffler();
-        this._unshuffler = new Unshuffler();
+        this._diepcrypto = new DiepCrypto();
 
         const { id, party } = this.constructor.linkParse(link);
         this._id = id;
@@ -179,6 +172,8 @@ class DiepSocket extends EventEmitter {
         this._entityId;
         this._tankX = 0.1;
         this._tankY = 0.1;
+
+        this._retryUnshuffle = true;
 
         this._connect();
     }
@@ -197,7 +192,7 @@ class DiepSocket extends EventEmitter {
     get region() {
         return this._region;
     }
-    
+
     /**
      * Returns the party link.
      *
@@ -230,8 +225,7 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _connect() {
-        this._shuffler.reset();
-        this._unshuffler.reset();
+        this._diepcrypto.reset();
 
         const options = {
             origin: 'https://diep.io',
@@ -239,8 +233,7 @@ class DiepSocket extends EventEmitter {
             headers: {
                 Pragma: 'no-cache',
                 'Cache-Control': 'no-cache',
-                'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
             },
@@ -286,30 +279,51 @@ class DiepSocket extends EventEmitter {
      * @private
      */
     _onmessage(data) {
-        data = this._unshuffler.clientbound(data);
-        const packet = new Parser(data).clientbound();
+        data = new Uint8Array(data);
+        const dataOld = new Uint8Array(data);
+
+        data = this._diepcrypto.unshuffle(data);
+
+        //console.log(new Parser(data).hexdump());
+
+        let packet;
+        try {
+            packet = new Parser(data).clientbound();
+        } catch (err) {
+            if(!this._retryUnshuffle) {
+                throw err;
+            }
+            this._retryUnshuffle = false;
+            //forcing the checkMagicBytes, fails 0.00001%
+            //console.log('parsing failed, force checkMagicByte');
+            //console.log(err);
+
+            this._diepcrypto.revert();
+            this._diepcrypto.checkMagicByte([1], 0);
+            this._onmessage(dataOld);
+            return;
+        }
+
+        this._retryUnshuffle = true;
 
         switch (packet.type) {
             case 'update':
-                if (!this._sentPing) {
-                    this._sentPing = true;
+                if (!this._firstUpdate) {
+                    this._firstUpdate = true;
                     this.send('heartbeat');
                     this._lastPing = Date.now();
                 }
 
                 this._entityId = packet.content.id || this._entityId;
-                this._leaderboard = packet.content.leaderboard || this._leaderboard;
 
                 const parsed = packet.content.parse(this._entityId);
                 this._tankX = parsed.x || this._tankX;
                 this._tankY = parsed.y || this._tankY;
-                if (parsed.dead) {
-                    this._entityId = undefined;
-                    super.emit('dead');
-                }
+                
+                //this._diepcrypto.checkMagicByte(packet.content.magicBuffer, 0);
                 break;
             case 'outdated':
-                console.warn('DiepSocket: outdated client. Further use is not recommended.');
+                console.warn('DiepSocket: outdated client. Further use is not recommended.', packet.content.build);
                 BUILD = packet.content.build;
                 this._resetListeners();
                 this.close();
@@ -334,8 +348,7 @@ class DiepSocket extends EventEmitter {
             case 'accept':
                 //setTimeout to give the other packets time to arrive (party, gamemode, player_count,leaderboard,...).
                 setTimeout(() => {
-                    if (this._options.forceTeam && this._initialLink !== this.link)
-                        this._onerror(new Error('The team you tried to join is full'));
+                    if (this._options.forceTeam && this._initialLink !== this.link) this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
                 }, 300);
                 break;
@@ -355,6 +368,12 @@ class DiepSocket extends EventEmitter {
                     this._pow_worker.on('message', (result) => this.send('pow_result', { result }));
                 }
                 this._pow_worker.postMessage(packet.content);
+                break;
+            case 'eval_request':
+                const sha1 = crypto.createHash('sha1').update(packet.content.func).digest('hex');
+                const result = EVAL_TABLE[sha1];
+                if(result === undefined) this._onerror(new Error('DiepSocket: EVAL_TABLE is outdated'));
+                this.send('eval_result', { result });
                 break;
         }
         super.emit('message', data);
@@ -395,7 +414,7 @@ class DiepSocket extends EventEmitter {
         this._socket.removeAllListeners('close');
         this._socket.removeAllListeners('error');
 
-        this._socket.on('error', () => {});
+        this._socket.on('error', () => { });
         this._socket.on('open', () => this.close());
     }
 
@@ -433,7 +452,7 @@ class DiepSocket extends EventEmitter {
      */
     sendBinary(data) {
         if (!(this._socket && this._socket.readyState === 1)) return;
-        data = this._shuffler.serverbound(data);
+        data = this._diepcrypto.shuffle(data);
         this._socket.send(data);
     }
 
@@ -457,8 +476,7 @@ class DiepSocket extends EventEmitter {
      * @param {Float} velocityY The velocity Y
      * @public
      */
-    move(flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0, velocityX = 0, velocityY = 0) {
-        flags |= INPUT.constantOfTrue;
+    move(flags = 0, mouseX = 0, mouseY = 0, velocityX = 0, velocityY = 0) {
         this.send('input', { flags, mouseX, mouseY, velocityX, velocityY });
     }
 
@@ -473,7 +491,7 @@ class DiepSocket extends EventEmitter {
      * @param {Number} mouseY The mouse Y position
      * @public
      */
-    moveTo(goalPos, flags = INPUT.constantOfTrue, mouseX = 0, mouseY = 0) {
+    moveTo(goalPos, flags = 0, mouseX = 0, mouseY = 0) {
         flags |= INPUT.gamepad;
         const deltaX = goalPos.x - this.position.x;
         const deltaY = goalPos.y - this.position.y;
@@ -573,8 +591,7 @@ class DiepSocket extends EventEmitter {
 
 DiepSocket.Parser = Parser;
 DiepSocket.Builder = Builder;
-DiepSocket.Shuffler = Shuffler;
-DiepSocket.Unshuffler = Unshuffler;
+DiepSocket.DiepCrypto = DiepCrypto;
 
 DiepSocket.INPUT = INPUT;
 DiepSocket.GAMEMODES = GAMEMODES;

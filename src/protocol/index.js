@@ -1,5 +1,5 @@
 const Parser = require('./lib/parser');
 const Builder = require('./lib/builder');
-const {Shuffler, Unshuffler} = require('./lib/crypto');
+const DiepCrypto = require('./lib/diepcrypto');
 
-module.exports = { Parser, Builder, Shuffler, Unshuffler };
+module.exports = { Parser, Builder, DiepCrypto };

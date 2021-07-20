@@ -65,7 +65,7 @@ class Parser extends Reader {
             type: dataSpecs.type,
             content: dataSpecs.parse(this),
         };
-        assert(this.isEOF, `Did not reach the end of data: ${JSON.stringify(packet)}`);
+        assert(this.isEOF(), `Did not reach the end of data: ${JSON.stringify(packet)}`);
 
         if (packet.type === 'compressed') {
             packet = new Parser(packet.content.buffer).clientbound();

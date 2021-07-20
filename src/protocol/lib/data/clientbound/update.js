@@ -1,8 +1,6 @@
 const FIELDS = {
-    53: { name: 'y', datatype: 'vi' },
-    48: { name: 'x', datatype: 'vi' },
-    43: { name: 'angle', datatype: 'vi' },
-    39: { name: 'unknown', datatype: 'float' },
+    11: { name: 'y', datatype: 'vi' },
+    41: { name: 'x', datatype: 'vi' },
 };
 const UPGRADE_ARRAY = [
     77,
@@ -136,7 +134,6 @@ function indexOf(arr, query) {
  * @returns {Object} contains {id, parse}. id is the entity id when a new gets created. parse is a function that gets the current entity id.
  */
 function parseUpdate(parser) {
-    //console.log(parser.hexdump());
     /**
      * This is the main function to parse. It requires an entity id and will return {died,x,y,angle}.
      * @param {array} id array that contains the entity id.
@@ -181,8 +178,12 @@ function parseUpdate(parser) {
         id = Array.from(parser.buffer.slice(parser.at, creationIndex));
     }
     //check if arena entity gets created
-    const leaderboard = parseLeaderboard(parser);
-    return { id, leaderboard, parse };
+    //const leaderboard = parseLeaderboard(parser);
+    return { 
+        id, 
+        //leaderboard, 
+        parse 
+    };
 }
 
 /**
@@ -192,13 +193,14 @@ function parseUpdate(parser) {
  * @returns {Boolean} if entity id gets deleted or not
  */
 function isDeleted(parser, id) {
+    return false;
     parser.at = 0;
     //packet header
     parser.vu();
     // update id
     parser.vu();
     // loop through deletions
-    for (var i = 0, n = parser.vu(); i < n; i++) {
+    for (var i = 0, n = parser.vu() % 9; i < n; i++) {
         const start = parser.at;
         parser.vu();
         parser.vu();
@@ -229,11 +231,12 @@ function parseLeaderboard(parser) {
     //update id
     parser.vu();
     //deletions
-    for (let i = 0, n = parser.vu(); i < n; i++) {
-        //entity id
-        parser.vu();
-        parser.vu();
-    }
+    // for (let i = 0, n = parser.vu(); i < n; i++) {
+    //     //entity id
+    //     parser.vu();
+    //     parser.vu();
+    // }
+    parser.vu();
     //updates-creations count
     if (parser.vu() === 0) return;
     //read first entity-id
@@ -244,25 +247,37 @@ function parseLeaderboard(parser) {
     //we have an arena entity creation
     //------------------starting here------------------
     const leaderboard = [...Array(10)].map(() => Object());
-    //leaderX
+    parser.float();
+    parser.vu();    
+    parser.float();
+    parser.float();
+    parser.float();    
     parser.float();
     //tankIds
     for (let i = 0; i < 10; i++) {
         const tank_id = parser.vi();
         leaderboard[i].tank = tank_id;
     }
-    //unknown
+    //color
+    for (let i = 0; i < 10; i++) {
+        const color = parser.vu();
+        leaderboard[i].color = color;
+    }
+    parser.float();
+    parser.float();
     parser.vu();
+    //scores
+    for (let i = 0; i < 10; i++) {
+        const score = parser.float();
+        leaderboard[i].score = score;
+    }
     parser.float();
-    parser.float();
+    parser.vu();
     //labels
     for (let i = 0; i < 10; i++) {
         const label = parser.string();
         leaderboard[i].label = label;
     }
-    //unknown
-    parser.vu();
-    parser.float();
     //names
     for (let i = 0; i < 10; i++) {
         const name = parser.string();
@@ -270,30 +285,7 @@ function parseLeaderboard(parser) {
     }
     //leaderboard length
     const leaderboard_length = parser.vu();
-    //color
-    for (let i = 0; i < 10; i++) {
-        const color = parser.vu();
-        leaderboard[i].color = color;
-    }
-    //leaderY
-    parser.float();
-    //bottomY
-    parser.float();
-    //unknown
-    parser.vu();
-    //rightX
-    parser.float();
-    //topY
-    parser.float();
-    //leftX
-    parser.float();
-    //unknown
-    parser.vu();
-    //scores
-    for (let i = 0; i < 10; i++) {
-        const score = parser.float();
-        leaderboard[i].score = score;
-    }
+
     return leaderboard.slice(0, leaderboard_length);
 }
 
@@ -302,9 +294,10 @@ module.exports = {
     type: 'update',
     parse(parser) {
         const { id, leaderboard, parse } = parseUpdate(parser);
+        parser.jumpToEnd();
         return {
             id,
-            leaderboard,
+            //leaderboard,
             parse,
         };
     },

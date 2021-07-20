@@ -1,43 +1,48 @@
 const { parentPort } = require('worker_threads');
 const crypto = require('crypto');
+const decoder = new TextDecoder();
+const encoder = new TextEncoder();
 
 parentPort.on('message', ({ prefix, difficulty }) => {
     parentPort.postMessage(solve(prefix, difficulty));
 });
 
 function solve(prefix, difficulty) {
-    for (var i = 0; ; ++i) {
-        const r = i.toString().padStart(16, 0);
-        if (solvesDifficulty(sha1(prefix + r + prefix), difficulty)) return r;
+    const buf = new Uint8Array(48).fill(48);
+    prefix = encoder.encode(prefix);
+
+    buf.set(prefix, 0);
+    buf.set(prefix, 32);
+
+    const zeroes = difficulty - (difficulty % 4);
+    const mask1 = (2 ** zeroes - 1) << (32 - zeroes);
+    const mask2 = (2 ** (difficulty - zeroes) - 1) << (zeroes - 4);
+    const mask3 = mask1 | mask2;
+
+    while (true) {
+        if (solvesDifficulty(sha1(buf), mask2, mask3)) break;
+        increment(buf);
+    }
+    return decoder.decode(buf.subarray(16, 32));
+}
+
+function increment(buf) {
+    let i = 31;
+
+    buf[i] += 1;
+    while (i > 15 && buf[i] === 58) {
+        buf[i] = 48;
+        buf[--i] += 1;
     }
 }
-function solvesDifficulty(str, difficulty) {
-    for (var i = 0; i < ~~(difficulty / 4); ++i) {
-        if (str[i] != '0') return false;
-    }
-    for (var i = 4 * ~~(difficulty / 4); i < difficulty; ++i) {
-        if (!(nibbleToNumber[str[~~(i / 4)]] & (1 << (i & 3)))) return false;
-    }
+function solvesDifficulty(hash, mask2, mask3) {
+    let z = (hash[0] << 24) + (hash[1] << 16) + (hash[2] << 8) + hash[3];
+
+    if ((z & mask3) !== mask2) return false;
+
     return true;
 }
-const nibbleToNumber = {
-    0: 0,
-    1: 1,
-    2: 2,
-    3: 3,
-    4: 4,
-    5: 5,
-    6: 6,
-    7: 7,
-    8: 8,
-    9: 9,
-    a: 10,
-    b: 11,
-    c: 12,
-    d: 13,
-    e: 14,
-    f: 15,
-};
-function sha1(str) {
-    return crypto.createHash('sha1').update(str).digest('hex');
+
+function sha1(buf) {
+    return crypto.createHash('sha1').update(buf).digest();
 }

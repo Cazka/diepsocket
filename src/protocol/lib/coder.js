@@ -10,8 +10,7 @@ const u16 = new Uint16Array(convo);
 const u32 = new Uint32Array(convo);
 const float = new Float32Array(convo);
 
-let endianSwap = (val) =>
-    ((val & 0xff) << 24) | ((val & 0xff00) << 8) | ((val >> 8) & 0xff00) | ((val >> 24) & 0xff);
+let endianSwap = (val) => ((val & 0xff) << 24) | ((val & 0xff00) << 8) | ((val >> 8) & 0xff00) | ((val >> 24) & 0xff);
 
 class Reader {
     constructor(content) {
@@ -91,6 +90,9 @@ class Reader {
             throw new Error(`Error at ${this.at}: Out of Bounds.\n${this.hexdump()}`);
         }
     }
+    jumpToEnd() {
+        this.at = this.buffer.byteLength;
+    }
 
     /**
      * Reverse Variable Length.
@@ -100,14 +102,12 @@ class Reader {
         while (this.buffer[this.at - 1] & 0x80) this.at--;
     }
     hexdump() {
-        const s = this.buffer.reduce((acc, x, i) => {
-            x = x.toString(16).padStart(2, 0).toUpperCase();
+        return Array.from(this.buffer).map((x, i) => {
+            x = x.toString(16).padStart(2, 0);
             if (this.at === i) x = `>${x}`;
-            if (i % 16 === 0) acc = `${acc}\n${x}`;
-            else acc = `${acc} ${x}`;
-            return acc;
-        }, '');
-        return s.trim();
+            if (i && i % 16 === 0) x = `\n${x}`;
+            return x;
+        }).join(' ');
     }
 }
 class Writer {
