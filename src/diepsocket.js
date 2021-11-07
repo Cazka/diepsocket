@@ -11,7 +11,7 @@ const crypto = require('crypto');
 
 const { Parser, Builder, DiepCrypto } = require('./protocol');
 
-let BUILD = '5327085435ba93c4eb8fb515dfb381101ccba3b7';
+let BUILD = '76ead1de30e6e2b80039d578671d1f6962e8810f';
 
 const EVAL_TABLE = (function getEvalTable() {
     const eval_table = {};
@@ -509,7 +509,7 @@ class DiepSocket extends EventEmitter {
      * @public
      */
     static getLink(wsURL = '', party = '') {
-        const match = wsURL.match(/(?<=wss:\/\/).[0-9a-z]{3}(?=.s.m28n.net\/)|^[0-9a-z]{4}$/);
+        const match = wsURL.match(/(?<=wss:\/\/)[0-9a-z]+(?=.s.m28n.net\/)|^[0-9a-z]+$/);
         if (!match) throw new Error('Invalid wsURL: wrong format:', wsURL);
         let serverid = match[0];
         serverid = serverid
