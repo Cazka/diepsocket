@@ -61,8 +61,8 @@ function parseUpdate(parser) {
             prev += parser.vu() ^ 1;
             let field = FIELDS[prev];
             if (!field) {
-                console.log('UNKOWN FIELD ID:', prev);
-                console.log(parser.hexdump());
+                // console.log('UNKOWN FIELD ID:', prev);
+                // console.log(parser.hexdump());
                 break;
             }
             parsed[field.name] = parser[field.datatype]();
