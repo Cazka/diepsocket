@@ -11,7 +11,7 @@ const crypto = require('crypto');
 
 const { Parser, Builder, DiepCrypto } = require('./protocol');
 
-let BUILD = '76ead1de30e6e2b80039d578671d1f6962e8810f';
+let BUILD = 'bdac7385bb6407c456f33369aef8b06244e3d029';
 
 const EVAL_TABLE = (function getEvalTable() {
     const eval_table = {};
@@ -41,7 +41,27 @@ const INPUT = {
 };
 const GAMEMODES = ['dom', 'ffa', 'tag', 'maze', 'teams', '4teams', 'sandbox', 'survival'];
 const REGIONS = ['la', 'miami', 'sydney', 'amsterdam', 'singapore'];
-const COLORS = ['BASE_GRAY', 'BARREL_GRAY', 'BODY_BLUE', 'TEAM_BLUE', 'TEAM_RED', 'TEAM_PURPLE', 'TEAM_GREEN', 'SHINY_GREEN', 'SQUARE_YELLOW', 'TRIANGLE_RED', 'PENTAGON_PURPLE', 'CRASHER_PINK', 'CLOSER_YELLOW', 'SCOREBOARD_GREEN', 'MAZEWALL_GRAY', 'FFA_RED', 'NECRO_ORANGE', 'FALLEN_GRAY', 'GLITCH'];
+const COLORS = [
+    'BASE_GRAY',
+    'BARREL_GRAY',
+    'BODY_BLUE',
+    'TEAM_BLUE',
+    'TEAM_RED',
+    'TEAM_PURPLE',
+    'TEAM_GREEN',
+    'SHINY_GREEN',
+    'SQUARE_YELLOW',
+    'TRIANGLE_RED',
+    'PENTAGON_PURPLE',
+    'CRASHER_PINK',
+    'CLOSER_YELLOW',
+    'SCOREBOARD_GREEN',
+    'MAZEWALL_GRAY',
+    'FFA_RED',
+    'NECRO_ORANGE',
+    'FALLEN_GRAY',
+    'GLITCH',
+];
 const TANKS = [
     'Tank', // 0
     'Twin',
@@ -233,7 +253,8 @@ class DiepSocket extends EventEmitter {
             headers: {
                 Pragma: 'no-cache',
                 'Cache-Control': 'no-cache',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
             },
@@ -290,7 +311,7 @@ class DiepSocket extends EventEmitter {
         try {
             packet = new Parser(data).clientbound();
         } catch (err) {
-            if(!this._retryUnshuffle) {
+            if (!this._retryUnshuffle) {
                 throw err;
             }
             this._retryUnshuffle = false;
@@ -319,7 +340,7 @@ class DiepSocket extends EventEmitter {
                 const parsed = packet.content.parse(this._entityId);
                 this._tankX = parsed.x || this._tankX;
                 this._tankY = parsed.y || this._tankY;
-                
+
                 //this._diepcrypto.checkMagicByte(packet.content.magicBuffer, 0);
                 break;
             case 'outdated':
@@ -348,7 +369,8 @@ class DiepSocket extends EventEmitter {
             case 'accept':
                 //setTimeout to give the other packets time to arrive (party, gamemode, player_count,leaderboard,...).
                 setTimeout(() => {
-                    if (this._options.forceTeam && this._initialLink !== this.link) this._onerror(new Error('The team you tried to join is full'));
+                    if (this._options.forceTeam && this._initialLink !== this.link)
+                        this._onerror(new Error('The team you tried to join is full'));
                     else super.emit('accept');
                 }, 300);
                 break;
@@ -372,7 +394,7 @@ class DiepSocket extends EventEmitter {
             case 'eval_request':
                 const sha1 = crypto.createHash('sha1').update(packet.content.func).digest('hex');
                 const result = EVAL_TABLE[sha1];
-                if(result === undefined) this._onerror(new Error('DiepSocket: EVAL_TABLE is outdated'));
+                if (result === undefined) this._onerror(new Error('DiepSocket: EVAL_TABLE is outdated'));
                 this.send('eval_result', { result });
                 break;
         }
@@ -414,7 +436,7 @@ class DiepSocket extends EventEmitter {
         this._socket.removeAllListeners('close');
         this._socket.removeAllListeners('error');
 
-        this._socket.on('error', () => { });
+        this._socket.on('error', () => {});
         this._socket.on('open', () => this.close());
     }
 

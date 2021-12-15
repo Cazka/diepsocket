@@ -1,112 +1,13 @@
 const FIELDS = {
-    11: { name: 'y', datatype: 'vi' },
-    41: { name: 'x', datatype: 'vi' },
+    2: { name: 'y', datatype: 'vi' },
+    6: { name: 'x', datatype: 'vi' },
 };
 const UPGRADE_ARRAY = [
-    77,
-    111,
-    118,
-    101,
-    109,
-    101,
-    110,
-    116,
-    32,
-    83,
-    112,
-    101,
-    101,
-    100,
-    0,
-    82,
-    101,
-    108,
-    111,
-    97,
-    100,
-    0,
-    66,
-    117,
-    108,
-    108,
-    101,
-    116,
-    32,
-    68,
-    97,
-    109,
-    97,
-    103,
-    101,
-    0,
-    66,
-    117,
-    108,
-    108,
-    101,
-    116,
-    32,
-    80,
-    101,
-    110,
-    101,
-    116,
-    114,
-    97,
-    116,
-    105,
-    111,
-    110,
-    0,
-    66,
-    117,
-    108,
-    108,
-    101,
-    116,
-    32,
-    83,
-    112,
-    101,
-    101,
-    100,
-    0,
-    66,
-    111,
-    100,
-    121,
-    32,
-    68,
-    97,
-    109,
-    97,
-    103,
-    101,
-    0,
-    77,
-    97,
-    120,
-    32,
-    72,
-    101,
-    97,
-    108,
-    116,
-    104,
-    0,
-    72,
-    101,
-    97,
-    108,
-    116,
-    104,
-    32,
-    82,
-    101,
-    103,
-    101,
-    110,
-    0,
+    77, 111, 118, 101, 109, 101, 110, 116, 32, 83, 112, 101, 101, 100, 0, 82, 101, 108, 111, 97, 100, 0, 66, 117, 108,
+    108, 101, 116, 32, 68, 97, 109, 97, 103, 101, 0, 66, 117, 108, 108, 101, 116, 32, 80, 101, 110, 101, 116, 114, 97,
+    116, 105, 111, 110, 0, 66, 117, 108, 108, 101, 116, 32, 83, 112, 101, 101, 100, 0, 66, 111, 100, 121, 32, 68, 97,
+    109, 97, 103, 101, 0, 77, 97, 120, 32, 72, 101, 97, 108, 116, 104, 0, 72, 101, 97, 108, 116, 104, 32, 82, 101, 103,
+    101, 110, 0,
 ];
 const TANK_CREATION = [1, 0, 2, 0, 5, 3, 0, 3, 1];
 
@@ -160,8 +61,8 @@ function parseUpdate(parser) {
             prev += parser.vu() ^ 1;
             let field = FIELDS[prev];
             if (!field) {
-                //console.log('UNKOWN FIELD ID:', prev);
-                //console.log(parser.hexdump());
+                console.log('UNKOWN FIELD ID:', prev);
+                console.log(parser.hexdump());
                 break;
             }
             parsed[field.name] = parser[field.datatype]();
@@ -179,10 +80,10 @@ function parseUpdate(parser) {
     }
     //check if arena entity gets created
     //const leaderboard = parseLeaderboard(parser);
-    return { 
-        id, 
-        //leaderboard, 
-        parse 
+    return {
+        id,
+        //leaderboard,
+        parse,
     };
 }
 
@@ -248,10 +149,10 @@ function parseLeaderboard(parser) {
     //------------------starting here------------------
     const leaderboard = [...Array(10)].map(() => Object());
     parser.float();
-    parser.vu();    
+    parser.vu();
     parser.float();
     parser.float();
-    parser.float();    
+    parser.float();
     parser.float();
     //tankIds
     for (let i = 0; i < 10; i++) {
